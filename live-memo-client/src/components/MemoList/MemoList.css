@@ -1,0 +1,11 @@
+.memoList{
+    flex:1;
+    overflow:scroll;
+}
+.memoList::-webkit-scrollbar{
+    display: none;
+}
+.memoList__list{
+    padding-bottom: 20%;
+}
+

@@ -1,0 +1,47 @@
+.memo{
+    flex:1;
+    background-color: whitesmoke;
+
+}
+.memo__tools{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.memo__toolsLeft{
+    display:flex;
+}
+
+.memo__body{
+    display:flex;
+    flex-direction: column;
+    margin: 30px;
+    background-color: white;
+    padding: 20px;
+    height: 100vh;
+    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.24);
+}
+.memo__bodyHeader{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid whitesmoke;
+    padding: 20px;
+    position: relative;
+}
+.memo__bodyHeader >p{
+    margin-left:20px;
+}
+
+.memo__message > p{
+    padding:10px;
+    margin-right: 20px;
+    overflow-wrap: break-word;
+}
+.memo__time{
+    position:absolute;
+    top:24px;
+    right: 0;
+    font-size: 12px;
+    color:gray;   
+    }
