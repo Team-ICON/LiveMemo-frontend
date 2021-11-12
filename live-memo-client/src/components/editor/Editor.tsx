@@ -65,7 +65,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     );
 
     useEffect(() => {
-        console.log("first me")
         handleSave(docState)
 
     }, [])

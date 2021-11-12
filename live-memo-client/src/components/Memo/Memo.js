@@ -12,9 +12,8 @@ import "./Memo.css"
 function Memo() {
 
     const navigate = useNavigate()
-    const selectedMemo = useSelector(selectOpenMemo)
+    const selectedMemo = useSelector(selectOpenMemo) //이게 room_id 들어가먄됨
 
-    //메모 열렸으니까 memipopen true임
 
     return (
         <div className="memo">
@@ -38,14 +37,15 @@ function Memo() {
 
             </div>
             <div className="memo__body">
-                <div className="memo__bodyHeader">
+                {/* <div className="memo__bodyHeader">
                     <p>{selectedMemo?.title}</p>
                     <p className="memo__time">{selectedMemo?.time}</p>
                 </div>
 
                 <div className="memo__message">
                     <p>{selectedMemo?.contents}</p>
-                </div>
+                </div> */}
+
 
             </div>
         </div >

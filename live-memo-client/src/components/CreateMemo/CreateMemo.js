@@ -12,6 +12,11 @@ import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import "./CreateMemo.css"
 const { Title } = Typography;
+const api = axios.create({
+    baseURL: 'http://localhost:5000/api/memo',
+    headers: { 'Content-Type': 'application/json' },
+});
+
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ roomId, currentUser }) {
 
@@ -20,10 +25,6 @@ function CreateMemo({ roomId, currentUser }) {
     //     baseURL: 'https://60b9308780400f00177b6434.mockapi.io/yjs-webrtc/v1/',
     //     headers: { 'Content-Type': 'application/json' },
     // });
-    const api = axios.create({
-        baseURL: 'http://localhost:5000/api/memo',
-        headers: { 'Content-Type': 'application/json' },
-    });
 
 
     // var editor = new QuillEditor()
@@ -57,7 +58,7 @@ function CreateMemo({ roomId, currentUser }) {
 
         console.log(response.data)
         if (response.data.body == null) {
-            console.log("hi")
+            // console.log("hi")
             return firstState
         }
         else {
