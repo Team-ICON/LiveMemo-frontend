@@ -14,7 +14,6 @@ function MemoList() {
     const [memos, setMemos] = useState([])
     const dispatch = useDispatch();
 
-    //메모 닫힌상태니까 memoisopen false
 
 
 

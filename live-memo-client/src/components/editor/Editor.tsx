@@ -36,8 +36,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const [isSynced, setIsSynced] = useState<boolean>(false);
     const [docState, setDocState] = useState<RemirrorJSON>();
 
-    console.log(provider)
-
 
 
     const handleChange = useCallback(
@@ -50,28 +48,33 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         },
         [setDocState],
     );
-
-    const handleSave = useCallback(
-        newDocState => {
-            if (isSynced || clientCount === 0) {
-                onSave(documentId, JSON.stringify(newDocState));
-                const meta = provider.doc.getMap('meta');
-                meta.set('lastSaved', Date.now());
-            }
-        },
-        [onSave, documentId, provider.doc, isSynced, clientCount],
-    );
-
-    const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
-
     const handlePeersChange = useCallback(
         ({ webrtcPeers }) => {
             setClientCount(webrtcPeers.length);
         },
         [setClientCount],
     );
-
     useObservableListener('peers', handlePeersChange, provider);
+
+
+    const handleSave = useCallback(
+        newDocState => {
+            console.log("make")
+            if (isSynced || clientCount === 0) {
+                onSave(documentId, JSON.stringify(newDocState));
+                const meta = provider.doc.getMap('meta');
+                meta.set('lastSaved', Date.now());
+                console.log(meta)
+            }
+            console.log(1)
+        },
+        [onSave, documentId, provider.doc, isSynced, clientCount],
+    );
+
+    const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
+
+
+
 
     const handleSynced = useCallback(
         ({ synced }) => {
@@ -108,6 +111,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     });
 
     useEffect(() => {
+        console.log("fetch")
         if (usedFallbackRef.current) return;
 
         const fetchFallback = async () => {
