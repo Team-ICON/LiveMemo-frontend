@@ -48,13 +48,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         },
         [setDocState],
     );
-    const handlePeersChange = useCallback(
-        ({ webrtcPeers }) => {
-            setClientCount(webrtcPeers.length);
-        },
-        [setClientCount],
-    );
-    useObservableListener('peers', handlePeersChange, provider);
+
 
 
     const handleSave = useCallback(
@@ -66,15 +60,25 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 meta.set('lastSaved', Date.now());
                 console.log(meta)
             }
-            console.log(1)
         },
         [onSave, documentId, provider.doc, isSynced, clientCount],
     );
 
+    useEffect(() => {
+        console.log("first me")
+        handleSave(docState)
+
+    }, [])
+
     const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
 
-
-
+    const handlePeersChange = useCallback(
+        ({ webrtcPeers }) => {
+            setClientCount(webrtcPeers.length);
+        },
+        [setClientCount],
+    );
+    useObservableListener('peers', handlePeersChange, provider);
 
     const handleSynced = useCallback(
         ({ synced }) => {
@@ -111,10 +115,10 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     });
 
     useEffect(() => {
-        console.log("fetch")
         if (usedFallbackRef.current) return;
 
         const fetchFallback = async () => {
+            console.log("fetch")
             if (provider.connected && clientCount === 0) {
                 const res = await onFetch(documentId);
                 getContext()?.setContent(JSON.parse(res));

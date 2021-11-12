@@ -12,8 +12,9 @@ import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import "./CreateMemo.css"
 const { Title } = Typography;
-
+const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ roomId, currentUser }) {
+
     const navigate = useNavigate()
     // const api = axios.create({
     //     baseURL: 'https://60b9308780400f00177b6434.mockapi.io/yjs-webrtc/v1/',
@@ -55,8 +56,14 @@ function CreateMemo({ roomId, currentUser }) {
         const response = await api.get(`getMemo/${id}`)
 
         console.log(response.data)
+        if (response.data.body == null) {
+            console.log("hi")
+            return firstState
+        }
+        else {
+            return response.data.memInfo.body;
 
-        return response.data.memInfo.body;
+        }
     }, []);
 
     // const handleSave = useCallback(async (id, body) => {
