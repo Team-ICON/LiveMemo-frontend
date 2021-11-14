@@ -10,6 +10,8 @@ import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwo
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import axios from "axios"
+// const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
+
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
     headers: { 'Content-Type': 'application/json' },
@@ -18,7 +20,7 @@ const api = axios.create({
 
 function MemoList() {
     const [memos, setMemos] = useState([])
-    // const [contents, setContents] = useState([])
+    const [contents, setContents] = useState([])
     const dispatch = useDispatch();
 
 
@@ -30,7 +32,9 @@ function MemoList() {
                     // console.log(response.data)
                     setMemos(response.data.memos.map(memo => ({
                         roomId: memo._id,
-                        doc: memo.body
+                        doc: memo.body,
+                        createdTime: memo.createdAt,
+                        updatedTime: memo.updatedAt
                     })
                     ))
                 } else {
@@ -40,23 +44,34 @@ function MemoList() {
     }, [])
 
     //컨텐츠 파싱
+    useEffect(() => {
+        let temp = []
 
-    // let contents = {}
-    // let cur_list = []
-    // memos.map(memo => {
-    //     JSON.parse(memo.doc).content.map(para => {
-    //         cur_list = [...cur_list, [para.content[0].text]]
-    //         console.log(cur_list)
-    //     })
-    //     contents = { ...contents, { roodId: memo.roodId, context: cur_list }
-    // }
-    // })
+        memos.map(({ roomId, doc, createdTime, updatedTime }) => {
+            let cur_list = []
+            console.log(doc)
+            let jsonDoc = JSON.parse(doc)
+            console.log(jsonDoc)
+            if (jsonDoc.content.length >= 1) {
+
+                jsonDoc.content.map(para => {
+                    if (Object.keys(para).length >= 2) {
+
+                        cur_list = [...cur_list, para.content[0].text]
+                    }
+
+                })
+                temp.push({ roomId: roomId, context: cur_list, createdTime: createdTime, updatedTime: updatedTime })
+            }
+        })
+
+        setContents(temp)
+    }, [memos])
 
 
 
-    // console.log(memos)
 
-    // console.log(contents)
+    console.log(contents)
     return (
 
         <div className="memoList">
@@ -64,12 +79,14 @@ function MemoList() {
                 <div className="emailList__list">
 
                     <FlipMove>
-                        <MemoRow
-                            title="첫 제목"
-                            contents="안녕"
-                            time="시간">
-                            {/* new Date(createdAt).toDateString() */}
-                        </MemoRow>
+                        {contents.map(({ roomId, context, createdTime }) => (
+                            <MemoRow
+                                roomId={roomId}
+                                contents={context}
+                                time={new Date(createdTime).toDateString()} />
+                            //  {/* new Date(createdAt).toDateString() */}
+                        ))}
+
 
                     </FlipMove>
 
