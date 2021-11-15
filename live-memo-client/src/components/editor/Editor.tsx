@@ -1,6 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { RemirrorJSON } from 'remirror';
-import { YjsExtension, AnnotationExtension } from 'remirror/extensions';
+import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension } from 'remirror/extensions';
 import {
     EditorComponent,
     Remirror,
@@ -15,7 +15,8 @@ import useObservableListener from '../hooks/useObservableListener';
 import FloatingAnnotations from './FloatingAnnotations';
 import AnnotationsJSONPrinter from './AnnotationsJSONPrinter';
 import 'remirror/styles/all.css';
-
+import { useDispatch } from 'react-redux';
+import { selectDoc } from '../../features/memoSlice';
 interface EditorProps {
     documentId: string;
     onFetch: Function;
@@ -25,7 +26,7 @@ interface EditorProps {
 const TIMEOUT = 3000 + Math.floor(Math.random() * 7000);
 
 const Status = ({ success = false }) => (
-    <span className={`status ${success ? 'success' : ''}`}>&nbsp;</span>
+    <span className={`status ${success ? 'success' : ''}`}>sync</span>
 );
 
 function Editor({ documentId, onFetch, onSave, }: EditorProps) {
@@ -35,7 +36,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const [clientCount, setClientCount] = useState<number>(0);
     const [isSynced, setIsSynced] = useState<boolean>(false);
     const [docState, setDocState] = useState<RemirrorJSON>();
-
+    const dispatch = useDispatch()
 
 
     const handleChange = useCallback(
@@ -49,30 +50,38 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         [setDocState],
     );
 
-
+    useEffect(() => {
+        dispatch(selectDoc({
+            docState
+        }))
+    }, [docState])
 
     const handleSave = useCallback(
         newDocState => {
-            console.log("make")
             if (isSynced || clientCount === 0) {
+                console.log(clientCount, "make")
                 onSave(documentId, JSON.stringify(newDocState));
                 const meta = provider.doc.getMap('meta');
                 meta.set('lastSaved', Date.now());
                 console.log(meta)
+                console.log(Date.now())
             }
         },
         [onSave, documentId, provider.doc, isSynced, clientCount],
     );
 
-    useEffect(() => {
-        handleSave(docState)
+    // useEffect(() => {
+    //     handleSave(docState)
 
-    }, [])
+    // }, [])
 
     const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
 
     const handlePeersChange = useCallback(
         ({ webrtcPeers }) => {
+            console.log(currentUser)
+
+            console.log("사람수:", webrtcPeers)
             setClientCount(webrtcPeers.length);
         },
         [setClientCount],
@@ -100,10 +109,13 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     const createExtensions = useCallback(() => {
         return [
+            new BoldExtension(),
             new YjsExtension({
                 getProvider: () => provider,
             }),
             new AnnotationExtension(),
+            // new ImageExtension()
+
         ];
     }, [provider]);
 
@@ -118,10 +130,23 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
         const fetchFallback = async () => {
             console.log("fetch")
+            console.log(provider.connected)
+            console.log(provider)
             if (provider.connected && clientCount === 0) {
                 const res = await onFetch(documentId);
+                console.log(res)
+                dispatch(selectDoc({
+                    docState: res
+                }))
                 getContext()?.setContent(JSON.parse(res));
             }
+            // if (clientCount === 0) {
+            //     console.log("여기는 처음임", provider.connected)
+
+            //     const res = await onFetch(documentId);
+            //     console.log(res)
+            //     getContext()?.setContent(JSON.parse(res));
+            // }
             usedFallbackRef.current = true;
         };
 

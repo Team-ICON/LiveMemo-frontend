@@ -7,4 +7,7 @@ export const store = configureStore({
     memo: memoReducer,
     user: userReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  })
 });

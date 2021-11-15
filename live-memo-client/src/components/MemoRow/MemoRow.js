@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { selectMemo } from "../../features/memoSlice"
 import "./MemoRow.css"
 
-const MemoRow = forwardRef(({ roomId, contents, time }) => {
+const MemoRow = ({ roomId, contents, time }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -15,7 +15,7 @@ const MemoRow = forwardRef(({ roomId, contents, time }) => {
         })
 
         )
-        navigate("/memo")
+        navigate("/createMemo")
     }
     ///여기서 doc 형태에 들어갈 json으로 리덕스로 set해주고 app에가서 찾은다음에 메모에 그거 보내버림 prop으로
 
@@ -35,6 +35,6 @@ const MemoRow = forwardRef(({ roomId, contents, time }) => {
             </p>
         </div>
     )
-})
+}
 
 export default MemoRow

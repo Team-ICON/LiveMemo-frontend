@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   selectedMemo: null,
-  MemoIsOpen: false,
+  selectedDoc: null,
+  openedProvider: null,
 
 }
 // The function below is called a thunk and allows us to perform async logic. It
@@ -19,11 +20,14 @@ export const memoSlice = createSlice({
     selectMemo: (state, action) => {
       state.selectedMemo = action.payload
     },
-    openMemo: state => {
-      state.MemoIsOpen = true;
+    selectProvider: (state, action) => {
+      state.openedProvider = action.payload
     },
-    closeMemo: state => {
-      state.MemoIsOpen = false;
+    deleteProvider: () =>
+      initialState
+    ,
+    selectDoc: (state, action) => {
+      state.selectedDoc = action.payload
     }
 
   }
@@ -32,11 +36,14 @@ export const memoSlice = createSlice({
 
 });
 
-export const { selectMemo, openMemo, closeMemo } = memoSlice.actions;
+export const { selectMemo, selectProvider, deleteProvider, selectDoc } = memoSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectOpenMemo = (state) => state.memo.selectedMemo;
 export const selectMemoIsOpen = (state) => state.memo.MemoIsOpen;
+export const selectOpenProvider = (state) => state.memo.openedProvider;
+export const selectOpenDoc = (state) => state.memo.selectedDoc;
+
 export default memoSlice.reducer;

@@ -39,8 +39,8 @@ const Footer = () => {
     return (
         <div className="footer">
             <div className="footer__right">
-                <IconButton>
-                    <AddCircleOutlineTwoToneIcon className="footer__addicon" onClick={() => navigate("/createMemo")} />
+                <IconButton onClick={() => navigate("/createMemo")}>
+                    <AddCircleOutlineTwoToneIcon className="footer__addicon" />
                 </IconButton>
             </div>
         </div>

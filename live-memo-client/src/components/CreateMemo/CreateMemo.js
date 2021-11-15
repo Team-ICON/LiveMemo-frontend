@@ -10,7 +10,11 @@ import PushPinIcon from '@mui/icons-material/PushPin';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
+import { useSelector, useDispatch } from 'react-redux';
+import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
+
 import "./CreateMemo.css"
+
 const { Title } = Typography;
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
@@ -21,32 +25,13 @@ const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ roomId, currentUser }) {
 
     const navigate = useNavigate()
-    // const api = axios.create({
-    //     baseURL: 'https://60b9308780400f00177b6434.mockapi.io/yjs-webrtc/v1/',
-    //     headers: { 'Content-Type': 'application/json' },
-    // });
-
-
-    // var editor = new QuillEditor()
-
-    // const onEditorChange = (value) => {
-    //     setContent(value)
-    //     console.log(content)
-    // }
-
-    // const onFilesChange = (files) => {
-    //     setFiles(files)
-    // }
-
-
-
-    // const handleFetch = useCallback(async id => {
-    //     const response = await api.get(`documents/${id}`)
-    //     return response.data.body;
-    // }, []);
-
+    const selectedMemo = useSelector(selectOpenMemo)
+    const selectedProvider = useSelector(selectOpenProvider)
+    const selectedDoc = useSelector(selectOpenDoc)
+    const dispatch = useDispatch()
 
     const handleSave = useCallback(async (_id, body) => {
+        console.log(_id, body)
         await api.put("createMemo", {
             _id,
             body,
@@ -55,43 +40,40 @@ function CreateMemo({ roomId, currentUser }) {
 
     const handleFetch = useCallback(async id => {
         const response = await api.get(`getMemo/${id}`)
-
-        console.log(response.data)
-        if (response.data.body == null) {
-            // console.log("hi")
+        if (response.data.memInfo == null) {
+            console.log("null body")
             return firstState
         }
         else {
+
             return response.data.memInfo.body;
 
         }
     }, []);
 
-    // const handleSave = useCallback(async (id, body) => {
-    //     await api.post(`/documents/${id}`, {
-    //         id,
-    //         body,
-    //     });
-    // }, []);
 
-
-
-
-
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
+        const findMemoId = selectedProvider.documentId
+        console.log("이거야: ", selectedProvider.documentId)
+        console.log("찾았다", selectedDoc)
+        handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
 
-        // setContent("");
+        selectedProvider.newProvider.destroy();
+
+        dispatch(deleteProvider())
+        navigate("/")
 
     }
-
-
-
+    if (selectedMemo)
+        console.log("이미있음: ", selectedMemo.roomId)
+    else
+        console.log("새로만듬: ", roomId)
     return (
         <div className="createMemo">
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
-                    <IconButton onClick={() => navigate("/")}>
+                    <IconButton onClick={onSubmit}>
                         <ArrowBackIcon />
                     </IconButton>
 
@@ -119,7 +101,8 @@ function CreateMemo({ roomId, currentUser }) {
                             <Title level={2} > Editor</Title>
                         </div>
 
-                        <Editor documentId={roomId}
+                        <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
+
                             onFetch={handleFetch}
                             onSave={handleSave}
 

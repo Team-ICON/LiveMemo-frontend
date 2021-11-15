@@ -10,6 +10,7 @@ import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwo
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import axios from "axios"
+import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 
 const api = axios.create({
@@ -22,6 +23,7 @@ function MemoList() {
     const [memos, setMemos] = useState([])
     const [contents, setContents] = useState([])
     const dispatch = useDispatch();
+
 
 
 
@@ -48,20 +50,22 @@ function MemoList() {
         let temp = []
 
         memos.map(({ roomId, doc, createdTime, updatedTime }) => {
-            let cur_list = []
-            console.log(doc)
-            let jsonDoc = JSON.parse(doc)
-            console.log(jsonDoc)
-            if (jsonDoc.content.length >= 1) {
+            if (doc !== null) {
+                let cur_list = []
+                // console.log(doc)
+                let jsonDoc = JSON.parse(doc)
+                // console.log(jsonDoc)
+                if (jsonDoc.content.length >= 1) {
 
-                jsonDoc.content.map(para => {
-                    if (Object.keys(para).length >= 2) {
+                    jsonDoc.content.map(para => {
+                        if (Object.keys(para).length >= 2) {
 
-                        cur_list = [...cur_list, para.content[0].text]
-                    }
+                            cur_list = [...cur_list, para.content[0].text]
+                        }
 
-                })
-                temp.push({ roomId: roomId, context: cur_list, createdTime: createdTime, updatedTime: updatedTime })
+                    })
+                    temp.push({ roomId: roomId, context: cur_list, createdTime: createdTime, updatedTime: updatedTime })
+                }
             }
         })
 
@@ -71,24 +75,23 @@ function MemoList() {
 
 
 
-    console.log(contents)
+    // console.log(contents)
     return (
 
         <div className="memoList">
             <Layout>
                 <div className="emailList__list">
 
-                    <FlipMove>
-                        {contents.map(({ roomId, context, createdTime }) => (
-                            <MemoRow
-                                roomId={roomId}
-                                contents={context}
-                                time={new Date(createdTime).toDateString()} />
-                            //  {/* new Date(createdAt).toDateString() */}
-                        ))}
+                    {contents.map(({ roomId, context, createdTime }) => (
+                        <MemoRow
+                            key={roomId}
+                            roomId={roomId}
+                            contents={context}
+                            time={new Date(createdTime).toDateString()} />
+                        //  {/* new Date(createdAt).toDateString() */}
+                    ))}
 
 
-                    </FlipMove>
 
 
 
