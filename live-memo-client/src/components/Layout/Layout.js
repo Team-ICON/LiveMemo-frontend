@@ -1,4 +1,4 @@
-import { PropsWithChildren, useMemo } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 
 
 import { Avatar, IconButton } from "@mui/material"
@@ -11,24 +11,93 @@ import { selectMemoIsOpen } from "../../features/memoSlice"
 import AppBar from '@mui/material/AppBar';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import { styled, useTheme } from '@mui/material/styles';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { MenuItem } from "@mui/material";
+import {
+    Link,
+} from "react-router-dom";
+
 import "./Layout.css"
 const Header = () => {
+    const drawerWidth = 140;
+
+    const DrawerHeader = styled('div')(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-start',
+    }));
+
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+
     return (
-        <div className="header">
-            <div className="header__left">
-                <IconButton>
-                    <MenuIcon />
-                </IconButton>
-
-            </div>
-
-            <div className="header__right">
-
-
-                <Avatar />
-            </div>
-
-
+        <div>
+            <Table>
+                <TableBody align="right">
+                    <IconButton onClick={handleDrawerOpen}>
+                        <Avatar>ID</Avatar>
+                    </IconButton>
+                    <Drawer
+                        sx={{
+                            width: drawerWidth,
+                            flexShrink: 0,
+                            '& .MuiDrawer-paper': {
+                                width: drawerWidth,
+                            },
+                        }}
+                        variant="persistent"
+                        anchor="right"
+                        open={open}
+                    >
+                        <DrawerHeader onClick={handleDrawerClose}>
+                            <IconButton>
+                                {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </DrawerHeader>
+                        <Divider />
+                        <List>
+                            <Link to="/folder" style={{ textDecoration: 'none', color:"black" }}>
+                                <MenuItem>폴더 리스트</MenuItem>
+                            </Link>
+                            <Link to="/history" style={{ textDecoration: 'none', color:"black" }}>
+                                <MenuItem onClick={() => { }}>히스토리</MenuItem>
+                            </Link>
+                        </List>
+                        <Divider />
+                        <List>
+                            {['로그아웃'].map((text, index) => (
+                                <ListItem button key={text}>
+                                    {/* <ListItemIcon>
+                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    </ListItemIcon> */}
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>
+                </TableBody>
+            </Table>
         </div>
     )
 }
@@ -54,7 +123,10 @@ const Layout = ({ children }) => {
     return (
         <div>
             <Header />
+            <hr/>
             {children}
+            <hr/>
+
             <Footer />
 
         </div>

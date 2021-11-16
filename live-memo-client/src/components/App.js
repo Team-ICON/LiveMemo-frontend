@@ -16,6 +16,8 @@ import { auth } from '../firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import Login from "../components/LoginPage/Login"
 import CreateMemo from "./CreateMemo/CreateMemo"
+import FolderList from "./FolderList/FolderList"
+import History from "./History/History"
 
 
 const App = () => {
@@ -56,6 +58,8 @@ const App = () => {
                 <Route path="/" element={<MemoList currentUser={currentUser} />} />
                 <Route path="createMemo" element={<CreateMemo roomId={newRoomId} currentUser={currentUser} />} />
                 {/* <Route path="createMemo" render={<CreateMemo />} /> */}
+                <Route path="/folder" element={<FolderList />} />
+                <Route path="/history" element={<History />} />
 
               </Routes>
             </div>

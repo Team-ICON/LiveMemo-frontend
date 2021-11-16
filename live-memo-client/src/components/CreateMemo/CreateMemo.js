@@ -98,8 +98,8 @@ function CreateMemo({ roomId, currentUser }) {
                 <UserProvider.Provider value={currentUser}>
 
                     <div >
-                        <div style={{ textAlign: 'center' }}>
-                            <Title level={2} > Editor</Title>
+                        <div style={{ textAlign: 'left' }}>
+                            <Title level={2} > 제목 없음</Title>
                         </div>
 
                         <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
