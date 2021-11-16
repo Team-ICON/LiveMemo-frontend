@@ -15,7 +15,7 @@ const MemoRow = ({ roomId, contents, time }) => {
         })
 
         )
-        navigate(`/createMemo/${roomId}`)
+        navigate(`/createMemo/${roomId}`, { state: roomId })
     }
     ///여기서 doc 형태에 들어갈 json으로 리덕스로 set해주고 app에가서 찾은다음에 메모에 그거 보내버림 prop으로
 

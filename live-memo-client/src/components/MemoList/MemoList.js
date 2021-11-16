@@ -82,11 +82,11 @@ function MemoList() {
 
 
         const navigate = useNavigate()
-        console.log(newRoomId)
+        // console.log(newRoomId)
         return (
             <div className="footer">
                 <div className="footer__right">
-                    <IconButton onClick={() => navigate(`/createMemo/${newRoomId}`)}>
+                    <IconButton onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
                         <AddCircleOutlineTwoToneIcon className="footer__addicon" />
                     </IconButton>
                 </div>

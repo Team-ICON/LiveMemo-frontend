@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Typography, Button, Form, message } from 'antd';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import * as Y from 'yjs'
 import Editor from '../editor/Editor';
 import { WebrtcProvider } from 'y-webrtc'
@@ -23,11 +23,11 @@ const api = axios.create({
 });
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
-function CreateMemo({ roomId, currentUser }) {
-    const [curRoomId, setCurRoomId] = useState(roomId)
-
+function CreateMemo({ currentUser }) {
+    // const [curRoomId, setCurRoomId] = useState(roomId)
+    const { state } = useLocation()
     const navigate = useNavigate()
-    const selectedMemo = useSelector(selectOpenMemo)
+    // const selectedMemo = useSelector(selectOpenMemo)
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
     const dispatch = useDispatch()
@@ -53,6 +53,28 @@ function CreateMemo({ roomId, currentUser }) {
         }
     }, []);
 
+    function popstateHandler() {
+
+        const findMemoId = selectedProvider.documentId
+        console.log("이거야: ", selectedProvider.documentId)
+        console.log("찾았다", selectedDoc)
+        handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
+
+        selectedProvider.newProvider.destroy();
+        //navigate로 하면 자꾸 에러 뜸
+        window.history.pushState(null, null, window.location.pathname);
+
+        // console.log(window.location.pathname)
+        // window.history.pushState(null, null, window.location.pathname);
+    }
+    useEffect(() => {
+        window.addEventListener('popstate', popstateHandler, false);
+        return () => {
+            window.removeEventListener('popstate', popstateHandler)
+        }
+    }, [selectedProvider])
+
+
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -65,14 +87,17 @@ function CreateMemo({ roomId, currentUser }) {
         // history.back()
 
         selectedProvider.newProvider.destroy();
-        dispatch(deleteProvider())
-
+        // dispatch(deleteProvider())
+        // window.history.back()
         navigate("/")
 
 
     }
 
+    useEffect(() => {
+        console.log(state)
 
+    }, [state])
 
     // console.log("현재 룸 넘버: ", curRoomId)
 
@@ -106,7 +131,7 @@ function CreateMemo({ roomId, currentUser }) {
                     <div >
 
 
-                        <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
+                        <Editor documentId={state}
 
                             onFetch={handleFetch}
                             onSave={handleSave}
