@@ -10,6 +10,8 @@ import { IconButton } from "@mui/material"
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
+import { v4 as uuid } from 'uuid';
+
 import axios from "axios"
 import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
 import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
@@ -29,7 +31,7 @@ function MemoList() {
 
     const navigate = useNavigate();
 
-
+    const newRoomId = uuid();
 
     useEffect(() => {
         api.get('/getMemos')
@@ -76,7 +78,23 @@ function MemoList() {
         setContents(temp)
     }, [memos])
 
+    const Footer = () => {
 
+
+        const navigate = useNavigate()
+        console.log(newRoomId)
+        return (
+            <div className="footer">
+                <div className="footer__right">
+                    <IconButton onClick={() => navigate(`/createMemo/${newRoomId}`)}>
+                        <AddCircleOutlineTwoToneIcon className="footer__addicon" />
+                    </IconButton>
+                </div>
+            </div>
+
+        )
+
+    };
 
 
     // console.log(contents)
@@ -97,7 +115,7 @@ function MemoList() {
 
 
 
-
+                    <Footer />
 
                 </div>
             </Layout>

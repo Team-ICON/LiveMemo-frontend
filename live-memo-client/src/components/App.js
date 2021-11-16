@@ -44,7 +44,7 @@ const App = () => {
     };
   }, []);
 
-  const newRoomId = uuid();
+
 
   return (
     <Router>
@@ -56,7 +56,7 @@ const App = () => {
 
                 {/* 아니다 걍 doc 아이디랑 나중에 userid만 넘기면 됨 그럼 reducer로는 현 docid slice만 해서 여기서 주면됨 */}
                 <Route path="/" element={<MemoList currentUser={currentUser} />} />
-                <Route path="createMemo" element={<CreateMemo roomId={newRoomId} currentUser={currentUser} />} />
+                <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={currentUser} />} />
                 {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                 <Route path="/folder" element={<FolderList />} />
                 <Route path="/history" element={<History />} />

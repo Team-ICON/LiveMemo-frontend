@@ -25,6 +25,7 @@ const api = axios.create({
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ roomId, currentUser }) {
     const [curRoomId, setCurRoomId] = useState(roomId)
+
     const navigate = useNavigate()
     const selectedMemo = useSelector(selectOpenMemo)
     const selectedProvider = useSelector(selectOpenProvider)
@@ -61,17 +62,17 @@ function CreateMemo({ roomId, currentUser }) {
         handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
         // console.log(JSON.stringify(selectedDoc.docState))
 
+        // history.back()
 
         selectedProvider.newProvider.destroy();
         dispatch(deleteProvider())
 
         navigate("/")
 
-    }
-    useEffect(() => {
-        setCurRoomId(uuid())
 
-    }, [])
+    }
+
+
 
     // console.log("현재 룸 넘버: ", curRoomId)
 
@@ -105,7 +106,7 @@ function CreateMemo({ roomId, currentUser }) {
                     <div >
 
 
-                        <Editor documentId={selectedMemo ? selectedMemo.roomId : curRoomId}
+                        <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
 
                             onFetch={handleFetch}
                             onSave={handleSave}

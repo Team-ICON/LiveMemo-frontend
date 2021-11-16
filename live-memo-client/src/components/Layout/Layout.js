@@ -99,22 +99,7 @@ const Header = () => {
         </div >
     )
 }
-const Footer = () => {
 
-
-    const navigate = useNavigate()
-    return (
-        <div className="footer">
-            <div className="footer__right">
-                <IconButton onClick={() => navigate("/createMemo")}>
-                    <AddCircleOutlineTwoToneIcon className="footer__addicon" />
-                </IconButton>
-            </div>
-        </div>
-
-    )
-
-};
 
 const Layout = ({ children }) => {
 
@@ -125,7 +110,7 @@ const Layout = ({ children }) => {
             {children}
 
 
-            <Footer />
+
 
         </div>
     );

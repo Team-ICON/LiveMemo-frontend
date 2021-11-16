@@ -20,9 +20,3 @@
     justify-content: flex-end
 }
 
-.footer__right{
-    display: flex;
-    margin-top:10px;
-    padding-right: 20px;
-    justify-content: flex-end
-}
