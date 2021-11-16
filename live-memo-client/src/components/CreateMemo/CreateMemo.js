@@ -12,6 +12,7 @@ import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
+import { v4 as uuid } from 'uuid';
 
 import "./CreateMemo.css"
 
@@ -23,7 +24,7 @@ const api = axios.create({
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ roomId, currentUser }) {
-
+    const [curRoomId, setCurRoomId] = useState(roomId)
     const navigate = useNavigate()
     const selectedMemo = useSelector(selectOpenMemo)
     const selectedProvider = useSelector(selectOpenProvider)
@@ -52,7 +53,7 @@ function CreateMemo({ roomId, currentUser }) {
     }, []);
 
 
-    const onSubmit = async (event) => {
+    const onSubmit = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
         console.log("이거야: ", selectedProvider.documentId)
@@ -63,13 +64,17 @@ function CreateMemo({ roomId, currentUser }) {
 
         selectedProvider.newProvider.destroy();
         dispatch(deleteProvider())
+
         navigate("/")
 
     }
-    if (selectedMemo)
-        console.log("이미있음: ", selectedMemo.roomId)
-    else
-        console.log("새로만듬: ", roomId)
+    useEffect(() => {
+        setCurRoomId(uuid())
+
+    }, [])
+
+    console.log("현재 룸 넘버: ", curRoomId)
+
     return (
         <div className="createMemo">
             <div className="createMemo__tools">
@@ -102,7 +107,7 @@ function CreateMemo({ roomId, currentUser }) {
                             <Title level={2} > Editor</Title>
                         </div>
 
-                        <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
+                        <Editor documentId={selectedMemo ? selectedMemo.roomId : curRoomId}
 
                             onFetch={handleFetch}
                             onSave={handleSave}

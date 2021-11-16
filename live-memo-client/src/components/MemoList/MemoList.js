@@ -4,14 +4,17 @@ import MemoRow from "../MemoRow/MemoRow"
 import { closeMemo } from '../../features/memoSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { db } from '../../firebase'
-import { useNavigate } from 'react-router';
-import { Avatar, IconButton } from "@mui/material"
+import { useNavigate } from "react-router-dom"
+import { Navigate } from 'react-router';
+import { IconButton } from "@mui/material"
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import axios from "axios"
+import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
 import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
+const { Title } = Typography
 
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
@@ -24,6 +27,7 @@ function MemoList() {
     const [contents, setContents] = useState([])
     const dispatch = useDispatch();
 
+    const navigate = useNavigate();
 
 
 
@@ -52,9 +56,9 @@ function MemoList() {
         memos.map(({ roomId, doc, createdTime, updatedTime }) => {
             if (doc !== null) {
                 let cur_list = []
-                console.log(doc)
+                // console.log(doc)
                 let jsonDoc = JSON.parse(doc)
-                console.log(jsonDoc)
+                // console.log(jsonDoc)
                 if (jsonDoc.content.length >= 1) {
 
                     jsonDoc.content.map(para => {
@@ -99,6 +103,41 @@ function MemoList() {
             </Layout>
         </div>
     )
+
+
+    // const renderCards = memos.map((memo) => {
+    //     return <Col key={memo.roodId} lg={8} md={12} xs={24}>
+    //         <Card
+    //             hoverable
+    //             style={{ width: 370, marginTop: 16 }}
+    //             onClick={() => { navigate("/createMemo") }}
+    //         >
+    //             {/* <Meta
+    //                 avatar={
+    //                     <Avatar src={blog.writer.image} />
+    //                 }
+    //                 title={blog.writer.name}
+    //                 description="This is the description"
+    //             /> */}
+    //             <div style={{ height: 150, overflowY: 'scroll', marginTop: 10 }}>
+    //                 <div dangerouslySetInnerHTML={{ __html: memo.doc }} />
+    //             </div>
+    //         </Card>
+    //     </Col>
+    // })
+
+    // return (
+    //     <div style={{ width: '85%', margin: '3rem auto' }}>
+    //         <Title level={2}> Memo Lists </Title>
+    //         <Row gutter={[32, 16]}>
+    //             {renderCards}
+    //         </Row>
+    //     </div>
+    // )
+
+
+
+
 }
 
 export default MemoList
