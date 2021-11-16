@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import * as Y from 'yjs'
 import Editor from '../editor/Editor';
 import { WebrtcProvider } from 'y-webrtc'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { IconButton } from '@mui/material';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -80,10 +80,8 @@ function CreateMemo({ roomId, currentUser }) {
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
                     <IconButton onClick={onSubmit}>
-                        <ArrowBackIcon />
+                        <ArrowBackIosNewIcon />
                     </IconButton>
-
-
                 </div>
                 <div className="memo__toolsRight">
                     <IconButton>
@@ -92,35 +90,18 @@ function CreateMemo({ roomId, currentUser }) {
                     <IconButton>
                         <NotificationsIcon />
                     </IconButton>
-
                 </div>
-
             </div>
-
             <div className="createMemo__body">
-
-
                 <UserProvider.Provider value={currentUser}>
-
                     <div >
-
-
                         <Editor documentId={selectedMemo ? selectedMemo.roomId : curRoomId}
-
                             onFetch={handleFetch}
                             onSave={handleSave}
-
-
                         />
-
-
                     </div>
                 </UserProvider.Provider>
-
-
             </div>
-
-
         </div>
     )
 }

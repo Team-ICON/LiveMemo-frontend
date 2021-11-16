@@ -13,6 +13,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -105,77 +107,81 @@ function FolderList() {
     }
 
     return (
-            <Table cols={2}>
-                <TableHead>
+        <div className="memoList">
+            <div className="header">
+                <div className="createMemo__tools">
                     <Link to="/">
                         <IconButton>
                             <ArrowBackIosNewIcon />
                         </IconButton>
                     </Link>
-                </TableHead>
-                <TableBody>
-                    {itemData.map((item) => (
-                        <ImageButton
-                            focusRipple
-                            key={item.title}
-                        >
-                            <ImageSrc style={{ backgroundImage: `url(${item.url})` }} />
-                            <ImageBackdrop className="MuiImageBackdrop-root" />
-                            <Image>
-                                <Typography
-                                    component="span"
-                                    variant="subtitle1"
-                                    color="inherit"
-                                    sx={{
-                                        position: 'relative',
-                                        p: 4,
-                                        pt: 2,
-                                        pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                                    }}
-                                >
-                                    {item.title}
-                                    <ImageMarked className="MuiImageMarked-root" />
-                                </Typography>
-                            </Image>
-                        </ImageButton>
-                    ))}
-                </TableBody>
-                <TableBody align="right">
-                    <IconButton align="right" onClick={handleClickOpen}>
-                        <FolderOpenIcon fontSize='large' />
-                    </IconButton>
-                    <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>폴더 생성</DialogTitle>
-                        <DialogContent>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                label="폴더 이름을 입력해주세요."
-                                type="text"
-                                fullWidth
-                                variant="standard"
-                                onChange={handleFileNameChange}
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => {
-                                setFileName("");
-                                if (fileName === "") {
-                                    handleClose();
-                                    return;
-                                }
-                                itemData.push({
-                                    title: fileName,
-                                });
-                                handleClose();
-                            }}>생성</Button>
-                            <Button onClick={handleClose}>취소</Button>
-                        </DialogActions>
-                    </Dialog>
-                </TableBody>
-            </Table>
+                </div>
+            </div>
 
+
+            <div className="emailList__list">
+                {itemData.map((item) => (
+                    <ImageButton
+                        focusRipple
+                        key={item.title}
+                    >
+                        <ImageSrc style={{ backgroundImage: `url(${item.url})` }} />
+                        <ImageBackdrop className="MuiImageBackdrop-root" />
+                        <Image>
+                            <Typography
+                                component="span"
+                                variant="subtitle1"
+                                color="inherit"
+                                sx={{
+                                    position: 'relative',
+                                    p: 4,
+                                    pt: 2,
+                                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                                }}
+                            >
+                                {item.title}
+                                <ImageMarked className="MuiImageMarked-root" />
+                            </Typography>
+                        </Image>
+                    </ImageButton>
+                ))}
+            </div>
+
+            <div className="footer__right">
+                <IconButton onClick={handleClickOpen}>
+                    <FolderOpenIcon fontSize='large' />
+                </IconButton>
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>폴더 생성</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="폴더 이름을 입력해주세요."
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            onChange={handleFileNameChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setFileName("");
+                            if (fileName === "") {
+                                handleClose();
+                                return;
+                            }
+                            itemData.push({
+                                title: fileName,
+                            });
+                            handleClose();
+                        }}>생성</Button>
+                        <Button onClick={handleClose}>취소</Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+        </div>
     );
 }
 

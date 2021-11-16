@@ -95,10 +95,6 @@ function MemoList() {
                         //  {/* new Date(createdAt).toDateString() */}
                     ))}
 
-
-
-
-
                 </div>
             </Layout>
         </div>

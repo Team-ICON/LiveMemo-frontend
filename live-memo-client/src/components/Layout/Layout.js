@@ -67,7 +67,7 @@ const Header = () => {
             >
                 <DrawerHeader onClick={handleDrawerClose}>
                     <IconButton>
-                        {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        <ChevronRightIcon />
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
@@ -76,7 +76,7 @@ const Header = () => {
                         <MenuItem>폴더 리스트</MenuItem>
                     </Link>
                     <Link to="/history" style={{ textDecoration: 'none', color: "black" }}>
-                        <MenuItem onClick={() => { }}>히스토리</MenuItem>
+                        <MenuItem>히스토리</MenuItem>
                     </Link>
                 </List>
                 <Divider />
