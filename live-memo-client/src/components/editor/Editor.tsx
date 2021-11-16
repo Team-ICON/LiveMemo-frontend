@@ -45,6 +45,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             //state 는 현재 editstate 뜸 tr은  트랜잭션 tr은 editstate 안에도 있음 
             if (tr?.docChanged) {
                 setDocState(state.toJSON().doc);
+                console.log(state)
             }
         },
         [setDocState],
@@ -162,7 +163,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             usedFallbackRef.current = true;
         };
 
-        const timeoutId = window.setTimeout(fetchFallback, 1000);
+        const timeoutId = window.setTimeout(fetchFallback, 500);
 
         return () => {
             window.clearTimeout(timeoutId);

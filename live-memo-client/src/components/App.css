@@ -16,6 +16,10 @@
   display:flex;
   align-items:center;
 }
+/* 부엉이삭제 */
+.css-oq1wa3{
+  display:none;
+}
 
 
 .header__right{
