@@ -91,6 +91,12 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     );
     useObservableListener('peers', handlePeersChange, provider);
 
+
+    useEffect(() => {
+
+
+    }, [clientCount])
+
     const handleSynced = useCallback(
         ({ synced }) => {
             setIsSynced(synced);

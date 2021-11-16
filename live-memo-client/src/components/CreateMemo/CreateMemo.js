@@ -73,7 +73,7 @@ function CreateMemo({ roomId, currentUser }) {
 
     }, [])
 
-    console.log("현재 룸 넘버: ", curRoomId)
+    // console.log("현재 룸 넘버: ", curRoomId)
 
     return (
         <div className="createMemo">
@@ -103,9 +103,7 @@ function CreateMemo({ roomId, currentUser }) {
                 <UserProvider.Provider value={currentUser}>
 
                     <div >
-                        <div style={{ textAlign: 'left' }}>
-                            <Title level={2} > 제목 없음</Title>
-                        </div>
+
 
                         <Editor documentId={selectedMemo ? selectedMemo.roomId : curRoomId}
 

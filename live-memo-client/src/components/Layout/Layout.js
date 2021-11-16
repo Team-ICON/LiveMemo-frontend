@@ -52,53 +52,51 @@ const Header = () => {
 
 
     return (
-        <div>
-            <Table>
-                <TableBody align="right">
-                    <IconButton onClick={handleDrawerOpen}>
-                        <Avatar>ID</Avatar>
+        <div className="header">
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                    },
+                }}
+                variant="persistent"
+                anchor="right"
+                open={open}
+            >
+                <DrawerHeader onClick={handleDrawerClose}>
+                    <IconButton>
+                        {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
-                    <Drawer
-                        sx={{
-                            width: drawerWidth,
-                            flexShrink: 0,
-                            '& .MuiDrawer-paper': {
-                                width: drawerWidth,
-                            },
-                        }}
-                        variant="persistent"
-                        anchor="right"
-                        open={open}
-                    >
-                        <DrawerHeader onClick={handleDrawerClose}>
-                            <IconButton>
-                                {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                            </IconButton>
-                        </DrawerHeader>
-                        <Divider />
-                        <List>
-                            <Link to="/folder" style={{ textDecoration: 'none', color:"black" }}>
-                                <MenuItem>폴더 리스트</MenuItem>
-                            </Link>
-                            <Link to="/history" style={{ textDecoration: 'none', color:"black" }}>
-                                <MenuItem onClick={() => { }}>히스토리</MenuItem>
-                            </Link>
-                        </List>
-                        <Divider />
-                        <List>
-                            {['로그아웃'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    {/* <ListItemIcon>
+                </DrawerHeader>
+                <Divider />
+                <List>
+                    <Link to="/folder" style={{ textDecoration: 'none', color: "black" }}>
+                        <MenuItem>폴더 리스트</MenuItem>
+                    </Link>
+                    <Link to="/history" style={{ textDecoration: 'none', color: "black" }}>
+                        <MenuItem onClick={() => { }}>히스토리</MenuItem>
+                    </Link>
+                </List>
+                <Divider />
+                <List>
+                    {['로그아웃'].map((text, index) => (
+                        <ListItem button key={text}>
+                            {/* <ListItemIcon>
                                         {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                                     </ListItemIcon> */}
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Drawer>
-                </TableBody>
-            </Table>
-        </div>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                    ))}
+                </List>
+            </Drawer>
+
+            <IconButton className="header__right" onClick={handleDrawerOpen}>
+                <Avatar >ID</Avatar>
+            </IconButton>
+
+        </div >
     )
 }
 const Footer = () => {
@@ -123,9 +121,9 @@ const Layout = ({ children }) => {
     return (
         <div>
             <Header />
-            <hr/>
+
             {children}
-            <hr/>
+
 
             <Footer />
 
