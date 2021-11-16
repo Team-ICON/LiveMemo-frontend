@@ -19,7 +19,8 @@ import "./CreateMemo.css"
 const { Title } = Typography;
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+              'authorization' : token ? `Bearer ${token}` : '' }
 });
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
@@ -40,16 +41,30 @@ function CreateMemo({ roomId, currentUser }) {
         });
     }, []);
 
+    // const handleSave = useCallback(async (_id, body) => {
+    //     try {
+    //         console.log(_id, body)
+    //         let result = await api.put("createMemo", {
+    //             _id,
+    //             body,
+    //         });
+    //         console.log(`result in handleSave at CreateMemo.js`, result);
+    //         newRoomId = result.data.roomId;
+    //         setCurRoomId(newRoomId);
+    //     } catch(err) {
+    //         console.log(`err in handleSave at CreateMemo.js`, err);
+    //     }
+    // }, []);
+
     const handleFetch = useCallback(async id => {
-        const response = await api.get(`getMemo/${id}`)
-        if (response.data.memInfo == null) {
-            console.log("null body")
-            return firstState
-        }
-        else {
+        try {
+            const response = await api.get(`getMemo/${id}`)
+            return response.data.newMemo.body;
 
-            return response.data.memInfo.body;
-
+        } catch (err) {
+            console.log(`handleFetch err At CreateMemo.js `, err);
+            console.log("null body");
+            return firstState;
         }
     }, []);
 

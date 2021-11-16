@@ -18,9 +18,11 @@ import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
 
+const token = window.localStorage.getItem('livememo-token');
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+              'authorization' : token ? `Bearer ${token}` : '' }
 });
 
 

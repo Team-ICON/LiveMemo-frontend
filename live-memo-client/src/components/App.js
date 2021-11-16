@@ -20,20 +20,42 @@ import FolderList from "./FolderList/FolderList"
 import History from "./History/History"
 
 
+const token = window.localStorage.getItem('livememo-token');
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/user',
+  headers: { 'Content-Type': 'application/json',
+              'authorization' : token ? `Bearer ${token}` : '' }
+});
+
 const App = () => {
   const user = useSelector(selectUser)
   const dispatch = useDispatch();
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
+    api.get('/userinfo')
+    .then((err, response) => {
+      if (err) {
+        console.log('err At App.js');
+        console.log(err);
+      }
+      if (response){
+        let user = response.data.user;
         dispatch(login({
           displayName: user.displayName,
           email: user.email,
           photoUrl: user.photoURL
         }))
       }
-
     })
+    // auth.onAuthStateChanged(user => {
+    //   if (user) {
+    //     dispatch(login({
+    //       displayName: user.displayName,
+    //       email: user.email,
+    //       photoUrl: user.photoURL
+    //     }))
+    //   }
+
+    // })
   }, [])
 
   const currentUser = useMemo(() => {
@@ -44,7 +66,8 @@ const App = () => {
     };
   }, []);
 
-
+  let isToken = localStorage.getItem('livememo-token');
+  const newRoomId = uuid();
 
   return (
     <Router>
