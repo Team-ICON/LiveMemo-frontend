@@ -1,6 +1,6 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import { RemirrorJSON } from 'remirror';
-import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension } from 'remirror/extensions';
+import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension, LinkExtension } from 'remirror/extensions';
 import {
     EditorComponent,
     Remirror,
@@ -51,9 +51,11 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     );
 
     useEffect(() => {
+
         dispatch(selectDoc({
             docState
         }))
+        // console.log(typeof (docState));
     }, [docState])
 
     const handleSave = useCallback(
@@ -107,6 +109,16 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     useObservableListener('update', handleYDocUpdate, provider.doc);
 
+
+    const linkExtension = useMemo(() => {
+        const extension = new LinkExtension({ autoLink: true });
+        extension.addHandler('onClick', (_, data) => {
+            window.location.href = data.href
+            return true;
+        });
+        return extension;
+    }, []);
+
     const createExtensions = useCallback(() => {
         return [
             new BoldExtension(),
@@ -114,8 +126,8 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 getProvider: () => provider,
             }),
             new AnnotationExtension(),
-            // new ImageExtension()
-
+            new ImageExtension(),
+            linkExtension
         ];
     }, [provider]);
 
@@ -134,9 +146,9 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             console.log(provider)
             if (provider.connected && clientCount === 0) {
                 const res = await onFetch(documentId);
-                console.log(res)
+                // console.log(typeof (res))
                 dispatch(selectDoc({
-                    docState: res
+                    docState: JSON.parse(res)
                 }))
                 getContext()?.setContent(JSON.parse(res));
             }

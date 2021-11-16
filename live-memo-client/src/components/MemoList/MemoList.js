@@ -52,9 +52,9 @@ function MemoList() {
         memos.map(({ roomId, doc, createdTime, updatedTime }) => {
             if (doc !== null) {
                 let cur_list = []
-                // console.log(doc)
+                console.log(doc)
                 let jsonDoc = JSON.parse(doc)
-                // console.log(jsonDoc)
+                console.log(jsonDoc)
                 if (jsonDoc.content.length >= 1) {
 
                     jsonDoc.content.map(para => {

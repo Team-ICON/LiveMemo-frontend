@@ -58,9 +58,10 @@ function CreateMemo({ roomId, currentUser }) {
         console.log("이거야: ", selectedProvider.documentId)
         console.log("찾았다", selectedDoc)
         handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
+        // console.log(JSON.stringify(selectedDoc.docState))
+
 
         selectedProvider.newProvider.destroy();
-
         dispatch(deleteProvider())
         navigate("/")
 
