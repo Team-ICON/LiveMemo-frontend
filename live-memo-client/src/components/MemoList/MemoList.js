@@ -115,13 +115,10 @@ function MemoList() {
                         //  {/* new Date(createdAt).toDateString() */}
                     ))}
 
-<<<<<<< HEAD
-=======
 
 
                     <Footer />
 
->>>>>>> 95cb8bdd968bb1a3a8cbb74d114e3289928faba4
                 </div>
             </Layout>
         </div>

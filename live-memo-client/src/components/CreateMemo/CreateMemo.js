@@ -17,6 +17,7 @@ import { v4 as uuid } from 'uuid';
 import "./CreateMemo.css"
 
 const { Title } = Typography;
+const token = window.localStorage.getItem('livememo-token');
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
     headers: { 'Content-Type': 'application/json',
@@ -111,14 +112,7 @@ function CreateMemo({ roomId, currentUser }) {
             <div className="createMemo__body">
                 <UserProvider.Provider value={currentUser}>
                     <div >
-<<<<<<< HEAD
                         <Editor documentId={selectedMemo ? selectedMemo.roomId : curRoomId}
-=======
-
-
-                        <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
-
->>>>>>> 95cb8bdd968bb1a3a8cbb74d114e3289928faba4
                             onFetch={handleFetch}
                             onSave={handleSave}
                         />

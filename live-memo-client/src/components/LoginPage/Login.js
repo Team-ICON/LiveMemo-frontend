@@ -6,8 +6,10 @@ import { login } from "../../features/userSlice"
 import { useDispatch } from "react-redux"
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import { IconButton } from '@mui/material';
+import axios from 'axios';
 
 function Login() {
+    const token = window.localStorage.getItem('livememo-token');
     const api = axios.create({
         baseURL: 'http://localhost:5000/api/user',
         headers: { 'Content-Type': 'application/json',

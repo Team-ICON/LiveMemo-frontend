@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
+import axios from 'axios';
 import MemoList from './MemoList/MemoList'
 import { v4 as uuid } from 'uuid';
 import getRandomUserName from './utils/getRandomUserName';
