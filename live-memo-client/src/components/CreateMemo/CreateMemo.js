@@ -19,12 +19,14 @@ import "./CreateMemo.css"
 const { Title } = Typography;
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+              'authorization' : token ? `Bearer ${token}` : '' }
 });
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ roomId, currentUser }) {
     const [curRoomId, setCurRoomId] = useState(roomId)
+
     const navigate = useNavigate()
     const selectedMemo = useSelector(selectOpenMemo)
     const selectedProvider = useSelector(selectOpenProvider)
@@ -39,16 +41,30 @@ function CreateMemo({ roomId, currentUser }) {
         });
     }, []);
 
+    // const handleSave = useCallback(async (_id, body) => {
+    //     try {
+    //         console.log(_id, body)
+    //         let result = await api.put("createMemo", {
+    //             _id,
+    //             body,
+    //         });
+    //         console.log(`result in handleSave at CreateMemo.js`, result);
+    //         newRoomId = result.data.roomId;
+    //         setCurRoomId(newRoomId);
+    //     } catch(err) {
+    //         console.log(`err in handleSave at CreateMemo.js`, err);
+    //     }
+    // }, []);
+
     const handleFetch = useCallback(async id => {
-        const response = await api.get(`getMemo/${id}`)
-        if (response.data.memInfo == null) {
-            console.log("null body")
-            return firstState
-        }
-        else {
+        try {
+            const response = await api.get(`getMemo/${id}`)
+            return response.data.newMemo.body;
 
-            return response.data.memInfo.body;
-
+        } catch (err) {
+            console.log(`handleFetch err At CreateMemo.js `, err);
+            console.log("null body");
+            return firstState;
         }
     }, []);
 
@@ -61,17 +77,17 @@ function CreateMemo({ roomId, currentUser }) {
         handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
         // console.log(JSON.stringify(selectedDoc.docState))
 
+        // history.back()
 
         selectedProvider.newProvider.destroy();
         dispatch(deleteProvider())
 
         navigate("/")
 
-    }
-    useEffect(() => {
-        setCurRoomId(uuid())
 
-    }, [])
+    }
+
+
 
     // console.log("현재 룸 넘버: ", curRoomId)
 
@@ -95,7 +111,14 @@ function CreateMemo({ roomId, currentUser }) {
             <div className="createMemo__body">
                 <UserProvider.Provider value={currentUser}>
                     <div >
+<<<<<<< HEAD
                         <Editor documentId={selectedMemo ? selectedMemo.roomId : curRoomId}
+=======
+
+
+                        <Editor documentId={selectedMemo ? selectedMemo.roomId : roomId}
+
+>>>>>>> 95cb8bdd968bb1a3a8cbb74d114e3289928faba4
                             onFetch={handleFetch}
                             onSave={handleSave}
                         />

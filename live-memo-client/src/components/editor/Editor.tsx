@@ -8,6 +8,8 @@ import {
     useRemirror,
 } from '@remirror/react';
 import { ProsemirrorDevTools } from '@remirror/dev';
+import { useNavigate } from 'react-router';
+
 import { useDebouncedCallback } from 'use-debounce';
 import useCurrentUser from '../hooks/useCurrentUser';
 import useWebRtcProvider from '../hooks/useWebRtcProvider';
@@ -37,6 +39,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const [isSynced, setIsSynced] = useState<boolean>(false);
     const [docState, setDocState] = useState<RemirrorJSON>();
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
 
     const handleChange = useCallback(
@@ -45,7 +48,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             //state 는 현재 editstate 뜸 tr은  트랜잭션 tr은 editstate 안에도 있음 
             if (tr?.docChanged) {
                 setDocState(state.toJSON().doc);
-                console.log(state)
+                // console.log(state)
             }
         },
         [setDocState],
@@ -92,10 +95,10 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     useObservableListener('peers', handlePeersChange, provider);
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
 
-    }, [clientCount])
+    // }, [clientCount])
 
     const handleSynced = useCallback(
         ({ synced }) => {

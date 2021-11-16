@@ -10,15 +10,19 @@ import { IconButton } from "@mui/material"
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
+import { v4 as uuid } from 'uuid';
+
 import axios from "axios"
 import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
 import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
 
+const token = window.localStorage.getItem('livememo-token');
 const api = axios.create({
     baseURL: 'http://localhost:5000/api/memo',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+              'authorization' : token ? `Bearer ${token}` : '' }
 });
 
 
@@ -29,7 +33,7 @@ function MemoList() {
 
     const navigate = useNavigate();
 
-
+    const newRoomId = uuid();
 
     useEffect(() => {
         api.get('/getMemos')
@@ -76,7 +80,23 @@ function MemoList() {
         setContents(temp)
     }, [memos])
 
+    const Footer = () => {
 
+
+        const navigate = useNavigate()
+        console.log(newRoomId)
+        return (
+            <div className="footer">
+                <div className="footer__right">
+                    <IconButton onClick={() => navigate(`/createMemo/${newRoomId}`)}>
+                        <AddCircleOutlineTwoToneIcon className="footer__addicon" />
+                    </IconButton>
+                </div>
+            </div>
+
+        )
+
+    };
 
 
     // console.log(contents)
@@ -95,6 +115,13 @@ function MemoList() {
                         //  {/* new Date(createdAt).toDateString() */}
                     ))}
 
+<<<<<<< HEAD
+=======
+
+
+                    <Footer />
+
+>>>>>>> 95cb8bdd968bb1a3a8cbb74d114e3289928faba4
                 </div>
             </Layout>
         </div>

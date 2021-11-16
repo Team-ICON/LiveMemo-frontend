@@ -8,15 +8,35 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import { IconButton } from '@mui/material';
 
 function Login() {
+    const api = axios.create({
+        baseURL: 'http://localhost:5000/api/user',
+        headers: { 'Content-Type': 'application/json',
+              'authorization' : token ? `Bearer ${token}` : '' }
+    });
     const dispatch = useDispatch()
-    const signIn = () => {
-        auth.signInWithPopup(provider).then(({ user }) => {
-            dispatch(login({
-                displayName: user.displayName,
-                email: user.email,
-                photoUrl: user.photoURL
-            }))
-        }).catch(error => alert(error.message))
+    // const signIn = () => {
+    //     auth.signInWithPopup(provider).then(({ user }) => {
+    //         dispatch(login({
+    //             displayName: user.displayName,
+    //             email: user.email,
+    //             photoUrl: user.photoURL
+    //         }))
+    //     }).catch(error => alert(error.message))
+    // }
+
+    const signIn = async(dispatch) => {
+        try {
+            // dispatch({ type: "LOGIN_REQUEST"});
+            const res = await api.get('/auth/google')
+            if (res.status === 200) {
+                const { token } = res.data;
+                localStorage.setItem('livememo-token', token);
+                // dispatch({ type: "LOGIN_SUCCESS",
+                //         payload: {id, nickname, profileImg110, provider} });
+            }
+        } catch (err) {
+            console.log(`err`, err);
+        }
     }
     return (
 
