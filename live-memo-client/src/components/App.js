@@ -34,23 +34,19 @@ const api = axios.create({
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser)
 
   useEffect(() => {
     api.get('/userinfo')
-      .then((err, response) => {
-        if (err) {
-          console.log('err At App.js');
-          console.log(err);
-        }
-        if (response) {
-          let user = response.data.user;
-          dispatch(login({
-            displayName: user.displayName,
-            email: user.email,
-            photoUrl: user.photoURL
-          }))
-        }
+      .then((response) => {
+        console.log(response)
+        let User = response.data.user;
+        console.log(User)
+        dispatch(login({
+          displayName: User.profileName,
+          email: User.email,
+          // photoUrl: user.photoURL
+        }))
+
       })
     // auth.onAuthStateChanged(user => {
     //   if (user) {
@@ -64,6 +60,7 @@ const App = () => {
     // })
   }, [])
 
+  const user = useSelector(selectUser)
 
 
 

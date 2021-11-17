@@ -46,12 +46,12 @@ function MemoList() {
             .then(response => {
 
                 if (response.data.success) {
-                    // console.log(response.data)
+                    console.log(response.data)
                     setMemos(response.data.memos.map(memo => ({
-                        roomId: memo._id,
-                        doc: memo.body,
-                        createdTime: memo.createdAt,
-                        updatedTime: memo.updatedAt
+                        roomId: memo.ID,
+                        doc: memo.content,
+
+                        updatedTime: memo.updateTime,
                     })
                     ))
                 } else {
@@ -64,7 +64,7 @@ function MemoList() {
     useEffect(() => {
         let temp = []
 
-        memos.map(({ roomId, doc, createdTime, updatedTime }) => {
+        memos.map(({ roomId, doc, updatedTime }) => {
             if (doc !== null) {
                 let cur_list = []
                 // console.log(doc)
@@ -79,7 +79,7 @@ function MemoList() {
                         }
 
                     })
-                    temp.push({ roomId: roomId, context: cur_list, createdTime: createdTime, updatedTime: updatedTime })
+                    temp.push({ roomId: roomId, context: cur_list, updatedTime: updatedTime })
                 }
             }
         })
@@ -113,12 +113,12 @@ function MemoList() {
             <Layout>
                 <div className="emailList__list">
 
-                    {contents.map(({ roomId, context, createdTime }) => (
+                    {contents.map(({ roomId, context, updatedTime }) => (
                         <MemoRow
                             key={roomId}
                             roomId={roomId}
                             contents={context}
-                            time={new Date(createdTime).toDateString()} />
+                            time={new Date(updatedTime).toDateString()} />
                         //  {/* new Date(createdAt).toDateString() */}
                     ))}
 
