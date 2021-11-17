@@ -17,6 +17,7 @@ import useObservableListener from '../hooks/useObservableListener';
 import FloatingAnnotations from './FloatingAnnotations';
 import AnnotationsJSONPrinter from './AnnotationsJSONPrinter';
 import 'remirror/styles/all.css';
+import "./Editor.css"
 import { useDispatch } from 'react-redux';
 import { selectDoc } from '../../features/memoSlice';
 interface EditorProps {
@@ -28,7 +29,7 @@ interface EditorProps {
 const TIMEOUT = 3000 + Math.floor(Math.random() * 7000);
 
 const Status = ({ success = false }) => (
-    <span className={`status ${success ? 'success' : ''}`}>sync</span>
+    <span className={`status ${success ? 'success' : 'fail'}`}>sync</span>
 );
 
 function Editor({ documentId, onFetch, onSave, }: EditorProps) {
@@ -76,10 +77,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         [onSave, documentId, provider.doc, isSynced, clientCount],
     );
 
-    // useEffect(() => {
-    //     handleSave(docState)
-
-    // }, [])
 
     const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
 
@@ -148,8 +145,10 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     });
 
     useEffect(() => {
-        if (usedFallbackRef.current) return;
-
+        if (usedFallbackRef.current) {
+            console.log(usedFallbackRef.current)
+            return;
+        }
         const fetchFallback = async () => {
             console.log("fetch")
             console.log(provider.connected)
@@ -157,6 +156,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             if (provider.connected && clientCount === 0) {
                 const res = await onFetch(documentId);
                 // console.log(typeof (res))
+                //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 그래서 나중에 create에서 stringify 함
                 dispatch(selectDoc({
                     docState: JSON.parse(res)
                 }))
@@ -189,7 +189,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 <div className="info-box">
                     <p className="info">Connected clients: {clientCount + 1}</p>
                     <p className="info">
-                        Synced: <Status success={isSynced || clientCount === 0} />
+                        Synced: <Status success={isSynced} />
                     </p>
                 </div>
                 <h3>Current annotations</h3>
