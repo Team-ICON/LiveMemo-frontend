@@ -7,9 +7,12 @@ import { useDispatch } from "react-redux"
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import { IconButton } from '@mui/material';
 import axios from 'axios';
+import { Cookies } from "react-cookie";
+
 
 function Login() {
-    const token = window.localStorage.getItem('livememo-token');
+    const cookies = new Cookies();
+    const token = cookies.get('livememo-token');
     const api = axios.create({
         baseURL: 'http://localhost:4000/api/user',
         headers: { 'Content-Type': 'application/json',

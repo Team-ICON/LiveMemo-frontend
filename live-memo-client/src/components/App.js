@@ -22,10 +22,15 @@ import FolderList from "./FolderList/FolderList"
 import History from "./History/History"
 
 
+
 const cookies = new Cookies();
+const token = cookies.get('livememo-token');
 const api = axios.create({
   baseURL: 'http://localhost:4000/api/user',
-  headers: { 'Content-Type': 'application/json'}
+  headers: {
+    'Content-Type': 'application/json',
+    'authorization': token ? `Bearer ${token}` : ''
+  }
 });
 
 const App = () => {
@@ -33,20 +38,20 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     api.get('/userinfo')
-    .then((err, response) => {
-      if (err) {
-        console.log('err At App.js');
-        console.log(err);
-      }
-      if (response){
-        let user = response.data.user;
-        dispatch(login({
-          displayName: user.displayName,
-          email: user.email,
-          photoUrl: user.photoURL
-        }))
-      }
-    })
+      .then((err, response) => {
+        if (err) {
+          console.log('err At App.js');
+          console.log(err);
+        }
+        if (response) {
+          let user = response.data.user;
+          dispatch(login({
+            displayName: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL
+          }))
+        }
+      })
     // auth.onAuthStateChanged(user => {
     //   if (user) {
     //     dispatch(login({
@@ -72,7 +77,7 @@ const App = () => {
   const [token, setToken] = useState('');
 
   useEffect(() => {
-    setToken(cookies.get('livememo-token')); 
+    setToken(cookies.get('livememo-token'));
   }, [])
 
 

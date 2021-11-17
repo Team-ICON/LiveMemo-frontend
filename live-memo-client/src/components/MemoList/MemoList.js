@@ -11,6 +11,8 @@ import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwo
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import { v4 as uuid } from 'uuid';
+import { Cookies } from "react-cookie";
+
 
 import axios from "axios"
 import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
@@ -18,9 +20,15 @@ import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
 
+const cookies = new Cookies();
+const token = cookies.get('livememo-token');
+
 const api = axios.create({
     baseURL: 'http://localhost:4000/api/memo',
-    headers: { 'Content-Type': 'application/json'}
+    headers: {
+        'Content-Type': 'application/json',
+        'authorization': token ? `Bearer ${token}` : ''
+    }
 });
 
 
@@ -36,6 +44,7 @@ function MemoList() {
     useEffect(() => {
         api.get('/getMemos')
             .then(response => {
+                console.log(response,"@@@@@@@@@@@@@@@@@@@");
                 if (response.data.success) {
                     // console.log(response.data)
                     setMemos(response.data.memos.map(memo => ({

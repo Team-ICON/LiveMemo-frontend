@@ -13,11 +13,14 @@ import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
 import { v4 as uuid } from 'uuid';
+import { Cookies } from "react-cookie";
+
 
 import "./CreateMemo.css"
 
 const { Title } = Typography;
-const token = window.localStorage.getItem('livememo-token');
+const cookies = new Cookies();
+const token = cookies.get('livememo-token');
 const api = axios.create({
     baseURL: 'http://localhost:4000/api/memo',
     headers: {
@@ -38,7 +41,7 @@ function CreateMemo({ currentUser }) {
 
     const handleSave = useCallback(async (_id, body) => {
         console.log(_id, body)
-        await api.put("createMemo", {
+        await api.put("/createMemo", {
             _id,
             body,
         });
@@ -62,6 +65,7 @@ function CreateMemo({ currentUser }) {
     const handleFetch = useCallback(async id => {
         try {
             const response = await api.get(`getMemo/${id}`)
+            console.log(response,"s@#!$E@!$$!$#!@!@!@$!@$!@$@$");
             return response.data.newMemo.body;
 
         } catch (err) {
