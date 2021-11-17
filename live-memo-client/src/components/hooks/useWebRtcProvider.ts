@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Doc } from 'yjs';
-import { WebrtcProvider } from 'y-webrtc'
+import { WebrtcProvider } from '../../app/y-webrtc';
 import useYjsAwareness, { User } from './useYjsAwareness';
 import { useDispatch } from 'react-redux';
 import { selectProvider } from "../../features/memoSlice"
