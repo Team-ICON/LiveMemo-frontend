@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from 'react'
 import MemoList from './MemoList/MemoList'
 import { v4 as uuid } from 'uuid';
 import getRandomUserName from './utils/getRandomUserName';
-import Memo from "./Memo/Memo"
 import "./App.css"
 import {
   BrowserRouter as Router,

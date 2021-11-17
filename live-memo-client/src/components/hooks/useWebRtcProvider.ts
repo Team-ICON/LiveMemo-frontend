@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Doc } from 'yjs';
-import { WebrtcProvider } from 'y-webrtc';
+import { WebrtcProvider } from 'y-webrtc'
 import useYjsAwareness, { User } from './useYjsAwareness';
 import { useDispatch } from 'react-redux';
 import { selectProvider } from "../../features/memoSlice"
@@ -12,7 +12,7 @@ function useWebRtcProvider(user: User, documentId: string) {
 	return useMemo(() => {
 		const roomName = `remirror-yjs-webrtc-demo-room-${documentId}`;
 		// @ts-ignore opts param seems to expect ALL options
-		const newProvider = new WebrtcProvider(roomName, ydoc, {
+		const newProvider = new WebrtcProvider(user.email, roomName, ydoc, {
 			awareness,
 		});
 		dispatch(selectProvider({
