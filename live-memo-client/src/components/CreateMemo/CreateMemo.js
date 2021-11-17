@@ -65,7 +65,7 @@ function CreateMemo({ currentUser }) {
     const handleFetch = useCallback(async id => {
         try {
             const response = await api.get(`getMemo/${id}`)
-            console.log(response,"s@#!$E@!$$!$#!@!@!@$!@$!@$@$");
+
             return response.data.newMemo.body;
 
         } catch (err) {
