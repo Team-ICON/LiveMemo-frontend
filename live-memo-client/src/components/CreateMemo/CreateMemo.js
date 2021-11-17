@@ -34,10 +34,9 @@ function CreateMemo({ currentUser }) {
     // const [curRoomId, setCurRoomId] = useState(roomId)
     const { state } = useLocation()
     const navigate = useNavigate()
-    // const selectedMemo = useSelector(selectOpenMemo)
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
-    const dispatch = useDispatch()
+
 
     const handleSave = useCallback(async (_id, body) => {
         console.log(_id, body)
@@ -75,17 +74,17 @@ function CreateMemo({ currentUser }) {
         }
     }, []);
 
+    //뒤로가기 핸듣러
     function popstateHandler() {
 
-        const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", selectedProvider.documentId)
-        console.log("찾았다", selectedDoc)
-        handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
 
-        selectedProvider.newProvider.destroy();
-        //navigate로 하면 자꾸 에러 뜸
-        window.history.pushState(null, null, window.location.pathname);
 
+
+        handleSave(state, JSON.stringify(selectedDoc.docState))
+
+        selectedProvider.newProvider.doc.destroy();
+        // window.history.pushState(null, null, window.location.pathname);
+        navigate('/', { replace: true })
         // console.log(window.location.pathname)
         // window.history.pushState(null, null, window.location.pathname);
     }
@@ -94,7 +93,7 @@ function CreateMemo({ currentUser }) {
         return () => {
             window.removeEventListener('popstate', popstateHandler)
         }
-    }, [selectedProvider])
+    }, [selectedProvider, selectedDoc]) //바뀐거 계속 확인
 
 
 
@@ -102,20 +101,23 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
         console.log("이거야: ", selectedProvider.documentId)
-        console.log("찾았다", selectedDoc)
+        console.log("갖고옴", selectedDoc)
+
         handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
         // console.log(JSON.stringify(selectedDoc.docState))
 
         // history.back()
-
-        selectedProvider.newProvider.destroy();
+        // console.log(selectedProvider.newProvider.doc)
+        selectedProvider.newProvider.doc.destroy();
         // dispatch(deleteProvider())
         // window.history.back()
-        navigate("/")
+        navigate("/", { replace: true });
+
+        // window.location.reload()
 
 
     }
-
+    //현재 룸 체크
     useEffect(() => {
         console.log(state)
 
@@ -143,8 +145,6 @@ function CreateMemo({ currentUser }) {
             <div className="createMemo__body">
                 <UserProvider.Provider value={currentUser}>
                     <div >
-
-
                         <Editor documentId={state}
 
                             onFetch={handleFetch}

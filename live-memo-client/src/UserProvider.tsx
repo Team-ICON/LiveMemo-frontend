@@ -1,11 +1,15 @@
 import { createContext } from 'react';
 
 export interface User {
-	id: string;
-	name: string;
+	displayName: string;
+	email: string;
+	photoUrl: string;
+
 }
 
 export default createContext<User>({
-	id: 'unknown',
-	name: 'Unknown User',
+
+	displayName: 'unknown',
+	email: 'Unknown User',
+	photoUrl: "Unkown"
 });
