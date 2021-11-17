@@ -55,6 +55,8 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         [setDocState],
     );
 
+
+
     useEffect(() => {
 
         dispatch(selectDoc({
@@ -82,20 +84,15 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     const handlePeersChange = useCallback(
         ({ webrtcPeers }) => {
-            console.log(currentUser)
-
+            console.log(provider)
             console.log("사람수:", webrtcPeers)
             setClientCount(webrtcPeers.length);
+
         },
         [setClientCount],
     );
     useObservableListener('peers', handlePeersChange, provider);
 
-
-    // useEffect(() => {
-
-
-    // }, [clientCount])
 
     const handleSynced = useCallback(
         ({ synced }) => {
@@ -162,13 +159,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 }))
                 getContext()?.setContent(JSON.parse(res));
             }
-            // if (clientCount === 0) {
-            //     console.log("여기는 처음임", provider.connected)
 
-            //     const res = await onFetch(documentId);
-            //     console.log(res)
-            //     getContext()?.setContent(JSON.parse(res));
-            // }
             usedFallbackRef.current = true;
         };
 
@@ -187,7 +178,8 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 <FloatingAnnotations />
                 <ProsemirrorDevTools />
                 <div className="info-box">
-                    <p className="info">Connected clients: {clientCount + 1}</p>
+                    <p className="info">Connected clients: {clientCount}</p>
+
                     <p className="info">
                         Synced: <Status success={isSynced} />
                     </p>

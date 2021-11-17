@@ -4,7 +4,7 @@ import * as awarenessProtocol from 'y-protocols/awareness.js';
 import getRandomColor from '../utils/getRandomColor';
 
 export interface User {
-	name: string;
+	displayName: string;
 	[x: string]: any;
 }
 
@@ -12,11 +12,11 @@ function useYjsAwareness(user: User, doc: Doc): awarenessProtocol.Awareness {
 	return useMemo(() => {
 		const awareness = new awarenessProtocol.Awareness(doc);
 		awareness.setLocalStateField('user', {
-			name: user.name,
-			color: getRandomColor(user.name),
+			name: user.displayName,
+			color: getRandomColor(user.displayName),
 		});
 		return awareness;
-	}, [user.name, doc]);
+	}, [user.displayName, doc]);
 }
 
 export default useYjsAwareness;
