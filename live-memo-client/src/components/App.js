@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import axios from 'axios';
+import { Cookies } from "react-cookie"
 import MemoList from './MemoList/MemoList'
 import { v4 as uuid } from 'uuid';
 import getRandomUserName from './utils/getRandomUserName';
@@ -19,21 +21,47 @@ import FolderList from "./FolderList/FolderList"
 import History from "./History/History"
 
 
+
+const cookies = new Cookies();
+const token = cookies.get('livememo-token');
+const api = axios.create({
+  baseURL: 'http://localhost:4000/api/user',
+  headers: {
+    'Content-Type': 'application/json',
+    'authorization': token ? `Bearer ${token}` : ''
+  }
+});
+
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser)
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        dispatch(login({
-          displayName: user.displayName,
-          email: user.email,
-          photoUrl: user.photoURL
-        }))
-      }
+    api.get('/userinfo')
+      .then((err, response) => {
+        if (err) {
+          console.log('err At App.js');
+          console.log(err);
+        }
+        if (response) {
+          let user = response.data.user;
+          dispatch(login({
+            displayName: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL
+          }))
+        }
+      })
+    // auth.onAuthStateChanged(user => {
+    //   if (user) {
+    //     dispatch(login({
+    //       displayName: user.displayName,
+    //       email: user.email,
+    //       photoUrl: user.photoURL
+    //     }))
+    //   }
 
-    })
+    // })
   }, [])
 
 
@@ -41,11 +69,18 @@ const App = () => {
 
 
 
+  const newRoomId = uuid();
+
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(cookies.get('livememo-token'));
+  }, [])
 
 
   return (
     <Router>
-      {!user ? (<Login />) :
+      {!token ? (<Login />) :
         (
           <div className="app">
             <div className="app__body">

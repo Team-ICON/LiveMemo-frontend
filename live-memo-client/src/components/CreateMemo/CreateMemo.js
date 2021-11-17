@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router';
 import * as Y from 'yjs'
 import Editor from '../editor/Editor';
 import { WebrtcProvider } from 'y-webrtc'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { IconButton } from '@mui/material';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -13,13 +13,20 @@ import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
 import { v4 as uuid } from 'uuid';
+import { Cookies } from "react-cookie";
+
 
 import "./CreateMemo.css"
 
 const { Title } = Typography;
+const cookies = new Cookies();
+const token = cookies.get('livememo-token');
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api/memo',
-    headers: { 'Content-Type': 'application/json' },
+    baseURL: 'http://localhost:4000/api/memo',
+    headers: {
+        'Content-Type': 'application/json',
+        'authorization': token ? `Bearer ${token}` : ''
+    }
 });
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
@@ -33,22 +40,37 @@ function CreateMemo({ currentUser }) {
 
     const handleSave = useCallback(async (_id, body) => {
         console.log(_id, body)
-        await api.put("createMemo", {
+        await api.put("/createMemo", {
             _id,
             body,
         });
     }, []);
 
+    // const handleSave = useCallback(async (_id, body) => {
+    //     try {
+    //         console.log(_id, body)
+    //         let result = await api.put("createMemo", {
+    //             _id,
+    //             body,
+    //         });
+    //         console.log(`result in handleSave at CreateMemo.js`, result);
+    //         newRoomId = result.data.roomId;
+    //         setCurRoomId(newRoomId);
+    //     } catch(err) {
+    //         console.log(`err in handleSave at CreateMemo.js`, err);
+    //     }
+    // }, []);
+
     const handleFetch = useCallback(async id => {
-        const response = await api.get(`getMemo/${id}`)
-        if (response.data.memInfo == null) {
-            console.log("null body")
-            return firstState
-        }
-        else {
+        try {
+            const response = await api.get(`getMemo/${id}`)
+            console.log(response,"s@#!$E@!$$!$#!@!@!@$!@$!@$@$");
+            return response.data.newMemo.body;
 
-            return response.data.memInfo.body;
-
+        } catch (err) {
+            console.log(`handleFetch err At CreateMemo.js `, err);
+            console.log("null body");
+            return firstState;
         }
     }, []);
 
@@ -108,10 +130,8 @@ function CreateMemo({ currentUser }) {
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
                     <IconButton onClick={onSubmit}>
-                        <ArrowBackIcon />
+                        <ArrowBackIosNewIcon />
                     </IconButton>
-
-
                 </div>
                 <div className="memo__toolsRight">
                     <IconButton>
@@ -120,32 +140,19 @@ function CreateMemo({ currentUser }) {
                     <IconButton>
                         <NotificationsIcon />
                     </IconButton>
-
                 </div>
-
             </div>
-
             <div className="createMemo__body">
-
-
                 <UserProvider.Provider value={currentUser}>
-
                     <div >
                         <Editor documentId={state}
 
                             onFetch={handleFetch}
                             onSave={handleSave}
-
                         />
-
-
                     </div>
                 </UserProvider.Provider>
-
-
             </div>
-
-
         </div>
     )
 }
