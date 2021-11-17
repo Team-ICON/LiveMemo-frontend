@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import axios from 'axios';
+import { Cookies } from "react-cookie"
 import MemoList from './MemoList/MemoList'
 import { v4 as uuid } from 'uuid';
 import getRandomUserName from './utils/getRandomUserName';
@@ -21,11 +22,10 @@ import FolderList from "./FolderList/FolderList"
 import History from "./History/History"
 
 
-const token = window.localStorage.getItem('livememo-token');
+const cookies = new Cookies();
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api/user',
-  headers: { 'Content-Type': 'application/json',
-              'authorization' : token ? `Bearer ${token}` : '' }
+  baseURL: 'http://localhost:4000/api/user',
+  headers: { 'Content-Type': 'application/json'}
 });
 
 const App = () => {
@@ -67,12 +67,18 @@ const App = () => {
     };
   }, []);
 
-  let isToken = localStorage.getItem('livememo-token');
   const newRoomId = uuid();
+
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(cookies.get('livememo-token')); 
+  }, [])
+
 
   return (
     <Router>
-      {!user ? (<Login />) :
+      {!token ? (<Login />) :
         (
           <div className="app">
             <div className="app__body">

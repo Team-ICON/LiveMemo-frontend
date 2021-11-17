@@ -19,7 +19,7 @@ import "./CreateMemo.css"
 const { Title } = Typography;
 const token = window.localStorage.getItem('livememo-token');
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api/memo',
+    baseURL: 'http://localhost:4000/api/memo',
     headers: {
         'Content-Type': 'application/json',
         'authorization': token ? `Bearer ${token}` : ''
