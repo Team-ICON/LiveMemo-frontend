@@ -21,7 +21,6 @@
   display:none;
 }
 
-
 .header__right{
   display: flex;
   margin-top:10px;
@@ -29,3 +28,12 @@
   justify-content: flex-end
 }
 
+/* editor css */
+.remirror-editor.ProseMirror{
+  display:flex;
+  flex-direction: column;
+  margin: 10px;
+  background-color: white;
+  padding: 20px;
+  height: 75vh;
+}

@@ -5,18 +5,34 @@ import * as Y from 'yjs'
 import Editor from '../editor/Editor';
 import { WebrtcProvider } from 'y-webrtc'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { IconButton } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import { deepOrange, deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
 import { v4 as uuid } from 'uuid';
 import { Cookies } from "react-cookie";
-
-
 import "./CreateMemo.css"
+
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText'
+import { MenuItem } from "@mui/material";
+import { styled } from '@mui/material/styles';
+
+
+
+
+
 
 const { Title } = Typography;
 const cookies = new Cookies();
@@ -122,8 +138,60 @@ function CreateMemo({ currentUser }) {
 
     // console.log("현재 룸 넘버: ", curRoomId)
 
+
+    // 사용자 추가 클릭 시 Drawer 
+    const [open, setOpen] = useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    const DrawerHeader = styled('div')(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-start',
+    }));
+
+
+    const drawerWidth = 200;
+
+
     return (
+
         <div className="createMemo">
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                    },
+                }}
+                variant="persistent"
+                anchor="right"
+                open={open}
+            >
+                <DrawerHeader onClick={handleDrawerClose}>
+                    <IconButton>
+                        <ChevronRightIcon />
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
+
+                </List>
+                <Divider />
+                <List>
+                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+                </List>
+            </Drawer>
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
                     <IconButton onClick={onSubmit}>
@@ -134,22 +202,27 @@ function CreateMemo({ currentUser }) {
                     <IconButton>
                         <PushPinIcon />
                     </IconButton>
+                    <IconButton onClick={handleDrawerOpen}>
+                        <GroupAddIcon color="primary" />
+                    </IconButton>
+                    <IconButton>
+                        <MicIcon color="success" />
+                    </IconButton>
                     <IconButton>
                         <NotificationsIcon />
                     </IconButton>
                 </div>
             </div>
-            <div className="createMemo__body">
-                <UserProvider.Provider value={currentUser}>
-                    <div >
-                        <Editor documentId={state}
-
-                            onFetch={handleFetch}
-                            onSave={handleSave}
-                        />
-                    </div>
-                </UserProvider.Provider>
+            <div className="memberList">
+                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
             </div>
+            <UserProvider.Provider value={currentUser}>
+                <Editor documentId={state}
+                    onFetch={handleFetch}
+                    onSave={handleSave}
+                />
+            </UserProvider.Provider>
+
         </div>
     )
 }

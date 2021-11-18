@@ -11,6 +11,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import "./History.css"
+
+
 import {
     Link,
 } from "react-router-dom";
@@ -30,7 +33,7 @@ function History() {
                     </Link>
                 </div>
 
-                <div className="createMemo__body">
+                <div className="history__body">
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item>
                             <Avatar>ID</Avatar>
