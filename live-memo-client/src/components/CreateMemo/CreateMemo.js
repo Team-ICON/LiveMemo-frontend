@@ -64,8 +64,8 @@ function CreateMemo({ currentUser }) {
     const handleFetch = useCallback(async id => {
         try {
             const response = await api.get(`getMemo/${id}`)
-
-            return response.data.newMemo.body;
+            console.log("createMemo 67 ", response)
+            return response.data.memInfo.content;
 
         } catch (err) {
             console.log(`handleFetch err At CreateMemo.js `, err);
@@ -76,9 +76,6 @@ function CreateMemo({ currentUser }) {
 
     //뒤로가기 핸듣러
     function popstateHandler() {
-
-
-
 
         handleSave(state, JSON.stringify(selectedDoc.docState))
 

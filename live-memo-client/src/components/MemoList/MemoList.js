@@ -46,11 +46,10 @@ function MemoList() {
             .then(response => {
 
                 if (response.data.success) {
-                    console.log(response.data)
+                    console.log("memoList 49 : ", response.data.memos)
                     setMemos(response.data.memos.map(memo => ({
-                        roomId: memo.ID,
+                        roomId: memo._id,
                         doc: memo.content,
-
                         updatedTime: memo.updateTime,
                     })
                     ))
@@ -85,7 +84,11 @@ function MemoList() {
         })
 
         setContents(temp)
+
     }, [memos])
+
+    console.log("MemoList 90:", contents)
+
 
     const Footer = () => {
 
