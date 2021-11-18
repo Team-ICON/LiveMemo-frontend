@@ -1,5 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Cookies } from "react-cookie";
+import axios from "axios"
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -23,6 +25,19 @@ import Typography from '@mui/material/Typography';
 import {
     Link,
 } from "react-router-dom";
+import { formControlUnstyledClasses } from "@mui/core";
+
+
+const cookies = new Cookies();
+const token = cookies.get('livememo-token');
+
+const api = axios.create({
+    baseURL: 'http://localhost:4000/api/folder',
+    headers: {
+        'Content-Type': 'application/json',
+        'authorization': token ? `Bearer ${token}` : ''
+    }
+});
 
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -92,6 +107,20 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 
 function FolderList() {
+    const [folders, setFolders] = useState([])
+
+    useEffect(() => {
+        api.get('/show')
+            .then(response => {
+                if (response.data.success) {
+                    setFolders(response.data.folders);
+                } else {
+                    alert('폴더가 없습니다.')
+                }
+            })
+    }, [])
+
+
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -100,10 +129,10 @@ function FolderList() {
         setOpen(false);
     };
 
-    const [fileName, setFileName] = useState("");
+    const [folderName, setFolderName] = useState("");
 
-    const handleFileNameChange = (e) => {
-        setFileName(e.target.value);
+    const handleFolderNameChange = (e) => {
+        setFolderName(e.target.value);
     }
 
     return (
@@ -120,10 +149,10 @@ function FolderList() {
 
 
             <div className="emailList__list">
-                {itemData.map((item) => (
+                {folders.map((item) => (
                     <ImageButton
                         focusRipple
-                        key={item.title}
+                        key={item}
                     >
                         <ImageSrc style={{ backgroundImage: `url(${item.url})` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
@@ -139,7 +168,7 @@ function FolderList() {
                                     pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
                                 }}
                             >
-                                {item.title}
+                                {item}
                                 <ImageMarked className="MuiImageMarked-root" />
                             </Typography>
                         </Image>
@@ -162,19 +191,23 @@ function FolderList() {
                             type="text"
                             fullWidth
                             variant="standard"
-                            onChange={handleFileNameChange}
+                            onChange={handleFolderNameChange}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setFileName("");
-                            if (fileName === "") {
+                            setFolderName("");
+                            if (folderName === "") {
                                 handleClose();
                                 return;
                             }
-                            itemData.push({
-                                title: fileName,
-                            });
+                            // folder create 추가
+                            api.post('/create', { folderName: folderName })
+                                .then(response => {
+                                    if (response.data.success) {
+                                        setFolders([...folders, folderName])
+                                    }
+                                })
                             handleClose();
                         }}>생성</Button>
                         <Button onClick={handleClose}>취소</Button>
@@ -184,22 +217,6 @@ function FolderList() {
         </div>
     );
 }
-
-
-const itemData = [
-    {
-        // url: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-        title: 'Breakfast',
-    },
-    {
-        // url: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-        title: 'Burgers',
-    },
-    {
-        // url: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-        title: 'Camera',
-    },
-];
 
 
 export default FolderList;
