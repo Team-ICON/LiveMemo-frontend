@@ -44,7 +44,7 @@ function MemoList() {
     useEffect(() => {
         api.get('/getMemos')
             .then(response => {
-
+                console.log("ㅅ제발", response)
                 if (response.data.success) {
                     console.log("memoList 49 : ", response.data.memos)
                     setMemos(response.data.memos.map(memo => ({

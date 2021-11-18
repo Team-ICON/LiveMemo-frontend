@@ -79,7 +79,7 @@ function CreateMemo({ currentUser }) {
 
         handleSave(state, JSON.stringify(selectedDoc.docState))
 
-        selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.room.disconnect();
         // window.history.pushState(null, null, window.location.pathname);
         navigate('/', { replace: true })
         // console.log(window.location.pathname)
@@ -105,7 +105,9 @@ function CreateMemo({ currentUser }) {
 
         // history.back()
         // console.log(selectedProvider.newProvider.doc)
-        selectedProvider.newProvider.doc.destroy();
+        // selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.room.disconnect();
+
         // dispatch(deleteProvider())
         // window.history.back()
         navigate("/", { replace: true });
@@ -114,6 +116,23 @@ function CreateMemo({ currentUser }) {
 
 
     }
+    const addBookMark = (event) => {
+        event.preventDefault();
+        const findMemoId = selectedProvider.documentId
+        console.log("이거야: ", findMemoId)
+
+        api.post("/addbookmark", {
+            memoId: findMemoId
+        })
+
+
+
+    }
+
+
+
+
+
     //현재 룸 체크
     useEffect(() => {
         console.log(state)
@@ -131,7 +150,7 @@ function CreateMemo({ currentUser }) {
                     </IconButton>
                 </div>
                 <div className="memo__toolsRight">
-                    <IconButton>
+                    <IconButton onClick={addBookMark}>
                         <PushPinIcon />
                     </IconButton>
                     <IconButton>
