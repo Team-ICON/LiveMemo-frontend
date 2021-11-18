@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch } from 'react-redux';
 import { selectMemo } from "../../features/memoSlice"
 import "./MemoRow.css"
+import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
 
 const MemoRow = ({ roomId, contents, time }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    console.log(roomId, contents, time)
     const openMemo = () => {
         dispatch(selectMemo({
             roomId
@@ -19,21 +20,30 @@ const MemoRow = ({ roomId, contents, time }) => {
     }
     ///여기서 doc 형태에 들어갈 json으로 리덕스로 set해주고 app에가서 찾은다음에 메모에 그거 보내버림 prop으로
 
-    return (
-        <div onClick={openMemo} className="memoRow">
-            <div className="memoRow__options">
-                <Checkbox />
-            </div>
-
-            <div className="memoRow__message">
-                <h4>
-                    {contents}
-                </h4>
-            </div>
-            <p className="memoRow__time">
-                {time}
-            </p>
+    const rendercontent = contents.map((content) => {
+        return <div>
+            <p>{content}</p>
         </div>
+    })
+
+    return (
+        <Card
+            hoverable
+            style={{ width: 370, marginTop: 16 }}
+            onClick={openMemo}
+        >
+            {/* <Meta
+            avatar={
+                <Avatar src={blog.writer.image} />
+            }
+            title={blog.writer.name}
+            description="This is the description"
+        /> */}
+            <div style={{ height: 150, overflowY: 'scroll', marginTop: 10 }}>
+                {rendercontent}
+            </div>
+        </Card>
+
     )
 }
 
