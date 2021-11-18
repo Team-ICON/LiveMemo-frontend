@@ -53,9 +53,9 @@ function CreateMemo({ currentUser }) {
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
 
-
     const handleSave = useCallback(async (_id, body) => {
         console.log(_id, body)
+
         await api.put("/createMemo", {
             _id,
             body,
@@ -96,8 +96,9 @@ function CreateMemo({ currentUser }) {
         handleSave(state, JSON.stringify(selectedDoc.docState))
 
         selectedProvider.newProvider.doc.destroy();
-        // window.history.pushState(null, null, window.location.pathname);
+
         navigate('/', { replace: true })
+        window.location.reload()
         // console.log(window.location.pathname)
         // window.history.pushState(null, null, window.location.pathname);
     }
@@ -121,15 +122,32 @@ function CreateMemo({ currentUser }) {
 
         // history.back()
         // console.log(selectedProvider.newProvider.doc)
+        // selectedProvider.newProvider.doc.destroy();
+
         selectedProvider.newProvider.doc.destroy();
         // dispatch(deleteProvider())
         // window.history.back()
-        navigate("/", { replace: true });
-
-        // window.location.reload()
+        setTimeout(() => {
+            navigate('/', { replace: true })
+        }, 200);
+        // window.history.pushState(null, null, window.location.pathname);
 
 
     }
+    const addBookMark = (event) => {
+        event.preventDefault();
+        const findMemoId = selectedProvider.documentId
+        console.log("이거야: ", findMemoId)
+
+        api.post("/addbookmark", {
+            memoId: findMemoId
+        })
+
+
+
+    }
+
+
     //현재 룸 체크
     useEffect(() => {
         console.log(state)
@@ -199,7 +217,7 @@ function CreateMemo({ currentUser }) {
                     </IconButton>
                 </div>
                 <div className="memo__toolsRight">
-                    <IconButton>
+                    <IconButton onClick={addBookMark}>
                         <PushPinIcon />
                     </IconButton>
                     <IconButton onClick={handleDrawerOpen}>
@@ -213,8 +231,22 @@ function CreateMemo({ currentUser }) {
                     </IconButton>
                 </div>
             </div>
+<<<<<<< HEAD
             <div className="memberList">
                 <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+=======
+            <div className="createMemo__body">
+                <UserProvider.Provider value={currentUser}>
+                    <div >
+                        <Editor documentId={state}
+
+                            onFetch={handleFetch}
+                            onSave={handleSave}
+                        />
+                    </div>
+
+                </UserProvider.Provider>
+>>>>>>> 8385a3b3f1a3ce748099bd87d5729379fa39ab31
             </div>
             <UserProvider.Provider value={currentUser}>
                 <Editor documentId={state}

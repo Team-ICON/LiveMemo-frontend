@@ -40,7 +40,6 @@ function MemoList() {
     const navigate = useNavigate();
 
     const newRoomId = uuid();
-
     useEffect(() => {
         api.get('/getMemos')
             .then(response => {
@@ -110,60 +109,55 @@ function MemoList() {
 
 
     // console.log(contents)
-    return (
-
-        <div className="memoList">
-            <Layout>
-                <div className="emailList__list">
-
-                    {contents.map(({ roomId, context, updatedTime }) => (
-                        <MemoRow
-                            key={roomId}
-                            roomId={roomId}
-                            contents={context}
-                            time={new Date(updatedTime).toDateString()} />
-                        //  {/* new Date(createdAt).toDateString() */}
-                    ))}
-
-
-
-                    <Footer />
-
-                </div>
-            </Layout>
-        </div>
-    )
-
-
-    // const renderCards = memos.map((memo) => {
-    //     return <Col key={memo.roodId} lg={8} md={12} xs={24}>
-    //         <Card
-    //             hoverable
-    //             style={{ width: 370, marginTop: 16 }}
-    //             onClick={() => { navigate("/createMemo") }}
-    //         >
-    //             {/* <Meta
-    //                 avatar={
-    //                     <Avatar src={blog.writer.image} />
-    //                 }
-    //                 title={blog.writer.name}
-    //                 description="This is the description"
-    //             /> */}
-    //             <div style={{ height: 150, overflowY: 'scroll', marginTop: 10 }}>
-    //                 <div dangerouslySetInnerHTML={{ __html: memo.doc }} />
-    //             </div>
-    //         </Card>
-    //     </Col>
-    // })
-
     // return (
-    //     <div style={{ width: '85%', margin: '3rem auto' }}>
-    //         <Title level={2}> Memo Lists </Title>
-    //         <Row gutter={[32, 16]}>
-    //             {renderCards}
-    //         </Row>
+
+    //     <div className="memoList">
+    //         <Layout>
+    //             <div className="memoList__list">
+
+    //                 {contents.map(({ roomId, context, updatedTime }) => (
+    // <MemoRow
+    //     key={roomId}
+    //     roomId={roomId}
+    //     contents={context}
+    //     time={new Date(updatedTime).toDateString()} />
+    //                     //  {/* new Date(createdAt).toDateString() */}
+    //                 ))}
+
+
+
+    //                 <Footer />
+
+    //             </div>
+    //         </Layout>
     //     </div>
     // )
+
+
+    const renderCards = contents.map((memo, index) => {
+
+        return <Row gutter={[32, 16]}>
+            <Col key={index} lg={8} md={12} xs={24}>
+                <MemoRow
+                    key={memo.roomId}
+                    roomId={memo.roomId}
+                    contents={memo.context}
+                    time={new Date(memo.updatedTime).toDateString()} />
+
+            </Col>
+        </Row>
+    })
+
+    return (
+        <div style={{ width: '85%', margin: '3rem auto' }}>
+            <div className="memoList">
+                <Layout>
+                    {renderCards}
+                    <Footer />
+                </Layout>
+            </div>
+        </div >
+    )
 
 
 

@@ -6,7 +6,7 @@
     display: none;
 }
 .memoList__list{
-    padding-bottom: 20%;
+   flex:1;
 }
 
 .footer__right{
