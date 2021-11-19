@@ -279,7 +279,7 @@ function CreateMemo({ currentUser }) {
                         }}
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                            <MenuItem onClick={handleClose}>
                                 {option}
                             </MenuItem>
                         ))}
