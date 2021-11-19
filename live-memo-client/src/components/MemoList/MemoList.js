@@ -100,11 +100,9 @@ function MemoList() {
         return (
             <div className="footer">
                 <div className="footer__right">
-                    <IconButton onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
-                        <Fab size="small" color="secondary" aria-label="add" className="footer__addicon">
+                    <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
                             <AddIcon />
-                        </Fab>
-                    </IconButton>
+                    </Fab>
                 </div>
             </div>
 
