@@ -93,7 +93,7 @@ function CreateMemo({ currentUser }) {
         }
     }, []);
 
-    //진짜 뒤로가기 눌렀을때 저장 핸들러
+    //진짜 뒤로가기 눌렀을때 저장 핸들러.
     function popstateHandler() {
 
         handleSave(state, JSON.stringify(selectedDoc.docState))
