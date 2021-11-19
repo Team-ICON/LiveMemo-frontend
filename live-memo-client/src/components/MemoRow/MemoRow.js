@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch } from 'react-redux';
 import { selectMemo } from "../../features/memoSlice"
 import "./MemoRow.css"
-import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
+import Paper from '@mui/material/Paper';
+import { experimentalStyled as styled } from '@mui/material/styles';
 
 const MemoRow = ({ roomId, contents, time }) => {
     const navigate = useNavigate();
@@ -19,17 +20,18 @@ const MemoRow = ({ roomId, contents, time }) => {
         navigate(`/createMemo/${roomId}`, { state: roomId })
     }
     ///여기서 doc 형태에 들어갈 json으로 리덕스로 set해주고 app에가서 찾은다음에 메모에 그거 보내버림 prop으로
+    const Item = styled(Paper)(({ theme }) => ({
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        height: 150, overflowY: 'scroll', marginTop: 10,
+        color: theme.palette.text.secondary,
+    }));
 
-    const rendercontent = contents.map((content) => {
-        return <div>
-            <p>{content}</p>
-        </div>
-    })
 
     return (
-        <Card
+        <Paper
             hoverable
-            style={{ width: 370, marginTop: 16 }}
+            style={{ width: 300, }}
             onClick={openMemo}
         >
             {/* <Meta
@@ -39,10 +41,14 @@ const MemoRow = ({ roomId, contents, time }) => {
             title={blog.writer.name}
             description="This is the description"
         /> */}
-            <div style={{ height: 150, overflowY: 'scroll', marginTop: 10 }}>
-                {rendercontent}
-            </div>
-        </Card>
+            <Item>
+                {contents.map((content) => (
+                    <div>
+                        <p>{content}</p>
+                    </div>
+                ))}
+            </Item>
+        </Paper>
 
     )
 }

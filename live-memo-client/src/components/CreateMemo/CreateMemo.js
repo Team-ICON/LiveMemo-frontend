@@ -134,7 +134,7 @@ function CreateMemo({ currentUser }) {
         // window.history.back()
         setTimeout(() => {
             navigate('/', { replace: true })
-        }, 200);
+        }, 250);
         // window.history.pushState(null, null, window.location.pathname);
 
 
