@@ -173,19 +173,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     return (
         <ThemeProvider>
             <Remirror manager={manager} onChange={handleChange}>
-
                 <EditorComponent />
-                <FloatingAnnotations />
-                <ProsemirrorDevTools />
-                <div className="info-box">
-                    <p className="info">Connected clients: {clientCount}</p>
-
-                    <p className="info">
-                        Synced: <Status success={isSynced} />
-                    </p>
-                </div>
-                <h3>Current annotations</h3>
-                <AnnotationsJSONPrinter />
             </Remirror>
         </ThemeProvider>
     );

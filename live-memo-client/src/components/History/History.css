@@ -1,0 +1,8 @@
+.history__body{
+    width:250px;
+    height:100px;
+    margin: 30px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.24);
+}
