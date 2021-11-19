@@ -38,9 +38,7 @@ const App = () => {
   useEffect(() => {
     api.get('/userinfo')
       .then((response) => {
-        console.log(response)
         let User = response.data.user;
-        console.log(User)
         dispatch(login({
           displayName: User.profileName,
           email: User.email,

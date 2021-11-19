@@ -30,7 +30,7 @@ const MemoRow = ({ roomId, contents, time }) => {
 
     return (
         <Paper
-            hoverable
+
             style={{ width: 300, }}
             onClick={openMemo}
         >
@@ -42,8 +42,8 @@ const MemoRow = ({ roomId, contents, time }) => {
             description="This is the description"
         /> */}
             <Item>
-                {contents.map((content) => (
-                    <div>
+                {contents.map((content, index) => (
+                    <div key={index}>
                         <p>{content}</p>
                     </div>
                 ))}

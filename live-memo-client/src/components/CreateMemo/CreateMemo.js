@@ -36,9 +36,6 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 
 
-
-
-
 const { Title } = Typography;
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
@@ -95,7 +92,7 @@ function CreateMemo({ currentUser }) {
         }
     }, []);
 
-    //뒤로가기 핸듣러
+    //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
 
         handleSave(state, JSON.stringify(selectedDoc.docState))
@@ -115,7 +112,7 @@ function CreateMemo({ currentUser }) {
     }, [selectedProvider, selectedDoc]) //바뀐거 계속 확인
 
 
-
+    //뒤로가기 아이콘 눌렀을때 저장
     const onSubmit = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
@@ -159,7 +156,6 @@ function CreateMemo({ currentUser }) {
 
     }, [state])
 
-    // console.log("현재 룸 넘버: ", curRoomId)
 
 
     // 사용자 추가 클릭 시 Drawer 
@@ -204,7 +200,7 @@ function CreateMemo({ currentUser }) {
         </IconButton>,
         <IconButton>
             <NotificationsIcon />
-        </IconButton>,
+        </IconButton >,
         <IconButton>
             <DeleteIcon />
         </IconButton>,
