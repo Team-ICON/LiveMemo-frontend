@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom"
 import { Navigate } from 'react-router';
 import { IconButton } from "@mui/material"
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import { v4 as uuid } from 'uuid';
@@ -98,7 +100,9 @@ function MemoList() {
             <div className="footer">
                 <div className="footer__right">
                     <IconButton onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
-                        <AddCircleOutlineTwoToneIcon className="footer__addicon" />
+                        <Fab size="small" color="secondary" aria-label="add" className="footer__addicon">
+                            <AddIcon />
+                        </Fab>
                     </IconButton>
                 </div>
             </div>

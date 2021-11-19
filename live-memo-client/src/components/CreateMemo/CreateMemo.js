@@ -28,6 +28,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText'
 import { MenuItem } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 
 
@@ -181,6 +186,31 @@ function CreateMemo({ currentUser }) {
     const drawerWidth = 200;
 
 
+    // three dot button
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const threeDotOpen = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const ITEM_HEIGHT = 40;
+
+    const options = [
+        <IconButton>
+            <DriveFolderUploadIcon />
+        </IconButton>,
+        <IconButton>
+            <NotificationsIcon />
+        </IconButton>,
+        <IconButton>
+            <DeleteIcon />
+        </IconButton>,
+    ];
+
+
     return (
 
         <div className="createMemo">
@@ -218,7 +248,7 @@ function CreateMemo({ currentUser }) {
                 </div>
                 <div className="memo__toolsRight">
                     <IconButton onClick={addBookMark}>
-                        <PushPinIcon />
+                        <BookmarkIcon />
                     </IconButton>
                     <IconButton onClick={handleDrawerOpen}>
                         <GroupAddIcon color="primary" />
@@ -226,9 +256,40 @@ function CreateMemo({ currentUser }) {
                     <IconButton>
                         <MicIcon color="success" />
                     </IconButton>
-                    <IconButton>
-                        <NotificationsIcon />
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls="long-menu"
+                        aria-expanded={threeDotOpen ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
                     </IconButton>
+
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={threeDotOpen}
+                        onClose={handleClose}
+                        PaperProps={{
+                            style: {
+                                maxHeight: ITEM_HEIGHT * 4.5,
+                                width: '8ch',
+                            },
+                        }}
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+
+
                 </div>
             </div>
             <div className="memberList">
@@ -240,6 +301,9 @@ function CreateMemo({ currentUser }) {
                     onSave={handleSave}
                 />
             </UserProvider.Provider>
+
+
+
 
         </div>
     )
