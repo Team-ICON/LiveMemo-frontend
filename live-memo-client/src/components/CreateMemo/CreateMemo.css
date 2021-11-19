@@ -29,7 +29,6 @@
     padding: 20px;
     position: relative;
 }
-<<<<<<< HEAD
 
 .memberList{
     display:flex;
@@ -50,8 +49,3 @@
     
     box-shadow: 3px 3px 3px 1px rgba(0,0,0,0.24);
 }
-=======
-.createMemo__bodyHeader >p{
-    margin-left:20px;
-}
->>>>>>> 8385a3b3f1a3ce748099bd87d5729379fa39ab31

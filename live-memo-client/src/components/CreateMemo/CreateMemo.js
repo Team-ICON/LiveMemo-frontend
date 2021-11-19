@@ -231,22 +231,8 @@ function CreateMemo({ currentUser }) {
                     </IconButton>
                 </div>
             </div>
-<<<<<<< HEAD
             <div className="memberList">
                 <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
-=======
-            <div className="createMemo__body">
-                <UserProvider.Provider value={currentUser}>
-                    <div >
-                        <Editor documentId={state}
-
-                            onFetch={handleFetch}
-                            onSave={handleSave}
-                        />
-                    </div>
-
-                </UserProvider.Provider>
->>>>>>> 8385a3b3f1a3ce748099bd87d5729379fa39ab31
             </div>
             <UserProvider.Provider value={currentUser}>
                 <Editor documentId={state}
