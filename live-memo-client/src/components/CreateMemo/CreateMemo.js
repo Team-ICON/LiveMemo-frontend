@@ -33,6 +33,7 @@ import Menu from '@mui/material/Menu';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 
 
@@ -194,18 +195,6 @@ function CreateMemo({ currentUser }) {
 
     const ITEM_HEIGHT = 40;
 
-    const options = [
-        <IconButton>
-            <DriveFolderUploadIcon />
-        </IconButton>,
-        <IconButton>
-            <NotificationsIcon />
-        </IconButton >,
-        <IconButton>
-            <DeleteIcon />
-        </IconButton>,
-    ];
-
 
     return (
 
@@ -273,11 +262,21 @@ function CreateMemo({ currentUser }) {
                             },
                         }}
                     >
-                        {options.map((option) => (
-                            <MenuItem key={option} onClick={handleClose}>
-                                {option}
-                            </MenuItem>
-                        ))}
+                        <MenuItem onClick={handleClose}>
+                            <IconButton>
+                                <DriveFolderUploadIcon />
+                            </IconButton>
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            <IconButton>
+                                <NotificationsIcon />
+                            </IconButton>
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            <IconButton>
+                                <DeleteIcon />
+                            </IconButton>
+                        </MenuItem>
                     </Menu>
 
 
