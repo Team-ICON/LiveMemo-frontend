@@ -32,6 +32,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+import { colCount } from 'prosemirror-tables';
 
 
 const cookies = new Cookies();
@@ -259,17 +260,15 @@ function CreateMemo({ currentUser }) {
     }
 
 
-
-
     return (
 
         <div className="createMemo">
             <Drawer
                 sx={{
-                    width: drawerWidth,
+                    width: window.innerWidth,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: drawerWidth,
+                        width: window.innerWidth,
                     },
                 }}
                 variant="persistent"
@@ -289,7 +288,7 @@ function CreateMemo({ currentUser }) {
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
-                            placeholder="사용자 ID를 입력해주세요."
+                            placeholder="사용자 메일을 입력해주세요."
                             inputProps={{ 'aria-label': 'search' }}
                             onChange={handleChange}
                         />
@@ -380,14 +379,18 @@ function CreateMemo({ currentUser }) {
             </div>
 
             <div className="createMemo__title">
+                <input placeholder="제목 없음" className="input_css" />
             </div>
 
-            <UserProvider.Provider value={currentUser}>
-                <Editor documentId={state.roomId}
-                    onFetch={handleFetch}
-                    onSave={handleSave}
-                />
-            </UserProvider.Provider>
+            <div className="createMemo__body">
+                <UserProvider.Provider value={currentUser}>
+                    <Editor documentId={state}
+                        onFetch={handleFetch}
+                        onSave={handleSave}
+                    />
+                </UserProvider.Provider>
+            </div>
+
 
 
 

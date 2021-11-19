@@ -1,7 +1,8 @@
 .createMemo{
-    flex:1;
+    display: table-column;
     background-color: rgb(247, 189, 247);
-
+    height: 100%;
+    width: 100%;
 }
 .createMemo__tools{
     display: flex;
@@ -16,12 +17,11 @@
 .createMemo__body{
     display:flex;
     flex-direction: column;
-    margin: 30px;
-    background-color: white;
-    padding: 20px;
-    height: 80vh;
-    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.24);
+    width: 100vw;
+    height: 65vh;
+
 }
+
 .createMemo__bodyHeader{
     display: flex;
     align-items: center;
@@ -34,6 +34,7 @@
     display:flex;
     flex-direction: column;
     margin: 10px;
+    margin-bottom: 40px;
     background-color: whitesmoke;
     padding: 8px;
     height: 6.5vh;
@@ -48,19 +49,26 @@
 .createMemo__title{
     display:flex;
     flex-direction: column;
-    margin: 10px;
-    background-color: whitesmoke;
-    padding: 8px;
-    height: 6.5vh;
-    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.24);
+    margin: 8px;
+}
 
+.input_css{
+    height: 40px;
     border-top-left-radius: 7px; 
     border-top-right-radius: 7px; 
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
+    text-indent: 0.8em;
+    font-size: large;
+
+    border: 2px solid rgb(172, 129, 212);
+    outline-color: rgb(172, 129, 212);
+    outline-offset: 2.3px;
+
 }
 
+
+
 .avatar_skin{
-    
     box-shadow: 3px 3px 3px 1px rgba(0,0,0,0.24);
 }
