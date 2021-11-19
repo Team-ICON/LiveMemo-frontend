@@ -300,7 +300,7 @@ function CreateMemo({ currentUser }) {
                                     }
                                 })
                         }}>
-                            Search
+                            Add
                         </Button>
                     </Search>
                 </List>
@@ -376,6 +376,10 @@ function CreateMemo({ currentUser }) {
             <div className="memberList">
                 <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
             </div>
+
+            <div className="createMemo__title">
+            </div>
+
             <UserProvider.Provider value={currentUser}>
                 <Editor documentId={state.roomId}
                     onFetch={handleFetch}

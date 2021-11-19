@@ -45,6 +45,21 @@
     border-bottom-left-radius: 7px;
 }
 
+.createMemo__title{
+    display:flex;
+    flex-direction: column;
+    margin: 10px;
+    background-color: whitesmoke;
+    padding: 8px;
+    height: 6.5vh;
+    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.24);
+
+    border-top-left-radius: 7px; 
+    border-top-right-radius: 7px; 
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
 .avatar_skin{
     
     box-shadow: 3px 3px 3px 1px rgba(0,0,0,0.24);
