@@ -12,10 +12,11 @@ import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import { v4 as uuid } from 'uuid';
 import { Cookies } from "react-cookie";
-
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import axios from "axios"
-import { Card, Icon, Avatar, Col, Typography, Row } from 'antd';
 import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
@@ -134,28 +135,34 @@ function MemoList() {
     // )
 
 
-    const renderCards = contents.map((memo, index) => {
 
-        return <Row gutter={[32, 16]}>
-            <Col key={index} lg={8} md={12} xs={24}>
-                <MemoRow
-                    key={memo.roomId}
-                    roomId={memo.roomId}
-                    contents={memo.context}
-                    time={new Date(memo.updatedTime).toDateString()} />
-
-            </Col>
-        </Row>
-    })
 
     return (
-        <div style={{ width: '85%', margin: '3rem auto' }}>
-            <div className="memoList">
-                <Layout>
-                    {renderCards}
-                    <Footer />
-                </Layout>
-            </div>
+        <div className="memoList">
+            <Layout>
+                <div style={{ width: '85%', margin: '3rem auto' }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Grid container spacing={{ xs: 2, md: 3 }} >
+                            {contents.map((memo, index) =>
+                            (
+
+                                <Grid item key={index} columns={{ xs: 4, sm: 8, md: 12 }} >
+
+                                    <MemoRow
+                                        key={memo.roomId}
+                                        roomId={memo.roomId}
+                                        contents={memo.context}
+                                        time={new Date(memo.updatedTime).toDateString()} />
+
+
+                                </Grid>
+                            )
+                            )}
+                        </Grid>
+                    </Box>
+                </div>
+                <Footer />
+            </Layout>
         </div >
     )
 
