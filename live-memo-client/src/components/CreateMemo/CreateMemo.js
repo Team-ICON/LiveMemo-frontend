@@ -148,7 +148,18 @@ function CreateMemo({ currentUser }) {
 
 
     }
+    const deleteMemo = (event) => {
+        event.preventDefault();
+        const findMemoId = selectedProvider.documentId
+        console.log("이거야: ", findMemoId)
 
+        api.post("/delete", {
+            memoId: findMemoId
+        })
+        navigate('/', { replace: true })
+
+
+    }
 
     //현재 룸 체크
     useEffect(() => {
@@ -201,7 +212,7 @@ function CreateMemo({ currentUser }) {
         <IconButton>
             <NotificationsIcon />
         </IconButton >,
-        <IconButton>
+        <IconButton onClick={deleteMemo}>
             <DeleteIcon />
         </IconButton>,
     ];
@@ -279,7 +290,7 @@ function CreateMemo({ currentUser }) {
                         }}
                     >
                         {options.map((option) => (
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
                                 {option}
                             </MenuItem>
                         ))}
