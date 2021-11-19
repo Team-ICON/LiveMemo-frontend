@@ -26,14 +26,15 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText'
 import { MenuItem } from "@mui/material";
-import { styled } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import ListItemIcon from '@mui/material/ListItemIcon';
-
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const cookies = new Cookies();
@@ -190,7 +191,7 @@ function CreateMemo({ currentUser }) {
     }));
 
 
-    const drawerWidth = 200;
+    const drawerWidth = 360;
 
 
     // three dot button
@@ -204,6 +205,55 @@ function CreateMemo({ currentUser }) {
     };
 
     const ITEM_HEIGHT = 40;
+
+    // 사용자 검색 기능
+
+    const Search = styled('div')(({ theme }) => ({
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(3),
+            width: 'auto',
+        },
+    }));
+
+    const SearchIconWrapper = styled('div')(({ theme }) => ({
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }));
+
+    const StyledInputBase = styled(InputBase)(({ theme }) => ({
+        color: 'inherit',
+        '& .MuiInputBase-input': {
+            padding: theme.spacing(1, 1, 1, 0),
+            // vertical padding + font size from searchIcon
+            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+            transition: theme.transitions.create('width'),
+            width: '100%',
+            [theme.breakpoints.up('md')]: {
+                width: '20ch',
+            },
+        },
+    }));
+
+    let searchEmail = "";
+    const handleChange = (e) => {
+        searchEmail = e.target.value;
+    }
+
+    
 
 
     return (
@@ -221,18 +271,46 @@ function CreateMemo({ currentUser }) {
                 anchor="right"
                 open={open}
             >
-                <DrawerHeader onClick={handleDrawerClose}>
-                    <IconButton>
-                        <ChevronRightIcon />
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        <CloseIcon />
                     </IconButton>
+                    <GroupAddIcon />
                 </DrawerHeader>
                 <Divider />
                 <List>
-
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="사용자 ID를 입력해주세요."
+                            inputProps={{ 'aria-label': 'search' }}
+                            onChange={handleChange}
+                        />
+                        <Button onClick={() => {
+                            //E-Mail로 사용자 검색을 위한 API
+                            api.post('/addUser', { userEmail: searchEmail , memoId: selectedProvider.documentId})
+                            .then(response => {
+                                if (response.data.success) {
+                                    console.log(response.data);
+                                }
+                            })
+                        }}>
+                            Search
+                        </Button>
+                    </Search>
                 </List>
                 <Divider />
                 <List>
                     <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+
+                </List>
+                <hr/>
+
+                <List>
+                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+
                 </List>
             </Drawer>
             <div className="createMemo__tools">
@@ -308,5 +386,6 @@ function CreateMemo({ currentUser }) {
         </div>
     )
 }
+
 
 export default CreateMemo
