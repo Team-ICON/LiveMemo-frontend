@@ -10,7 +10,6 @@ import { experimentalStyled as styled } from '@mui/material/styles';
 const MemoRow = ({ roomId, contents, time }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log(roomId, contents, time)
     const openMemo = () => {
         dispatch(selectMemo({
             roomId

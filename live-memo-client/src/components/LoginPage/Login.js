@@ -15,8 +15,10 @@ function Login() {
     const token = cookies.get('livememo-token');
     const api = axios.create({
         baseURL: 'http://localhost:4000/api/user',
-        headers: { 'Content-Type': 'application/json',
-              'authorization' : token ? `Bearer ${token}` : '' }
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': token ? `Bearer ${token}` : ''
+        }
     });
     const dispatch = useDispatch()
     // const signIn = () => {
@@ -29,7 +31,7 @@ function Login() {
     //     }).catch(error => alert(error.message))
     // }
 
-    const signIn = async(dispatch) => {
+    const signIn = async (dispatch) => {
         try {
             window.location.href = 'http://localhost:4000/api/user/auth/google';
         } catch (err) {

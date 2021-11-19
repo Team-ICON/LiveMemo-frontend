@@ -6,14 +6,13 @@ import firebase from 'firebase'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBzvRd4Rr7I_6f7teg20yNkPGdrt6ZZVHc",
-    authDomain: "live-memo-fb7fa.firebaseapp.com",
-    projectId: "live-memo-fb7fa",
-    storageBucket: "live-memo-fb7fa.appspot.com",
-    messagingSenderId: "610451654728",
-    appId: "1:610451654728:web:c91d2a397ca1b2d5c6307d"
+    apiKey: "AIzaSyC2XKZyh4QMPROuZXDneko-9X9MoGde-Lc",
+    authDomain: "live-memo-610d4.firebaseapp.com",
+    projectId: "live-memo-610d4",
+    storageBucket: "live-memo-610d4.appspot.com",
+    messagingSenderId: "874159596175",
+    appId: "1:874159596175:web:4d4f2d7bff1500d59286fa"
 };
-
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 

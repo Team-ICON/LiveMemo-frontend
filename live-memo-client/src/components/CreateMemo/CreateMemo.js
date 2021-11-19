@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
-import { Typography, Button, Form, message } from 'antd';
 import { useNavigate, useLocation } from 'react-router';
 import * as Y from 'yjs'
 import Editor from '../editor/Editor';
@@ -37,11 +36,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 
 
-const { Title } = Typography;
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 const api = axios.create({
-    baseURL: 'http://localhost:4000/api/memo',
+    baseURL: 'https://54.180.143.245:4000/api/memo',
     headers: {
         'Content-Type': 'application/json',
         'authorization': token ? `Bearer ${token}` : ''
@@ -156,9 +154,10 @@ function CreateMemo({ currentUser }) {
 
         api.post("/delete", {
             memoId: findMemoId
-        })
-        navigate('/', { replace: true })
-
+        }).then(response => { console.log(response) })
+        setTimeout(() => {
+            navigate('/', { replace: true })
+        }, 250);
 
     }
 
@@ -283,7 +282,7 @@ function CreateMemo({ currentUser }) {
                                 <NotificationsIcon />
                             </IconButton>
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={deleteMemo}>
                             <IconButton>
                                 <DeleteIcon />
                             </IconButton>

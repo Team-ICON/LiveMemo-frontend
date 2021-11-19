@@ -27,7 +27,7 @@ const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
 const api = axios.create({
-    baseURL: 'http://localhost:4000/api/memo',
+    baseURL: 'https://3.36.85.105:4000/api/memo',
     headers: {
         'Content-Type': 'application/json',
         'authorization': token ? `Bearer ${token}` : ''
@@ -101,7 +101,7 @@ function MemoList() {
             <div className="footer">
                 <div className="footer__right">
                     <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
-                            <AddIcon />
+                        <AddIcon />
                     </Fab>
                 </div>
             </div>
