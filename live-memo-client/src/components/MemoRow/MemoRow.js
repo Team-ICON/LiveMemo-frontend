@@ -10,13 +10,14 @@ import { experimentalStyled as styled } from '@mui/material/styles';
 const MemoRow = ({ roomId, contents, time }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const openMemo = () => {
         dispatch(selectMemo({
             roomId
         })
 
         )
-        navigate(`/createMemo/${roomId}`, { state: roomId })
+        navigate(`/createMemo/${roomId}`, { state: { roomId, first: false } })
     }
     ///여기서 doc 형태에 들어갈 json으로 리덕스로 set해주고 app에가서 찾은다음에 메모에 그거 보내버림 prop으로
     const Item = styled(Paper)(({ theme }) => ({

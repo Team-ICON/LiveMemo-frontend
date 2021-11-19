@@ -42,7 +42,7 @@ function MemoList() {
 
     const navigate = useNavigate();
 
-    const newRoomId = uuid();
+    const roomId = uuid();
     useEffect(() => {
         api.get('/getMemos')
             .then(response => {
@@ -100,7 +100,7 @@ function MemoList() {
         return (
             <div className="footer">
                 <div className="footer__right">
-                    <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
+                    <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${roomId}`, { state: { roomId, first: true } })}>
                         <AddIcon />
                     </Fab>
                 </div>

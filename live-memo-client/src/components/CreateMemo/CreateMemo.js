@@ -52,6 +52,7 @@ const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser }) {
     // const [curRoomId, setCurRoomId] = useState(roomId)
     const { state } = useLocation()
+    console.log(currentUser)
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
@@ -80,23 +81,24 @@ function CreateMemo({ currentUser }) {
     //     }
     // }, []);
 
+    //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
-        try {
+        if (state.first) {
+            console.log("처음 만듬")
+            return firstState;
+        }
+        else {
+            console.log("기존 메모")
             const response = await api.get(`getMemo/${id}`)
             console.log("createMemo 67 ", response)
             return response.data.memInfo.content;
-
-        } catch (err) {
-            console.log(`handleFetch err At CreateMemo.js `, err);
-            console.log("null body");
-            return firstState;
         }
     }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
 
-        handleSave(state, JSON.stringify(selectedDoc.docState))
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
 
         selectedProvider.newProvider.doc.destroy();
 
@@ -165,9 +167,9 @@ function CreateMemo({ currentUser }) {
 
     //현재 룸 체크
     useEffect(() => {
-        console.log(state)
+        console.log(state.roomId)
 
-    }, [state])
+    }, [state.roomId])
 
 
 
@@ -375,7 +377,7 @@ function CreateMemo({ currentUser }) {
                 <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
             </div>
             <UserProvider.Provider value={currentUser}>
-                <Editor documentId={state}
+                <Editor documentId={state.roomId}
                     onFetch={handleFetch}
                     onSave={handleSave}
                 />
