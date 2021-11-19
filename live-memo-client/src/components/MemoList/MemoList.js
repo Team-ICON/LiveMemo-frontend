@@ -27,7 +27,7 @@ const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
 const api = axios.create({
-    baseURL: 'https://3.36.85.105:4000/api/memo',
+    baseURL: 'http://localhost:4000/api/memo',
     headers: {
         'Content-Type': 'application/json',
         'authorization': token ? `Bearer ${token}` : ''
