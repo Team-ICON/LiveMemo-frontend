@@ -266,7 +266,6 @@ function CreateMemo({ currentUser }) {
                     <IconButton
                         aria-label="more"
                         id="long-button"
-                        aria-controls="long-menu"
                         aria-expanded={threeDotOpen ? 'true' : undefined}
                         aria-haspopup="true"
                         onClick={handleClick}
@@ -275,10 +274,6 @@ function CreateMemo({ currentUser }) {
                     </IconButton>
 
                     <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                        }}
                         anchorEl={anchorEl}
                         open={threeDotOpen}
                         onClose={handleClose}
@@ -290,7 +285,7 @@ function CreateMemo({ currentUser }) {
                         }}
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                            <MenuItem key={option} onClick={handleClose}>
                                 {option}
                             </MenuItem>
                         ))}
