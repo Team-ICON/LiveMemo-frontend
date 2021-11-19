@@ -142,7 +142,7 @@ export async function handler(
     // names. It also doesn't matter, this is anyways an internal (AWS->AWS) call.
     const apigwManagementApi = new ApiGatewayManagementApi({
         apiVersion: '2018-11-29',
-        endpoint: `https://${event.requestContext.apiId}.execute-api.${AWS_REGION}.amazonaws.com/${event.requestContext.stage}`,
+        endpoint: `http://${event.requestContext.apiId}.execute-api.${AWS_REGION}.amazonaws.com/${event.requestContext.stage}`,
     });
     const send = async (connectionId: string, message: any) => {
         try {
