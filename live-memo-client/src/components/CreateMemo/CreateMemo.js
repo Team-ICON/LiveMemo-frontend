@@ -1,30 +1,26 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router';
-import * as Y from 'yjs'
+
 import Editor from '../editor/Editor';
-import { WebrtcProvider } from 'y-webrtc'
+
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Avatar, IconButton } from '@mui/material';
-import PushPinIcon from '@mui/icons-material/PushPin';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
-import MicOffIcon from '@mui/icons-material/MicOff';
+
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
-import { v4 as uuid } from 'uuid';
+import { selectOpenProvider, selectOpenDoc } from '../../features/memoSlice';
+
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
-
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText'
+
 import { MenuItem } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -50,9 +46,10 @@ const api = axios.create({
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser }) {
-    // const [curRoomId, setCurRoomId] = useState(roomId)
+
     const { state } = useLocation()
     console.log(currentUser)
+    console.log(state.roomId, state.first)
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
@@ -83,24 +80,30 @@ function CreateMemo({ currentUser }) {
 
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
-        if (state.first) {
-            console.log("처음 만듬")
-            return firstState;
+        try {
+            if (state.first) {
+                console.log("처음 만듬")
+                return firstState;
+            }
+            else {
+                console.log("기존 메모")
+                const response = await api.get(`getMemo/${id}`)
+                console.log("createMemo 67 ", response)
+                return response.data.memInfo.content;
+            }
+        } catch {
+            console.log("못가져옴")
         }
-        else {
-            console.log("기존 메모")
-            const response = await api.get(`getMemo/${id}`)
-            console.log("createMemo 67 ", response)
-            return response.data.memInfo.content;
-        }
+
     }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
 
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
+        selectedProvider.newProvider.disconnect();
 
-        selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.destroy();
 
         navigate('/', { replace: true })
         window.location.reload()
@@ -128,8 +131,9 @@ function CreateMemo({ currentUser }) {
         // history.back()
         // console.log(selectedProvider.newProvider.doc)
         // selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.disconnect();
 
-        selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.destroy();
         // dispatch(deleteProvider())
         // window.history.back()
         setTimeout(() => {
@@ -142,7 +146,6 @@ function CreateMemo({ currentUser }) {
     const addBookMark = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", findMemoId)
 
         api.post("/addbookmark", {
             memoId: findMemoId
@@ -154,7 +157,6 @@ function CreateMemo({ currentUser }) {
     const deleteMemo = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", findMemoId)
 
         api.post("/delete", {
             memoId: findMemoId
