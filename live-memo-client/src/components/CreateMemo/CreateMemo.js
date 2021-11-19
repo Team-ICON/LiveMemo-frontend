@@ -41,7 +41,7 @@ import Button from '@mui/material/Button';
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 const api = axios.create({
-    baseURL: 'https://54.180.143.245:4000/api/memo',
+    baseURL: 'http://localhost:4000/api/memo',
     headers: {
         'Content-Type': 'application/json',
         'authorization': token ? `Bearer ${token}` : ''
