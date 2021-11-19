@@ -47,10 +47,14 @@ const api = axios.create({
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser }) {
-
+    // 사용자 추가 클릭 시 Drawer 
+    const [open, setOpen] = useState(false);
     const { state } = useLocation()
-    console.log(currentUser)
-    console.log(state.roomId, state.first)
+    // three dot button
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const threeDotOpen = Boolean(anchorEl);
+    const ITEM_HEIGHT = 40;
+
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
@@ -174,10 +178,21 @@ function CreateMemo({ currentUser }) {
 
     }, [state.roomId])
 
+    //E-Mail로 사용자 검색을 위한 API
+    const addUser = (event) => {
+        event.preventDefault();
 
 
-    // 사용자 추가 클릭 시 Drawer 
-    const [open, setOpen] = useState(false);
+        api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
+            .then(response => {
+                if (response.data.success) {
+                    console.log(response.data);
+                }
+            })
+
+
+    }
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -186,6 +201,15 @@ function CreateMemo({ currentUser }) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
 
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
@@ -197,23 +221,13 @@ function CreateMemo({ currentUser }) {
     }));
 
 
-    const drawerWidth = 360;
 
 
-    // three dot button
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const threeDotOpen = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
-    const ITEM_HEIGHT = 40;
+
+
 
     // 사용자 검색 기능
-
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -292,15 +306,7 @@ function CreateMemo({ currentUser }) {
                             inputProps={{ 'aria-label': 'search' }}
                             onChange={handleChange}
                         />
-                        <Button onClick={() => {
-                            //E-Mail로 사용자 검색을 위한 API
-                            api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
-                                .then(response => {
-                                    if (response.data.success) {
-                                        console.log(response.data);
-                                    }
-                                })
-                        }}>
+                        <Button onClick={addUser}>
                             Add
                         </Button>
                     </Search>
