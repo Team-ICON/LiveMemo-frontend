@@ -130,7 +130,7 @@ function CreateMemo({ currentUser }) {
         console.log("이거야: ", selectedProvider.documentId)
         console.log("갖고옴", selectedDoc)
 
-        handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
         // console.log(JSON.stringify(selectedDoc.docState))
 
         // history.back()
@@ -390,7 +390,7 @@ function CreateMemo({ currentUser }) {
 
             <div className="createMemo__body">
                 <UserProvider.Provider value={currentUser}>
-                    <Editor documentId={state}
+                    <Editor documentId={state.roomId}
                         onFetch={handleFetch}
                         onSave={handleSave}
                     />
