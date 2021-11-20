@@ -293,9 +293,10 @@ function CreateMemo({ currentUser }) {
                             api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
                                 .then(response => {
                                     if (response.data.success) {
-                                        console.log(response.data);
+                                        
+
                                     }
-                                })
+                                }).catch(error => { alert("메일 주소를 확인해주세요.");});
                         }}>
                             Add
                         </Button>
@@ -324,10 +325,10 @@ function CreateMemo({ currentUser }) {
                         <BookmarkIcon />
                     </IconButton>
                     <IconButton onClick={handleDrawerOpen}>
-                        <GroupAddIcon color="primary" />
+                        <GroupAddIcon />
                     </IconButton>
                     <IconButton>
-                        <MicIcon color="success" />
+                        <MicIcon />
                     </IconButton>
                     <IconButton
                         aria-label="more"
