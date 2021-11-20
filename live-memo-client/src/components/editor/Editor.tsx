@@ -85,8 +85,10 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const handlePeersChange = useCallback(
         ({ webrtcPeers }) => {
             console.log(provider)
-            console.log("사람수:", webrtcPeers)
+            console.log("사람수:", webrtcPeers.length)
             setClientCount(webrtcPeers.length);
+            setClientCount(webrtcPeers);
+
 
         },
         [setClientCount],
@@ -148,12 +150,14 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         }
         const fetchFallback = async () => {
             console.log("fetch")
-            console.log(provider.connected)
-            console.log(provider)
+
+
+
+
             if (provider.connected && clientCount === 0) {
                 const res = await onFetch(documentId);
                 // console.log(typeof (res))
-                //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 그래서 나중에 create에서 stringify 함
+                //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함
                 dispatch(selectDoc({
                     docState: JSON.parse(res)
                 }))

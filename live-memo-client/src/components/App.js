@@ -69,10 +69,7 @@ const App = () => {
   const [token, setToken] = useState('');
 
   useEffect(() => {
-    setTimeout(() => {
-      setToken(cookies.get('livememo-token'));
-
-    }, 250)
+    setToken(cookies.get('livememo-token'));
   }, [])
 
 

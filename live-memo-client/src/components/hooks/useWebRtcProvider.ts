@@ -14,6 +14,7 @@ function useWebRtcProvider(user: User, documentId: string) {
 		// @ts-ignore opts param seems to expect ALL options
 		const newProvider = new WebrtcProvider(user.email, roomName, ydoc, {
 			awareness,
+			signaling: ['wss://livememo.herokuapp.com']
 		});
 		dispatch(selectProvider({
 			newProvider,
