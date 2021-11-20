@@ -50,6 +50,8 @@ function CreateMemo({ currentUser }) {
     // 사용자 추가 클릭 시 Drawer 
     const [open, setOpen] = useState(false);
     const { state } = useLocation()
+    //메모에 속한 사용자 리스트 
+    const [memberList, setMemberList] = useState([]);
     // three dot button
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
@@ -186,9 +188,9 @@ function CreateMemo({ currentUser }) {
         api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
             .then(response => {
                 if (response.data.success) {
-                    console.log(response.data);
+                    // setMemberList(response.data.);
                 }
-            })
+            }).catch(error => { alert("메일 주소를 확인해주세요."); });
 
 
     }
