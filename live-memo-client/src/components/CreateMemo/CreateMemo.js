@@ -56,6 +56,7 @@ function CreateMemo({ currentUser }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
+    const [memeTitle, setMemoTitle] = useState("");
 
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
@@ -275,6 +276,11 @@ function CreateMemo({ currentUser }) {
         searchEmail = e.target.value;
     }
 
+    //제목 수정
+    const handleTitleNameChange = (e) => {
+        setMemoTitle(e.target.value);
+    }
+
 
     return (
 
@@ -387,7 +393,9 @@ function CreateMemo({ currentUser }) {
             </div>
 
             <div className="createMemo__title">
-                <input placeholder="제목 없음" className="input_css" />
+                <input placeholder="제목 없음" className="input_css" type ="text" value={memeTitle} 
+                onChange={handleTitleNameChange}
+                />
             </div>
 
             <div className="createMemo__body">
