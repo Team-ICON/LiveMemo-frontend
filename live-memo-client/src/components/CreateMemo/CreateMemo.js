@@ -1,30 +1,26 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router';
-import * as Y from 'yjs'
+
 import Editor from '../editor/Editor';
-import { WebrtcProvider } from 'y-webrtc'
+
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Avatar, IconButton } from '@mui/material';
-import PushPinIcon from '@mui/icons-material/PushPin';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
-import MicOffIcon from '@mui/icons-material/MicOff';
+
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOpenMemo, selectOpenProvider, selectProvider, deleteProvider, selectOpenDoc } from '../../features/memoSlice';
-import { v4 as uuid } from 'uuid';
+import { selectOpenProvider, selectOpenDoc } from '../../features/memoSlice';
+
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
-
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText'
+
 import { MenuItem } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -51,8 +47,14 @@ const api = axios.create({
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser }) {
-    // const [curRoomId, setCurRoomId] = useState(roomId)
+    // 사용자 추가 클릭 시 Drawer 
+    const [open, setOpen] = useState(false);
     const { state } = useLocation()
+    // three dot button
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const threeDotOpen = Boolean(anchorEl);
+    const ITEM_HEIGHT = 40;
+
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
@@ -81,25 +83,32 @@ function CreateMemo({ currentUser }) {
     //     }
     // }, []);
 
+    //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
         try {
-            const response = await api.get(`getMemo/${id}`)
-            console.log("createMemo 67 ", response)
-            return response.data.memInfo.content;
-
-        } catch (err) {
-            console.log(`handleFetch err At CreateMemo.js `, err);
-            console.log("null body");
-            return firstState;
+            if (state.first) {
+                console.log("처음 만듬")
+                return firstState;
+            }
+            else {
+                console.log("기존 메모")
+                const response = await api.get(`getMemo/${id}`)
+                console.log("createMemo 67 ", response)
+                return response.data.memInfo.content;
+            }
+        } catch {
+            console.log("못가져옴")
         }
+
     }, []);
 
-    //진짜 뒤로가기 눌렀을때 저장 핸들러.
+    //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
 
-        handleSave(state, JSON.stringify(selectedDoc.docState))
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
+        selectedProvider.newProvider.disconnect();
 
-        selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.destroy();
 
         navigate('/', { replace: true })
         window.location.reload()
@@ -121,14 +130,15 @@ function CreateMemo({ currentUser }) {
         console.log("이거야: ", selectedProvider.documentId)
         console.log("갖고옴", selectedDoc)
 
-        handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
         // console.log(JSON.stringify(selectedDoc.docState))
 
         // history.back()
         // console.log(selectedProvider.newProvider.doc)
         // selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.disconnect();
 
-        selectedProvider.newProvider.doc.destroy();
+        selectedProvider.newProvider.destroy();
         // dispatch(deleteProvider())
         // window.history.back()
         setTimeout(() => {
@@ -141,7 +151,6 @@ function CreateMemo({ currentUser }) {
     const addBookMark = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", findMemoId)
 
         api.post("/addbookmark", {
             memoId: findMemoId
@@ -153,7 +162,6 @@ function CreateMemo({ currentUser }) {
     const deleteMemo = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", findMemoId)
 
         api.post("/delete", {
             memoId: findMemoId
@@ -166,14 +174,25 @@ function CreateMemo({ currentUser }) {
 
     //현재 룸 체크
     useEffect(() => {
-        console.log(state)
+        console.log(state.roomId)
 
-    }, [state])
+    }, [state.roomId])
+
+    //E-Mail로 사용자 검색을 위한 API
+    const addUser = (event) => {
+        event.preventDefault();
 
 
+        api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
+            .then(response => {
+                if (response.data.success) {
+                    console.log(response.data);
+                }
+            })
 
-    // 사용자 추가 클릭 시 Drawer 
-    const [open, setOpen] = useState(false);
+
+    }
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -182,6 +201,15 @@ function CreateMemo({ currentUser }) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
 
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
@@ -193,23 +221,13 @@ function CreateMemo({ currentUser }) {
     }));
 
 
-    const drawerWidth = 360;
 
 
-    // three dot button
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const threeDotOpen = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
-    const ITEM_HEIGHT = 40;
+
+
 
     // 사용자 검색 기능
-
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -288,16 +306,7 @@ function CreateMemo({ currentUser }) {
                             inputProps={{ 'aria-label': 'search' }}
                             onChange={handleChange}
                         />
-                        <Button onClick={() => {
-                            //E-Mail로 사용자 검색을 위한 API
-                            api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
-                                .then(response => {
-                                    if (response.data.success) {
-                                        
-
-                                    }
-                                }).catch(error => { alert("메일 주소를 확인해주세요.");});
-                        }}>
+                        <Button onClick={addUser}>
                             Add
                         </Button>
                     </Search>
@@ -381,13 +390,12 @@ function CreateMemo({ currentUser }) {
 
             <div className="createMemo__body">
                 <UserProvider.Provider value={currentUser}>
-                    <Editor documentId={state}
+                    <Editor documentId={state.roomId}
                         onFetch={handleFetch}
                         onSave={handleSave}
                     />
                 </UserProvider.Provider>
             </div>
-
 
 
 

@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import "./MemoList.css"
 import MemoRow from "../MemoRow/MemoRow"
-import { closeMemo } from '../../features/memoSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { db } from '../../firebase'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom"
-import { Navigate } from 'react-router';
-import { IconButton } from "@mui/material"
-import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import FlipMove from "react-flip-move"
 import Layout from '../Layout/Layout'
 import { v4 as uuid } from 'uuid';
 import { Cookies } from "react-cookie";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
 import axios from "axios"
-import { selectOpenMemo, selectOpenProvider } from '../../features/memoSlice';
+
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
 
@@ -42,7 +35,7 @@ function MemoList() {
 
     const navigate = useNavigate();
 
-    const newRoomId = uuid();
+    const roomId = uuid();
     useEffect(() => {
         api.get('/getMemos')
             .then(response => {
@@ -100,7 +93,7 @@ function MemoList() {
         return (
             <div className="footer">
                 <div className="footer__right">
-                    <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${newRoomId}`, { state: newRoomId })}>
+                    <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${roomId}`, { state: { roomId, first: true } })}>
                         <AddIcon />
                     </Fab>
                 </div>
@@ -162,8 +155,8 @@ function MemoList() {
                             )}
                         </Grid>
                     </Box>
+                    <Footer />
                 </div>
-                <Footer />
             </Layout>
         </div >
     )

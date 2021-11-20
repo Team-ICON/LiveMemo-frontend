@@ -418,6 +418,7 @@ export class Room {
         this.doc.off('update', this._docUpdateHandler)
         this.awareness.off('update', this._awarenessUpdateHandler)
         this.webrtcConns.forEach(conn => conn.destroy())
+        console.log("사라짐")
     }
 
     destroy() {
@@ -595,12 +596,13 @@ export class WebrtcProvider extends Observable {
     connect() {
         this.shouldConnect = true
         this.signalingUrls.forEach(url => {
-            const signalingConn = map.setIfUndefined(signalingConns, url, () => new SignalingConn(url))
+            const signalingConn = map.setIfUndefined(signalingConns, url, () => new SignalingConn(url)) //Signalingconn 값 리턴됨 전역 signalingConns에도 추가됨
             this.signalingConns.push(signalingConn)
             signalingConn.providers.add(this)
         })
         if (this.room) {
             this.room.connect()
+
         }
     }
 
@@ -616,6 +618,7 @@ export class WebrtcProvider extends Observable {
         if (this.room) {
             this.room.disconnect()
         }
+
     }
 
     destroy() {
@@ -623,8 +626,11 @@ export class WebrtcProvider extends Observable {
         // need to wait for key before deleting room
         this.key.then(() => {
       /** @type {Room} */ (this.room).destroy()
+            console.log("삭제된 룸", (this.roomName))
             rooms.delete(this.roomName)
         })
         super.destroy()
+
+
     }
 }
