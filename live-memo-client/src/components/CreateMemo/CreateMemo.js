@@ -64,12 +64,12 @@ function CreateMemo({ currentUser }) {
 
     const handleSave = useCallback(async (_id, body) => {
         console.log(_id, body)
-
-        await api.put("/createMemo", {
-            _id,
-            body,
-        });
+            await api.put("/createMemo", {
+                _id,
+                body,
+            });
     }, []);
+
 
     // const handleSave = useCallback(async (_id, body) => {
     //     try {
@@ -90,17 +90,19 @@ function CreateMemo({ currentUser }) {
     const handleFetch = useCallback(async id => {
         try {
             if (state.first) {
-                console.log("처음 만듬")
+                console.log("처음 만듬");
                 return firstState;
             }
             else {
-                console.log("기존 메모")
-                const response = await api.get(`getMemo/${id}`)
-                console.log("createMemo 67 ", response)
+                console.log("기존 메모");
+                const response = await api.get(`getMemo/${id}`);
+                console.log("createMemo 67 ", response);
+                console.log(response.data.memInfo.userList, "##########$$$$$$");
+                setMemberList(response.data.memInfo.userList);
                 return response.data.memInfo.content;
             }
         } catch {
-            console.log("못가져옴")
+            console.log("못가져옴");
         }
 
     }, []);
@@ -189,7 +191,7 @@ function CreateMemo({ currentUser }) {
         api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
             .then(response => {
                 if (response.data.success) {
-                    // setMemberList(response.data.);
+                    setMemberList([...memberList, response.data.userdata]);
                 }
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
 
@@ -264,10 +266,8 @@ function CreateMemo({ currentUser }) {
             // vertical padding + font size from searchIcon
             paddingLeft: `calc(1em + ${theme.spacing(4)})`,
             transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
+            width: '60vw',
+
         },
     }));
 
@@ -280,7 +280,6 @@ function CreateMemo({ currentUser }) {
     const handleTitleNameChange = (e) => {
         setMemoTitle(e.target.value);
     }
-
 
     return (
 
@@ -305,31 +304,38 @@ function CreateMemo({ currentUser }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="사용자 메일을 입력해주세요."
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={handleChange}
-                        />
-                        <Button onClick={addUser}>
+                    <div className="searchUser">
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="사용자 메일을 입력해주세요."
+                                inputProps={{ 'aria-label': 'search' }}
+                                onChange={handleChange}
+                            />
+                        </Search>
+                        <button className="addButton" onClick={addUser}>
                             Add
-                        </Button>
-                    </Search>
+                        </button>
+                    </div >
+
                 </List>
                 <Divider />
-                <List>
-                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+                <div>
+                    {memberList.map((item, index) => (
+                        <List key={index}>
+                            <div className="userList" key={index}>
+                                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>{item.picture}</Avatar>
+                                <div key={index} className="profileList">
+                                    {item.profileName}
+                                </div>
+                            </div>
 
-                </List>
-                <hr />
+                        </List>
+                    ))}
 
-                <List>
-                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
-
-                </List>
+                </div>
             </Drawer>
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
@@ -384,8 +390,6 @@ function CreateMemo({ currentUser }) {
                             </IconButton>
                         </MenuItem>
                     </Menu>
-
-
                 </div>
             </div>
             <div className="memberList">
@@ -393,8 +397,9 @@ function CreateMemo({ currentUser }) {
             </div>
 
             <div className="createMemo__title">
-                <input placeholder="제목 없음" className="input_css" type ="text" value={memeTitle} 
-                onChange={handleTitleNameChange}
+                <input placeholder="제목 없음" className="input_css" type="text" value={memeTitle}
+                    onChange={handleTitleNameChange}
+
                 />
             </div>
 

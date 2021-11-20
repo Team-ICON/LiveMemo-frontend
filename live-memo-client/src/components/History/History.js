@@ -13,35 +13,36 @@ import TableRow from '@mui/material/TableRow';
 
 import "./History.css"
 
-
 import {
     Link,
 } from "react-router-dom";
 
-const message = `공지 확인 바랍니다. `;
+const message = `공지 사항을 확인해주세요! `;
+const time = `2021-11-21 03:05`;
 
 
 function History() {
     return (
-        <div className="header">
-            <div className="createMemo">
-                <div className="createMemo__tools">
-                    <Link to="/">
-                        <IconButton>
-                            <ArrowBackIosNewIcon />
-                        </IconButton>
-                    </Link>
-                </div>
+        <div className="history">
+            <div className="history__header">
+                <Link to="/">
+                    <IconButton>
+                        <ArrowBackIosNewIcon />
+                    </IconButton>
+                </Link>
+            </div>
 
-                <div className="history__body">
-                    <Grid container wrap="nowrap" spacing={2}>
-                        <Grid item>
-                            <Avatar>ID</Avatar>
-                        </Grid>
-                        <Grid item xs>
-                            <Typography>{message}</Typography>
-                        </Grid>
-                    </Grid>
+            <div className="history__body">
+                <div className="wrapper">
+                    <div className="history_avatar">
+                        <Avatar>ID</Avatar>
+                    </div>
+                    <div className="history_msg">
+                        <Typography variant="body2">{message}</Typography>
+                    </div>
+                    <div className="history_time">
+                        <Typography variant="body2">{time}</Typography>
+                    </div>
                 </div>
             </div>
         </div>

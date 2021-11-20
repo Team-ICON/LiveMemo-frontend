@@ -90,7 +90,6 @@ const App = () => {
                 {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                 <Route path="/folder" element={<FolderList />} />
                 <Route path="/history" element={<History />} />
-
               </Routes>
             </div>
 
