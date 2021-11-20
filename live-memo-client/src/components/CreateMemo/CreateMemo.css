@@ -1,13 +1,16 @@
 .createMemo{
     display: table-column;
-    background-color: rgb(247, 189, 247);
+    /* background-color: rgb(247, 189, 247); */
+    background-color: rgb(199, 181, 199);
     height: 100%;
     width: 100%;
 }
 .createMemo__tools{
     display: flex;
     justify-content: space-between;
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
+    /* background-color: rgb(206, 153, 153); */
+    background-color: rgb(212, 172, 172);
 }
 
 .createMemo__toolsLeft{
