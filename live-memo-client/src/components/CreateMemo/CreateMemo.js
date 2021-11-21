@@ -151,6 +151,8 @@ function CreateMemo({ currentUser }) {
         api.post("/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
+        selectedProvider.newProvider.disconnect();
+        selectedProvider.newProvider.destroy();
         setTimeout(() => {
             navigate('/', { replace: true })
         }, 250);
