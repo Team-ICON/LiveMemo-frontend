@@ -28,6 +28,7 @@ const api = axios.create({
 });
 
 
+
 function MemoList({ currentUser }) {
     const [memos, setMemos] = useState([])
     const [contents, setContents] = useState([])
