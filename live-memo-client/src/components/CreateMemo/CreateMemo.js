@@ -131,8 +131,6 @@ function CreateMemo({ currentUser }) {
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-
-
         setTimeout(() => {
             navigate('/', { replace: true })
         }, 250);
