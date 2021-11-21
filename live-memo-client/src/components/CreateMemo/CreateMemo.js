@@ -43,6 +43,7 @@ function CreateMemo({ currentUser }) {
     const { state } = useLocation()
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
+    const [conMemberList, setConMemberList] = useState([])
     // three dot button
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
@@ -55,7 +56,7 @@ function CreateMemo({ currentUser }) {
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
-            title : memoTitle,
+            title: memoTitle,
             body,
             quit,
             first: state.first
@@ -93,7 +94,7 @@ function CreateMemo({ currentUser }) {
                 console.log(curMem)
                 setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
-
+                
 
                 if (curMem == 1)
                     return res.data.memInfo.content;
@@ -361,10 +362,11 @@ function CreateMemo({ currentUser }) {
                 </div>
             </div>
             <div className="memberList">
-                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+                <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
+
             </div>
             <div className="createMemo__title">
-                <input placeholder="제목 없음" className="input_css" type="text" value= {memoTitle}
+                <input placeholder="제목 없음" className="input_css" type="text" value={memoTitle}
                     onChange={handleTitleNameChange}
 
                 />
