@@ -91,13 +91,13 @@ function CreateMemo({ currentUser }) {
         try {
             if (state.first) {
                 console.log("처음 만듬");
+                handleSave(state.roomId, JSON.stringify(firstState));
                 return firstState;
             }
             else {
                 console.log("기존 메모");
                 const response = await api.get(`getMemo/${id}`);
                 console.log("createMemo 67 ", response);
-                console.log(response.data.memInfo.userList, "##########$$$$$$");
                 setMemberList(response.data.memInfo.userList);
                 return response.data.memInfo.content;
             }
