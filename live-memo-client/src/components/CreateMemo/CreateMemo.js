@@ -47,7 +47,7 @@ function CreateMemo({ currentUser }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
-    const [memeTitle, setMemoTitle] = useState("");
+    const [memoTitle, setMemoTitle] = useState("");
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
@@ -55,14 +55,14 @@ function CreateMemo({ currentUser }) {
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
-            title: memeTitle,
+            title : memoTitle,
             body,
             quit,
             first: state.first
         }).then(res => {
             console.log("succes save", res)
         });
-    }, []);
+    }, [memoTitle]);
     // const handleSave = useCallback(async (_id, body) => {
     //     try {
     //         console.log(_id, body)
@@ -91,7 +91,7 @@ function CreateMemo({ currentUser }) {
                 const curMem = res.data.roomsStatus[id]
                 console.log("createMemo  ", res)
                 console.log(curMem)
-
+                setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
 
 
@@ -364,7 +364,7 @@ function CreateMemo({ currentUser }) {
                 <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
             </div>
             <div className="createMemo__title">
-                <input placeholder="제목 없음" className="input_css" type="text" value={memeTitle}
+                <input placeholder="제목 없음" className="input_css" type="text" value= {memoTitle}
                     onChange={handleTitleNameChange}
 
                 />
