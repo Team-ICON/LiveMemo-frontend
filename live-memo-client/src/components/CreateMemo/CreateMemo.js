@@ -1,26 +1,21 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router';
-
 import Editor from '../editor/Editor';
-
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Avatar, IconButton } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
-
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOpenProvider, selectOpenDoc } from '../../features/memoSlice';
-
+import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, selectProvider } from '../../features/memoSlice';
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-
 import { MenuItem } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -33,8 +28,6 @@ import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import { colCount } from 'prosemirror-tables';
-
-
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 const api = axios.create({
@@ -44,30 +37,33 @@ const api = axios.create({
         'authorization': token ? `Bearer ${token}` : ''
     }
 });
-
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser }) {
     // 사용자 추가 클릭 시 Drawer 
     const [open, setOpen] = useState(false);
     const { state } = useLocation()
+    //메모에 속한 사용자 리스트 
+    const [memberList, setMemberList] = useState([]);
     // three dot button
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
-
+    const [memeTitle, setMemoTitle] = useState("");
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
-
-    const handleSave = useCallback(async (_id, body) => {
-        console.log(_id, body)
-
+    const curRoomsStatus = useSelector(selectRoomsStatus)
+    const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
+            title: memeTitle,
             body,
+            quit,
+            first: state.first
+        }).then(res => {
+            console.log("succes save", res)
         });
     }, []);
-
     // const handleSave = useCallback(async (_id, body) => {
     //     try {
     //         console.log(_id, body)
@@ -82,34 +78,40 @@ function CreateMemo({ currentUser }) {
     //         console.log(`err in handleSave at CreateMemo.js`, err);
     //     }
     // }, []);
-
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
         try {
             if (state.first) {
-                console.log("처음 만듬")
+                console.log("처음 만듬");
+                handleSave(state.roomId, JSON.stringify(firstState));
                 return firstState;
             }
             else {
-                console.log("기존 메모")
-                const response = await api.get(`getMemo/${id}`)
-                console.log("createMemo 67 ", response)
-                return response.data.memInfo.content;
+                console.log("기존 메모");
+                const res = await api.get(`getMemo/${id}`);
+                const curMem = res.data.roomsStatus[id]
+                console.log("createMemo  ", res)
+                console.log(curMem)
+
+                if (curMem == 1)
+                    return res.data.memInfo.content;
+                else {
+                    return firstState
+                }
+                setMemberList(res.data.memInfo.userList);
+                return res.data.memInfo.content;
             }
         } catch {
-            console.log("못가져옴")
+            console.log("못가져옴");
         }
 
     }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
-
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
         selectedProvider.newProvider.disconnect();
-
         selectedProvider.newProvider.destroy();
-
         navigate('/', { replace: true })
         window.location.reload()
         // console.log(window.location.pathname)
@@ -122,77 +124,58 @@ function CreateMemo({ currentUser }) {
         }
     }, [selectedProvider, selectedDoc]) //바뀐거 계속 확인
 
-
     //뒤로가기 아이콘 눌렀을때 저장
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
-        const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", selectedProvider.documentId)
-        console.log("갖고옴", selectedDoc)
 
-        handleSave(findMemoId, JSON.stringify(selectedDoc.docState))
-        // console.log(JSON.stringify(selectedDoc.docState))
-
-        // history.back()
-        // console.log(selectedProvider.newProvider.doc)
-        // selectedProvider.newProvider.doc.destroy();
+        console.log(selectedDoc.docState)
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
         selectedProvider.newProvider.disconnect();
-
         selectedProvider.newProvider.destroy();
-        // dispatch(deleteProvider())
-        // window.history.back()
+
         setTimeout(() => {
             navigate('/', { replace: true })
         }, 250);
         // window.history.pushState(null, null, window.location.pathname);
-
-
     }
+
     const addBookMark = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-
         api.post("/addbookmark", {
             memoId: findMemoId
         })
-
-
-
     }
+
     const deleteMemo = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-
         api.post("/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
+        selectedProvider.newProvider.disconnect();
+        selectedProvider.newProvider.destroy();
         setTimeout(() => {
             navigate('/', { replace: true })
         }, 250);
-
     }
 
     //현재 룸 체크
     useEffect(() => {
         console.log(state.roomId)
-
     }, [state.roomId])
 
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
         event.preventDefault();
-
-
         api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
             .then(response => {
                 if (response.data.success) {
-                    console.log(response.data);
+                    setMemberList([...memberList, response.data.userdata]);
                 }
-            })
-
-
+                console.log(memberList)
+            }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
-
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -202,14 +185,13 @@ function CreateMemo({ currentUser }) {
         setOpen(false);
     };
 
-
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
-
 
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
@@ -219,14 +201,6 @@ function CreateMemo({ currentUser }) {
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
     }));
-
-
-
-
-
-
-
-
     // 사용자 검색 기능
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -243,7 +217,6 @@ function CreateMemo({ currentUser }) {
             width: 'auto',
         },
     }));
-
     const SearchIconWrapper = styled('div')(({ theme }) => ({
         padding: theme.spacing(0, 2),
         height: '100%',
@@ -253,7 +226,6 @@ function CreateMemo({ currentUser }) {
         alignItems: 'center',
         justifyContent: 'center',
     }));
-
     const StyledInputBase = styled(InputBase)(({ theme }) => ({
         color: 'inherit',
         '& .MuiInputBase-input': {
@@ -261,21 +233,19 @@ function CreateMemo({ currentUser }) {
             // vertical padding + font size from searchIcon
             paddingLeft: `calc(1em + ${theme.spacing(4)})`,
             transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
+            width: '60vw',
+
         },
     }));
-
     let searchEmail = "";
     const handleChange = (e) => {
         searchEmail = e.target.value;
     }
-
-
+    //제목 수정
+    const handleTitleNameChange = (e) => {
+        setMemoTitle(e.target.value);
+    }
     return (
-
         <div className="createMemo">
             <Drawer
                 sx={{
@@ -297,31 +267,38 @@ function CreateMemo({ currentUser }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="사용자 메일을 입력해주세요."
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={handleChange}
-                        />
-                        <Button onClick={addUser}>
+                    <div className="searchUser">
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="사용자 메일을 입력해주세요."
+                                inputProps={{ 'aria-label': 'search' }}
+                                onChange={handleChange}
+                            />
+                        </Search>
+                        <button className="addButton" onClick={addUser}>
                             Add
-                        </Button>
-                    </Search>
+                        </button>
+                    </div >
+
                 </List>
                 <Divider />
-                <List>
-                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+                <div>
+                    {memberList.map((item, index) => (
+                        <List key={index}>
+                            <div className="userList" key={index}>
+                                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
+                                <div key={index} className="profileList">
+                                    {item.profileName}
+                                </div>
+                            </div>
 
-                </List>
-                <hr />
+                        </List>
+                    ))}
 
-                <List>
-                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
-
-                </List>
+                </div>
             </Drawer>
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
@@ -334,10 +311,10 @@ function CreateMemo({ currentUser }) {
                         <BookmarkIcon />
                     </IconButton>
                     <IconButton onClick={handleDrawerOpen}>
-                        <GroupAddIcon color="primary" />
+                        <GroupAddIcon />
                     </IconButton>
                     <IconButton>
-                        <MicIcon color="success" />
+                        <MicIcon />
                     </IconButton>
                     <IconButton
                         aria-label="more"
@@ -348,7 +325,6 @@ function CreateMemo({ currentUser }) {
                     >
                         <MoreVertIcon />
                     </IconButton>
-
                     <Menu
                         anchorEl={anchorEl}
                         open={threeDotOpen}
@@ -376,34 +352,26 @@ function CreateMemo({ currentUser }) {
                             </IconButton>
                         </MenuItem>
                     </Menu>
-
-
                 </div>
             </div>
             <div className="memberList">
                 <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
             </div>
-
             <div className="createMemo__title">
-                <input placeholder="제목 없음" className="input_css" />
-            </div>
+                <input placeholder="제목 없음" className="input_css" type="text" value={memeTitle}
+                    onChange={handleTitleNameChange}
 
+                />
+            </div>
             <div className="createMemo__body">
                 <UserProvider.Provider value={currentUser}>
-                    <Editor documentId={state}
+                    <Editor documentId={state.roomId}
                         onFetch={handleFetch}
                         onSave={handleSave}
                     />
                 </UserProvider.Provider>
             </div>
-
-
-
-
-
         </div>
     )
 }
-
-
 export default CreateMemo

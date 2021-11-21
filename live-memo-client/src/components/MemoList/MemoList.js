@@ -20,7 +20,7 @@ const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
 const api = axios.create({
-    baseURL: 'https://localhost:4000/api/memo',
+    baseURL: 'http://localhost:4000/api/memo',
     headers: {
         'Content-Type': 'application/json',
         'authorization': token ? `Bearer ${token}` : ''
@@ -28,7 +28,8 @@ const api = axios.create({
 });
 
 
-function MemoList() {
+
+function MemoList({ currentUser }) {
     const [memos, setMemos] = useState([])
     const [contents, setContents] = useState([])
     const dispatch = useDispatch();
@@ -134,7 +135,7 @@ function MemoList() {
 
     return (
         <div className="memoList">
-            <Layout>
+            <Layout >
                 <div style={{ width: '85%', margin: '3rem auto' }}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={{ xs: 2, md: 3 }} >
@@ -155,8 +156,8 @@ function MemoList() {
                             )}
                         </Grid>
                     </Box>
+                    <Footer />
                 </div>
-                <Footer />
             </Layout>
         </div >
     )

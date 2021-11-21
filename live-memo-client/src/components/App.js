@@ -39,9 +39,11 @@ const App = () => {
     api.get('/userinfo')
       .then((response) => {
         let User = response.data.user;
+        console.log(User)
         dispatch(login({
           displayName: User.profileName,
           email: User.email,
+          picture: User.picture
           // photoUrl: user.photoURL
         }))
 
@@ -62,18 +64,14 @@ const App = () => {
 
 
 
-
-
-  const newRoomId = uuid();
-
   const [token, setToken] = useState('');
 
   useEffect(() => {
-    setTimeout(() => {
-      setToken(cookies.get('livememo-token'));
+    setToken(cookies.get('livememo-token'));
 
-    }, 250)
   }, [])
+
+
 
 
   return (
@@ -90,7 +88,6 @@ const App = () => {
                 {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                 <Route path="/folder" element={<FolderList />} />
                 <Route path="/history" element={<History />} />
-
               </Routes>
             </div>
 

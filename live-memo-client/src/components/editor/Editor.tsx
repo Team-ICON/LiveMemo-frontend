@@ -58,7 +58,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
 
     useEffect(() => {
-
         dispatch(selectDoc({
             docState
         }))
@@ -69,7 +68,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         newDocState => {
             if (isSynced || clientCount === 0) {
                 console.log(clientCount, "make")
-                onSave(documentId, JSON.stringify(newDocState));
+                onSave(documentId, JSON.stringify(newDocState), false);
                 const meta = provider.doc.getMap('meta');
                 meta.set('lastSaved', Date.now());
                 console.log(meta)
@@ -84,9 +83,10 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     const handlePeersChange = useCallback(
         ({ webrtcPeers }) => {
-            console.log(provider)
-            console.log("사람수:", webrtcPeers)
+            // console.log("사람수:", webrtcPeers.length)
             setClientCount(webrtcPeers.length);
+            console.log(webrtcPeers);
+
 
         },
         [setClientCount],
@@ -142,26 +142,31 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     });
 
     useEffect(() => {
+
         if (usedFallbackRef.current) {
-            console.log(usedFallbackRef.current)
+            console.log("두번쨰")
             return;
         }
         const fetchFallback = async () => {
-            console.log("fetch")
-            console.log(provider.connected)
-            console.log(provider)
+
             if (provider.connected && clientCount === 0) {
+                console.log("첫번째", provider)
+
+
+
                 const res = await onFetch(documentId);
-                // console.log(typeof (res))
-                //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 그래서 나중에 create에서 stringify 함
+                //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함
                 dispatch(selectDoc({
                     docState: JSON.parse(res)
                 }))
+                console.log(docState)
                 getContext()?.setContent(JSON.parse(res));
+
             }
 
             usedFallbackRef.current = true;
         };
+
 
         const timeoutId = window.setTimeout(fetchFallback, 500);
 

@@ -181,7 +181,7 @@ export class WebrtcConn {
          * @type {any}
          */
         this.peer = new Peer({ initiator, ...room.provider.peerOpts })
-        this.peer.on('signal', signal => {
+        this.peer.on('signal', signal => { //이건 피어 끼리 통신하는데 시그널타입이 오면 뒤에 데이터 객체는 묶어서 시그널링 서버로 보내버림
             publishSignalingMessage(signalingConn, room, { to: remotePeerId, from: room.peerId, type: 'signal', signal })
         })
         this.peer.on('connect', () => {
@@ -261,12 +261,13 @@ const broadcastRoomMessage = (room, m) => {
 /**
  * @param {Room} room
  */
-const announceSignalingInfo = room => {
+const announceSignalingInfo = room => {   // signaling 서버마다 소켓을 만든게 signalingConns인데 이것들을 돌면서 연결되어있으면
+    //룸 구독하게 메세지 서버에 보냄
     signalingConns.forEach(conn => {
         // only subcribe if connection is established, otherwise the conn automatically subscribes to all rooms
         if (conn.connected) {
             conn.send({ type: 'subscribe', topics: [room.name] })
-            if (room.webrtcConns.size < room.provider.maxConns) {
+            if (room.webrtcConns.size < room.provider.maxConns) { //maxconns안넘으면 이 룸의 peer를 키로 갖는 webrtcConns에다가 webrtcConn객체를 값으로 넣음
                 publishSignalingMessage(conn, room, { type: 'announce', from: room.peerId })
             }
         }
@@ -448,7 +449,7 @@ const openRoom = (userId, doc, provider, name, key) => {
  * @param {Room} room
  * @param {any} data
  */
-const publishSignalingMessage = (conn, room, data) => {
+const publishSignalingMessage = (conn, room, data) => { //시그널링 서버로 보냄 룸이름이랑 
     if (room.key) {
         cryptoutils.encryptJson(data, room.key).then(data => {
             conn.send({ type: 'publish', topic: room.name, data: buffer.toBase64(data) })
@@ -457,6 +458,7 @@ const publishSignalingMessage = (conn, room, data) => {
         conn.send({ type: 'publish', topic: room.name, data })
     }
 }
+//서버 보면 룸네임의 value 값이 set이어서 시그널링 주소 소켓이 각각 들어가 있음
 
 export class SignalingConn extends ws.WebsocketClient {
     constructor(url) {
@@ -499,7 +501,7 @@ export class SignalingConn extends ws.WebsocketClient {
                             case 'announce':
                                 if (webrtcConns.size < room.provider.maxConns) {
                                     map.setIfUndefined(webrtcConns, data.from, () => new WebrtcConn(this, true, data.from, room))
-                                    emitPeerChange()
+                                    emitPeerChange() //만들고 peer바꼈다고 알려줌
                                 }
                                 break
                             case 'signal':

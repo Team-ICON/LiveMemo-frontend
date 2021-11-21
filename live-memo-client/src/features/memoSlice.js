@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { enableMapSet, produce } from 'immer';
+enableMapSet()
 
 const initialState = {
   selectedMemo: null,
   selectedDoc: null,
   openedProvider: null,
+  roomsStatus: new Map()
 
 }
 // The function below is called a thunk and allows us to perform async logic. It
@@ -29,6 +32,10 @@ export const memoSlice = createSlice({
     selectDoc: (state, action) => {
       state.selectedDoc = action.payload
     }
+    ,
+    setRoomsStatus: (state, action) => {
+      state.roomsStatus = new Map(state.roomsStatus).set(action.payload.key, action.payload.value)
+    }
 
   }
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -36,7 +43,7 @@ export const memoSlice = createSlice({
 
 });
 
-export const { selectMemo, selectProvider, deleteProvider, selectDoc } = memoSlice.actions;
+export const { selectMemo, selectProvider, deleteProvider, selectDoc, setRoomsStatus } = memoSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -45,5 +52,7 @@ export const selectOpenMemo = (state) => state.memo.selectedMemo;
 export const selectMemoIsOpen = (state) => state.memo.MemoIsOpen;
 export const selectOpenProvider = (state) => state.memo.openedProvider;
 export const selectOpenDoc = (state) => state.memo.selectedDoc;
+export const selectRoomsStatus = (state) => state.memo.roomsStatus;
+
 
 export default memoSlice.reducer;
