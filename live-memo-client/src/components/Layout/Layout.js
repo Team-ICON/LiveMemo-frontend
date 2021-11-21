@@ -28,7 +28,6 @@ const Header = () => {
 
     const user = useSelector(selectUser)
     const drawerWidth = 140;
-    console.log(user)
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',

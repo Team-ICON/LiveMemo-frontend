@@ -8,9 +8,9 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import axios from 'axios';
-import UserProvider, { User } from '../../UserProvider'
-import { useSelector, useDispatch } from 'react-redux';
-import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, selectProvider } from '../../features/memoSlice';
+import UserProvider from '../../UserProvider'
+import { useSelector, } from 'react-redux';
+import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, } from '../../features/memoSlice';
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
 import Drawer from '@mui/material/Drawer';
@@ -26,8 +26,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
-import { colCount } from 'prosemirror-tables';
+
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 const api = axios.create({
@@ -108,6 +107,9 @@ function CreateMemo({ currentUser }) {
         }
 
     }, []);
+
+
+
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
