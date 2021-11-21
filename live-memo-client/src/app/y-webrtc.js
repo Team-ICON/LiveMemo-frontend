@@ -544,7 +544,7 @@ export class WebrtcProvider extends Observable {
         roomName,
         doc,
         {
-            signaling = ['wss://signaling.yjs.dev', 'wss://y-webrtc-signaling-eu.herokuapp.com', 'wss://y-webrtc-signaling-us.herokuapp.com'],
+            signaling = ['wss://livememo.herokuapp.com'],
             password = null,
             awareness = new awarenessProtocol.Awareness(doc),
             maxConns = 20 + math.floor(random.rand() * 15), // the random factor reduces the chance that n clients form a cluster
