@@ -86,7 +86,7 @@ function CreateMemo({ currentUser }) {
             }
             else {
                 console.log("기존 메모");
-                const response = await api.get(`getMemo/${id}`);
+                const res = await api.get(`getMemo/${id}`);
                 const curMem = res.data.roomsStatus[id]
                 console.log("createMemo  ", res)
                 console.log(curMem)
@@ -96,8 +96,8 @@ function CreateMemo({ currentUser }) {
                 else {
                     return firstState
                 }
-                setMemberList(response.data.memInfo.userList);
-                return response.data.memInfo.content;
+                setMemberList(res.data.memInfo.userList);
+                return res.data.memInfo.content;
             }
         } catch {
             console.log("못가져옴");
