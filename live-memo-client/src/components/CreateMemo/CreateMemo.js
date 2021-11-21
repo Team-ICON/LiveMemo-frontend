@@ -57,7 +57,8 @@ function CreateMemo({ currentUser }) {
         await api.put("/createMemo", {
             _id,
             body,
-            quit
+            quit,
+            first: state.first
         }).then(res => {
             console.log("succes save", res)
         });
