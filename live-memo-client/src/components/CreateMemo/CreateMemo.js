@@ -56,6 +56,7 @@ function CreateMemo({ currentUser }) {
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
+            title: memeTitle,
             body,
             quit,
             first: state.first
@@ -172,6 +173,7 @@ function CreateMemo({ currentUser }) {
                 if (response.data.success) {
                     setMemberList([...memberList, response.data.userdata]);
                 }
+                console.log(memberList)
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
 
@@ -287,7 +289,7 @@ function CreateMemo({ currentUser }) {
                     {memberList.map((item, index) => (
                         <List key={index}>
                             <div className="userList" key={index}>
-                                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>{item.picture}</Avatar>
+                                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
                                 <div key={index} className="profileList">
                                     {item.profileName}
                                 </div>

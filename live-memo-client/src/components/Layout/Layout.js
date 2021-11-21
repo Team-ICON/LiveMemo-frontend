@@ -10,7 +10,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import { selectMemoIsOpen } from "../../features/memoSlice"
 import AppBar from '@mui/material/AppBar';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
-
+import { selectUser } from "../../features/userSlice"
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -25,8 +25,10 @@ import {
 
 import "./Layout.css"
 const Header = () => {
-    const drawerWidth = 140;
 
+    const user = useSelector(selectUser)
+    const drawerWidth = 140;
+    console.log(user)
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
@@ -90,7 +92,7 @@ const Header = () => {
             </Drawer>
 
             <IconButton className="header__right" onClick={handleDrawerOpen}>
-                <Avatar>ID</Avatar>
+                <Avatar src={user?.picture}>ID</Avatar>
             </IconButton>
 
         </div >

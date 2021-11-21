@@ -28,7 +28,7 @@ const api = axios.create({
 });
 
 
-function MemoList() {
+function MemoList({ currentUser }) {
     const [memos, setMemos] = useState([])
     const [contents, setContents] = useState([])
     const dispatch = useDispatch();
@@ -134,7 +134,7 @@ function MemoList() {
 
     return (
         <div className="memoList">
-            <Layout>
+            <Layout >
                 <div style={{ width: '85%', margin: '3rem auto' }}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={{ xs: 2, md: 3 }} >

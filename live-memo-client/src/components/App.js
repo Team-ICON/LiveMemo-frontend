@@ -39,10 +39,11 @@ const App = () => {
     api.get('/userinfo')
       .then((response) => {
         let User = response.data.user;
-
+        console.log(User)
         dispatch(login({
           displayName: User.profileName,
           email: User.email,
+          picture: User.picture
           // photoUrl: user.photoURL
         }))
 
@@ -62,8 +63,6 @@ const App = () => {
   const user = useSelector(selectUser)
 
 
-
-  const newRoomId = uuid();
 
   const [token, setToken] = useState('');
 
