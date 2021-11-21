@@ -10,7 +10,7 @@ import { deepOrange, deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider, { User } from '../../UserProvider'
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOpenProvider, selectOpenDoc } from '../../features/memoSlice';
+import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, selectProvider } from '../../features/memoSlice';
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
 import Drawer from '@mui/material/Drawer';
@@ -52,11 +52,14 @@ function CreateMemo({ currentUser }) {
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
-    const handleSave = useCallback(async (_id, body) => {
-        console.log(_id, body)
+    const curRoomsStatus = useSelector(selectRoomsStatus)
+    const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
             body,
+            quit
+        }).then(res => {
+            console.log("succes save", res)
         });
     }, []);
     // const handleSave = useCallback(async (_id, body) => {
@@ -75,24 +78,32 @@ function CreateMemo({ currentUser }) {
     // }, []);
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
-        try {
-            if (state.first) {
-                console.log("처음 만듬")
-                return firstState;
-            }
-            else {
-                console.log("기존 메모")
-                const response = await api.get(`getMemo/${id}`)
-                console.log("createMemo 67 ", response)
-                return response.data.memInfo.content;
-            }
-        } catch {
-            console.log("못가져옴")
+
+        if (state.first) {
+            console.log("처음 만듬")
+            return firstState;
         }
+        else {
+            console.log("기존 메모")
+            const res = await api.get(`getMemo/${id}`)
+
+            const curMem = res.data.roomsStatus[id]
+            console.log("createMemo  ", res)
+            console.log(curMem)
+
+            if (curMem == 1)
+                return res.data.memInfo.content;
+            else {
+                return firstState
+            }
+
+        }
+
     }, []);
+
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
         navigate('/', { replace: true })
@@ -106,26 +117,24 @@ function CreateMemo({ currentUser }) {
             window.removeEventListener('popstate', popstateHandler)
         }
     }, [selectedProvider, selectedDoc]) //바뀐거 계속 확인
+
     //뒤로가기 아이콘 눌렀을때 저장
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
-        const findMemoId = selectedProvider.documentId
-        console.log("이거야: ", selectedProvider.documentId)
-        console.log("갖고옴", selectedDoc)
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState))
-        // console.log(JSON.stringify(selectedDoc.docState))
-        // history.back()
-        // console.log(selectedProvider.newProvider.doc)
-        // selectedProvider.newProvider.doc.destroy();
+
+        console.log(selectedDoc.docState)
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
-        // dispatch(deleteProvider())
-        // window.history.back()
+
+
+
         setTimeout(() => {
             navigate('/', { replace: true })
         }, 250);
         // window.history.pushState(null, null, window.location.pathname);
     }
+
     const addBookMark = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
@@ -133,6 +142,7 @@ function CreateMemo({ currentUser }) {
             memoId: findMemoId
         })
     }
+
     const deleteMemo = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
@@ -143,10 +153,12 @@ function CreateMemo({ currentUser }) {
             navigate('/', { replace: true })
         }, 250);
     }
+
     //현재 룸 체크
     useEffect(() => {
         console.log(state.roomId)
     }, [state.roomId])
+
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
         event.preventDefault();
@@ -158,18 +170,23 @@ function CreateMemo({ currentUser }) {
                 }
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
+
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',

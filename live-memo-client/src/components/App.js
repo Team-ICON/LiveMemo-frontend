@@ -39,6 +39,7 @@ const App = () => {
     api.get('/userinfo')
       .then((response) => {
         let User = response.data.user;
+
         dispatch(login({
           displayName: User.profileName,
           email: User.email,
@@ -62,15 +63,16 @@ const App = () => {
 
 
 
-
-
   const newRoomId = uuid();
 
   const [token, setToken] = useState('');
 
   useEffect(() => {
     setToken(cookies.get('livememo-token'));
+
   }, [])
+
+
 
 
   return (
