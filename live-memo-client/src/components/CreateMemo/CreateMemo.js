@@ -78,25 +78,29 @@ function CreateMemo({ currentUser }) {
     // }, []);
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
-
-        if (state.first) {
-            console.log("처음 만듬")
-            return firstState;
-        }
-        else {
-            console.log("기존 메모")
-            const res = await api.get(`getMemo/${id}`)
-
-            const curMem = res.data.roomsStatus[id]
-            console.log("createMemo  ", res)
-            console.log(curMem)
-
-            if (curMem == 1)
-                return res.data.memInfo.content;
-            else {
-                return firstState
+        try {
+            if (state.first) {
+                console.log("처음 만듬");
+                handleSave(state.roomId, JSON.stringify(firstState));
+                return firstState;
             }
+            else {
+                console.log("기존 메모");
+                const response = await api.get(`getMemo/${id}`);
+                const curMem = res.data.roomsStatus[id]
+                console.log("createMemo  ", res)
+                console.log(curMem)
 
+                if (curMem == 1)
+                    return res.data.memInfo.content;
+                else {
+                    return firstState
+                }
+                setMemberList(response.data.memInfo.userList);
+                return response.data.memInfo.content;
+            }
+        } catch {
+            console.log("못가져옴");
         }
 
     }, []);
@@ -165,8 +169,7 @@ function CreateMemo({ currentUser }) {
         api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
             .then(response => {
                 if (response.data.success) {
-                    // setMemberList(response.data.userdata);
-                    console.log(response.data.userdata);
+                    setMemberList([...memberList, response.data.userdata]);
                 }
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
@@ -227,10 +230,8 @@ function CreateMemo({ currentUser }) {
             // vertical padding + font size from searchIcon
             paddingLeft: `calc(1em + ${theme.spacing(4)})`,
             transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
+            width: '60vw',
+
         },
     }));
     let searchEmail = "";
@@ -263,28 +264,38 @@ function CreateMemo({ currentUser }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="사용자 메일을 입력해주세요."
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={handleChange}
-                        />
-                        <Button onClick={addUser}>
+                    <div className="searchUser">
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="사용자 메일을 입력해주세요."
+                                inputProps={{ 'aria-label': 'search' }}
+                                onChange={handleChange}
+                            />
+                        </Search>
+                        <button className="addButton" onClick={addUser}>
                             Add
-                        </Button>
-                    </Search>
+                        </button>
+                    </div >
+
                 </List>
                 <Divider />
-                <List>
-                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
-                </List>
-                <hr />
-                <List>
-                    <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
-                </List>
+                <div>
+                    {memberList.map((item, index) => (
+                        <List key={index}>
+                            <div className="userList" key={index}>
+                                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>{item.picture}</Avatar>
+                                <div key={index} className="profileList">
+                                    {item.profileName}
+                                </div>
+                            </div>
+
+                        </List>
+                    ))}
+
+                </div>
             </Drawer>
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">

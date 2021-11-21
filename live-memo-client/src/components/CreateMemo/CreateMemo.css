@@ -11,6 +11,8 @@
     /* background-color: whitesmoke; */
     /* background-color: rgb(206, 153, 153); */
     background-color: rgb(212, 172, 172);
+    border-bottom: 1px solid whitesmoke;
+
 }
 
 .createMemo__toolsLeft{
@@ -55,6 +57,8 @@
     margin: 8px;
 }
 
+input:focus {outline: rgb(172, 129, 212) solid 1.8px;}
+
 .input_css{
     height: 40px;
     border-top-left-radius: 7px; 
@@ -63,15 +67,50 @@
     border-bottom-left-radius: 7px;
     text-indent: 0.8em;
     font-size: large;
-
     border: 2px solid rgb(172, 129, 212);
-    outline-color: rgb(172, 129, 212);
-    outline-offset: 2.3px;
 
 }
 
+.addButton{
+    margin-top: 2.5px;
+    margin-right: 10px;
+    background-color: rebeccapurple;
+    width: 20vw;
+    height: 5vh;
+    border-top-left-radius: 7px; 
+    border-top-right-radius: 7px; 
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    color: white;
+    font-weight: bold;
 
+}
+
+.searchUser{
+    display: flex;
+
+}
+
+.userList{
+    margin: 10px;
+    height: 3vh;
+    display: flex;
+}
 
 .avatar_skin{
     box-shadow: 3px 3px 3px 1px rgba(0,0,0,0.24);
+}
+
+.profileList{
+    margin-left: 20px;
+    margin-top: 7px;
+    font-size: large;
+    font-weight: bold;
+
+
+}
+
+.css-1mbri1u{
+    background-color: rgb(212, 172, 172);
+    border-bottom: 1px solid rgb(199, 181, 199);
 }

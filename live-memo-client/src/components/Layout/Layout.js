@@ -90,7 +90,7 @@ const Header = () => {
             </Drawer>
 
             <IconButton className="header__right" onClick={handleDrawerOpen}>
-                <Avatar >ID</Avatar>
+                <Avatar>ID</Avatar>
             </IconButton>
 
         </div >
@@ -103,12 +103,7 @@ const Layout = ({ children }) => {
     return (
         <div>
             <Header />
-
             {children}
-
-
-
-
         </div>
     );
 };
