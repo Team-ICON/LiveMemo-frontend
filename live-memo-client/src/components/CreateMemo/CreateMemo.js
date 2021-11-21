@@ -93,12 +93,15 @@ function CreateMemo({ currentUser }) {
                 console.log("createMemo  ", res)
                 console.log(curMem)
 
+                setMemberList(res.data.memInfo.userList);
+
+
                 if (curMem == 1)
                     return res.data.memInfo.content;
                 else {
                     return firstState
                 }
-                setMemberList(res.data.memInfo.userList);
+
                 return res.data.memInfo.content;
             }
         } catch {
@@ -163,6 +166,7 @@ function CreateMemo({ currentUser }) {
     //현재 룸 체크
     useEffect(() => {
         console.log(state.roomId)
+        console.log(memberList)
     }, [state.roomId])
 
     //E-Mail로 사용자 검색을 위한 API
@@ -173,6 +177,7 @@ function CreateMemo({ currentUser }) {
                 if (response.data.success) {
                     setMemberList([...memberList, response.data.userdata]);
                 }
+                console.log(response)
                 console.log(memberList)
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
