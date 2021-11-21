@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import axios from 'axios';
 import { Cookies } from "react-cookie"
 import MemoList from './MemoList/MemoList'
@@ -16,7 +16,7 @@ import { login } from "../features/userSlice"
 import { auth } from '../firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import Login from "../components/LoginPage/Login"
-import CreateMemo from "./CreateMemo/CreateMemo"
+// import CreateMemo from "./CreateMemo/CreateMemo"
 import FolderList from "./FolderList/FolderList"
 import History from "./History/History"
 
@@ -31,6 +31,8 @@ const api = axios.create({
     'authorization': token ? `Bearer ${token}` : ''
   }
 });
+
+const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 
 const App = () => {
   const dispatch = useDispatch();
@@ -76,23 +78,25 @@ const App = () => {
 
   return (
     <Router>
-      {!token ? (<Login />) :
-        (
-          <div className="app">
-            <div className="app__body">
-              <Routes>
+      <Suspense fallback={<div>Page is Loading ...</div>}>
 
-                {/* 아니다 걍 doc 아이디랑 나중에 userid만 넘기면 됨 그럼 reducer로는 현 docid slice만 해서 여기서 주면됨 */}
-                <Route path="/" element={<MemoList currentUser={user} />} />
-                <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={user} />} />
-                {/* <Route path="createMemo" render={<CreateMemo />} /> */}
-                <Route path="/folder" element={<FolderList />} />
-                <Route path="/history" element={<History />} />
-              </Routes>
+        {!token ? (<Login />) :
+          (
+            <div className="app">
+              <div className="app__body">
+                <Routes>
+                  {/* 아니다 걍 doc 아이디랑 나중에 userid만 넘기면 됨 그럼 reducer로는 현 docid slice만 해서 여기서 주면됨 */}
+                  <Route path="/" element={<MemoList currentUser={user} />} />
+                  <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={user} />} />
+                  {/* <Route path="createMemo" render={<CreateMemo />} /> */}
+                  <Route path="/folder" element={<FolderList />} />
+                  <Route path="/history" element={<History />} />
+                </Routes>
+              </div>
+
             </div>
-
-          </div>
-        )}
+          )}
+      </Suspense>
     </Router>
   )
 }

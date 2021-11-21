@@ -102,7 +102,6 @@ function CreateMemo({ currentUser }) {
                     return firstState
                 }
 
-                return res.data.memInfo.content;
             }
         } catch {
             console.log("못가져옴");
@@ -116,7 +115,7 @@ function CreateMemo({ currentUser }) {
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
         navigate('/', { replace: true })
-        window.location.reload()
+        // window.location.reload()
         // console.log(window.location.pathname)
         // window.history.pushState(null, null, window.location.pathname);
     }
