@@ -43,7 +43,6 @@ const App = () => {
     api.get('/userinfo')
       .then((response) => {
         let User = response.data.user;
-        console.log(User)
         dispatch(login({
           displayName: User.profileName,
           email: User.email,

@@ -9,6 +9,7 @@ import {
 } from '@remirror/react';
 import { ProsemirrorDevTools } from '@remirror/dev';
 import { useNavigate } from 'react-router';
+import { setCurUserList, getCurUsers } from '../../features/userSlice';
 
 import { useDebouncedCallback } from 'use-debounce';
 import useCurrentUser from '../hooks/useCurrentUser';
@@ -18,7 +19,7 @@ import FloatingAnnotations from './FloatingAnnotations';
 import AnnotationsJSONPrinter from './AnnotationsJSONPrinter';
 import 'remirror/styles/all.css';
 import "./Editor.css"
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectDoc } from '../../features/memoSlice';
 interface EditorProps {
     documentId: string;
@@ -40,7 +41,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const [isSynced, setIsSynced] = useState<boolean>(false);
     const [docState, setDocState] = useState<RemirrorJSON>();
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const CurUserList = useSelector(getCurUsers)
 
 
     const handleChange = useCallback(
@@ -61,6 +62,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         dispatch(selectDoc({
             docState
         }))
+
         // console.log(typeof (docState));
     }, [docState])
 
@@ -72,7 +74,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 const meta = provider.doc.getMap('meta');
                 meta.set('lastSaved', Date.now());
                 console.log(meta)
-                console.log(Date.now())
             }
         },
         [onSave, documentId, provider.doc, isSynced, clientCount],
@@ -81,15 +82,29 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
 
+    // useEffect(() => {
+    //     let lists = Array.from(provider.room?.webrtcConns.keys())
+    //     dispatch(setCurUserList({
+    //         lists
+    //     }))
+
+    // }, [])
+
+
+
+
     const handlePeersChange = useCallback(
         ({ webrtcPeers }) => {
             // console.log("사람수:", webrtcPeers.length)
             setClientCount(webrtcPeers.length);
             console.log(webrtcPeers);
-
+            dispatch(setCurUserList({
+                webrtcPeers
+            }))
+            console.log(CurUserList)
 
         },
-        [setClientCount],
+        [setClientCount, provider.room?.webrtcConns],
     );
     useObservableListener('peers', handlePeersChange, provider);
 
@@ -97,6 +112,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const handleSynced = useCallback(
         ({ synced }) => {
             setIsSynced(synced);
+            console.log(synced)
         },
         [setIsSynced],
     );
@@ -151,7 +167,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
             if (provider.connected && clientCount === 0) {
                 console.log("첫번째", provider)
-
 
 
                 const res = await onFetch(documentId);
