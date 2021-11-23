@@ -308,40 +308,7 @@ function CreateMemo({ currentUser }) {
         setMemoTitle(e.target.value);
     }
 
-    // 음성 대화 기능
-    const voiceToggle = (event) => {
-        event.preventDefault();
-
-        // 음소거 버튼 js 스크립트 by jinh
-        const toggleMute = (event) => {
-            event.preventDefault();
-            // 버튼의 현재 텍스트를 가져온다 value인지 innerText인지 나중에 확인 필요!
-            const audioMuteButton = document.querySelector("#audio-mute-button");
-            const innerTextAudioMuteButton = audioMuteButton.innerText;
-            // audio-tags 가져옴
-            const audioTags = document.querySelectorAll("div#audio-boxes audio");
-
-            if (innerTextAudioMuteButton === "MUTE") {
-                // 음소거 해야할 경우
-                audioTags.forEach(audioTag => {
-                    audioTag.muted = true;
-                });
-                audioMuteButton.innerText = "ACTIVE";
-            }
-            else {
-                // 음소거 해제해야 할 경우
-                audioTags.forEach(audioTag => {
-                    audioTag.muted = false;
-                });
-                audioMuteButton.innerText = "MUTE";
-            }
-        }
-        // button이름을 audio-mute-button
-        const button = document.querySelector("#audio-mute-button");
-        button.addEventListener("click", toggleMute);
-
-
-    }
+ 
 
     return (
         <div className="createMemo">
@@ -411,7 +378,7 @@ function CreateMemo({ currentUser }) {
                     <IconButton onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>
-                    <IconButton onClick={voiceToggle}>
+                    <IconButton id="audio-mute-button">
                         <MicIcon />
                     </IconButton>
                     <IconButton
