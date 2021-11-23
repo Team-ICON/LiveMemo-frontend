@@ -6,11 +6,14 @@ import { Avatar, IconButton } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
-import { deepOrange, deepPurple } from '@mui/material/colors';
+import { deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider from '../../UserProvider'
 import { useSelector, } from 'react-redux';
 import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, } from '../../features/memoSlice';
+import { getCurUsers, checkSetCurUser, setCurUserList } from '../../features/userSlice';
+import { useDispatch } from 'react-redux';
+
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
 import Drawer from '@mui/material/Drawer';
@@ -43,7 +46,7 @@ function CreateMemo({ currentUser }) {
     const { state } = useLocation()
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
-    const [conMemberList, setConMemberList] = useState([])
+    const [curMemberList, setCurMemberList] = useState([])
     // three dot button
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
@@ -52,7 +55,8 @@ function CreateMemo({ currentUser }) {
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
-    const curRoomsStatus = useSelector(selectRoomsStatus)
+    const CurUserList = useSelector(getCurUsers)
+    const dispatch = useDispatch()
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
@@ -94,7 +98,7 @@ function CreateMemo({ currentUser }) {
                 console.log(curMem)
                 setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
-                
+
 
                 if (curMem == 1)
                     return res.data.memInfo.content;
@@ -115,6 +119,11 @@ function CreateMemo({ currentUser }) {
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
+
+        // const ret = curMemberList.filter(member => member.email !== currentUser)
+        // console.log(ret)
+        // setCurMemberList(ret)
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
         navigate('/', { replace: true })
@@ -134,13 +143,21 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
 
         console.log(selectedDoc.docState)
+
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
+
+        // const ret = curMemberList.filter(member => member.email !== currentUser)
+        // console.log(ret)
+        // setCurMemberList(ret)
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-        setTimeout(() => {
-            navigate('/', { replace: true })
-        }, 250);
+
+
+
+        navigate('/', { replace: true })
+
         // window.history.pushState(null, null, window.location.pathname);
     }
 
@@ -158,18 +175,57 @@ function CreateMemo({ currentUser }) {
         api.post("/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
+
+        // const ret = curMemberList.filter(member => member.email !== currentUser)
+        // setCurMemberList(ret)
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
-        setTimeout(() => {
-            navigate('/', { replace: true })
-        }, 250);
+
+        navigate('/', { replace: true })
+
     }
 
-    //현재 룸 체크
+
+    const curUserUpdate = useCallback((webrtcPeers) => {
+        webrtcPeers.map((member) => {
+            api.post('/getCurUser', { userEmail: member })
+                .then(response => {
+                    if (response.data.success) {
+                        setCurMemberList([...curMemberList, response.data.userdata]);
+                    }
+                }).catch(error => { alert("메일 주소를 확인해주세요."); });
+        })
+
+    }, [curMemberList])
+
+
     useEffect(() => {
-        console.log(state.roomId)
-        console.log(memberList)
-    }, [state.roomId])
+
+
+
+
+        if (CurUserList['webrtcPeers'])
+            curUserUpdate(CurUserList['webrtcPeers'])
+
+
+        return () => {
+
+            // let ret = curMemberList.filter(member => member.email !== currentUser)
+            setCurMemberList([])
+            let retList = []
+            dispatch(setCurUserList({
+                retList
+            }))
+            // checkSetCurUser(CurUserList['webrtcPeers'], currentUser)
+            console.log(CurUserList['webrtcPeers'])
+
+        }
+    }, [state.roomId, CurUserList['webrtcPeers']])
+
+
+
+
 
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
@@ -361,8 +417,11 @@ function CreateMemo({ currentUser }) {
                     </Menu>
                 </div>
             </div>
-            <div className="memberList">
+            <div className="curMemberList">
                 <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
+                {curMemberList.map((item, index) => (
+                    <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
+                ))}
 
             </div>
             <div className="createMemo__title">
