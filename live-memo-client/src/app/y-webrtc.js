@@ -616,7 +616,11 @@ export class SignalingConn extends ws.WebsocketClient {
                                 break
                             case 'signal':
                                 if (data.to === peerId) {
+<<<<<<< HEAD
                                     // console.log(data)
+=======
+                                    console.log(data)
+>>>>>>> 7dfc47d669043c8df91b0d85ad30173e92d5b6f8
                                     map.setIfUndefined(webrtcConns, data.from, () => new WebrtcConn(this, false, data.from, room)).peer.signal(data.signal)
                                     emitPeerChange()
                                 }
