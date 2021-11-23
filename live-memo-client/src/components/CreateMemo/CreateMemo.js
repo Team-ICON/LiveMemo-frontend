@@ -202,12 +202,8 @@ function CreateMemo({ currentUser }) {
 
     useEffect(() => {
 
-
-
-
         if (CurUserList['webrtcPeers'])
             curUserUpdate(CurUserList['webrtcPeers'])
-
 
         return () => {
 
