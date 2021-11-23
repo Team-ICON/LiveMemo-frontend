@@ -182,7 +182,10 @@ function CreateMemo({ currentUser }) {
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-        navigate('/', { replace: true })
+        setTimeout(() => {
+            navigate('/', { replace: true })
+
+        }, 250);
 
     }
 
@@ -202,12 +205,8 @@ function CreateMemo({ currentUser }) {
 
     useEffect(() => {
 
-
-
-
         if (CurUserList['webrtcPeers'])
             curUserUpdate(CurUserList['webrtcPeers'])
-
 
         return () => {
 

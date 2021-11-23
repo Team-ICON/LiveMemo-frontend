@@ -82,14 +82,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     const handleSaveDebounced = useDebouncedCallback(handleSave, TIMEOUT);
 
-    // useEffect(() => {
-    //     let lists = Array.from(provider.room?.webrtcConns.keys())
-    //     dispatch(setCurUserList({
-    //         lists
-    //     }))
-
-    // }, [])
-
 
 
 
