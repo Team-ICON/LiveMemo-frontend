@@ -11,7 +11,6 @@ import * as bc from 'lib0/broadcastchannel'
 import * as buffer from 'lib0/buffer'
 import * as math from 'lib0/math'
 import { createMutex } from 'lib0/mutex'
-
 import * as Y from 'yjs' // eslint-disable-line
 import Peer from 'simple-peer/simplepeer.min.js'
 
@@ -239,109 +238,113 @@ const broadcastWebrtcConn = (room, m) => {
 
 // jinh version
 export class WebrtcConn {
-  /**
-   * @param {SignalingConn} signalingConn
-   * @param {boolean} initiator
-   * @param {string} remotePeerId
-   * @param {Room} room
-   */
-  constructor (signalingConn, initiator, remotePeerId, room) {
-    log('establishing connection to ', logging.BOLD, remotePeerId)
-    this.room = room
-    this.remotePeerId = remotePeerId
-    this.closed = false
-    this.connected = false
-    this.synced = false
-
     /**
-     * @type {any}
+     * @param {SignalingConn} signalingConn
+     * @param {boolean} initiator
+     * @param {string} remotePeerId
+     * @param {Room} room
      */
-    // 수정 부분1: 전체를 navigator.mediaDevices.getUserMedia(constraints) 로 감싼다
-    let constraints = { audio: true, video: false };
-
-    navigator.mediaDevices.getUserMedia(constraints).then( stream => {
-      console.log('Received local stream');
-
-      var localStream = stream;
-
-      // 수정 부분2: new Peer 생성시 옵션으로 stream 추가
-      room.provider.peerOpts['stream'] = localStream;
-
-      this.peer = new Peer({ initiator, ...room.provider.peerOpts }) // initiator: true/ false
-
-      this.peer.on('signal', signal => {
-        publishSignalingMessage(signalingConn, room, { to: remotePeerId, from: room.peerId, type: 'signal', signal })
-      })
-
-      this.peer.on('connect', () => {
-        log('connected to ', logging.BOLD, remotePeerId)
-        this.connected = true
-        // send sync step 1
-        const provider = room.provider
-        const doc = provider.doc
-        const awareness = room.awareness
-        const encoder = encoding.createEncoder()
-        encoding.writeVarUint(encoder, messageSync)
-        syncProtocol.writeSyncStep1(encoder, doc)
-        sendWebrtcConn(this, encoder)
-        const awarenessStates = awareness.getStates()
-        if (awarenessStates.size > 0) {
-          const encoder = encoding.createEncoder()
-          encoding.writeVarUint(encoder, messageAwareness)
-          encoding.writeVarUint8Array(encoder, awarenessProtocol.encodeAwarenessUpdate(awareness, Array.from(awarenessStates.keys())))
-          sendWebrtcConn(this, encoder)
-        }
-      })
-
-      this.peer.on('close', () => {
+    constructor(signalingConn, initiator, remotePeerId, room) {
+        log('establishing connection to ', logging.BOLD, remotePeerId)
+        this.room = room
+        this.remotePeerId = remotePeerId
+        this.closed = false
         this.connected = false
-        this.closed = true
-        if (room.webrtcConns.has(this.remotePeerId)) {
-          room.webrtcConns.delete(this.remotePeerId)
-          room.provider.emit('peers', [{
-            removed: [this.remotePeerId],
-            added: [],
-            webrtcPeers: Array.from(room.webrtcConns.keys()),
-            bcPeers: Array.from(room.bcConns)
-          }])
-        }
-        checkIsSynced(room)
+        this.synced = false
+        /**
+         * @type {any}
+         */
+        // 수정 부분1: 전체를 navigator.mediaDevices.getUserMedia(constraints) 로 감싼다
+        let constraints = { audio: true, video: true };
+
+
+
+
+        // 수정 부분2: new Peer 생성시 옵션으로 stream 추가
+
+
+        this.peer = new Peer({ initiator, ...room.provider.peerOpts }) // initiator: true/ false
+
+        this.peer.on('signal', signal => {
+            publishSignalingMessage(signalingConn, room, { to: remotePeerId, from: room.peerId, type: 'signal', signal })
+        })
+
+
+        this.peer.on('stream', stream => {
+            console.log(stream)
+            let newVid = document.createElement('audio');
+            newVid.srcObject = stream;
+            // newVid.playsinline = false;
+            newVid.autoplay = true;
+
+            document.body.appendChild(newVid)
+
+        })
+
+
+
+        this.peer.on('connect', () => {
+            log('connected to ', logging.BOLD, remotePeerId)
+            this.connected = true
+            // send sync step 1
+            const provider = room.provider
+            const doc = provider.doc
+            const awareness = room.awareness
+            const encoder = encoding.createEncoder()
+            encoding.writeVarUint(encoder, messageSync)
+            syncProtocol.writeSyncStep1(encoder, doc)
+            sendWebrtcConn(this, encoder)
+            const awarenessStates = awareness.getStates()
+            if (awarenessStates.size > 0) {
+                const encoder = encoding.createEncoder()
+                encoding.writeVarUint(encoder, messageAwareness)
+                encoding.writeVarUint8Array(encoder, awarenessProtocol.encodeAwarenessUpdate(awareness, Array.from(awarenessStates.keys())))
+                sendWebrtcConn(this, encoder)
+            }
+        })
+
+        this.peer.on('close', () => {
+            this.connected = false
+            this.closed = true
+            if (room.webrtcConns.has(this.remotePeerId)) {
+                room.webrtcConns.delete(this.remotePeerId)
+                room.provider.emit('peers', [{
+                    removed: [this.remotePeerId],
+                    added: [],
+                    webrtcPeers: Array.from(room.webrtcConns.keys()),
+                    bcPeers: Array.from(room.bcConns)
+                }])
+            }
+            checkIsSynced(room)
+            this.peer.destroy()
+            log('closed connection to ', logging.BOLD, remotePeerId)
+            announceSignalingInfo(room)
+        })
+
+        this.peer.on('error', err => {
+            log('Error in connection to ', logging.BOLD, remotePeerId, ': ', err)
+            announceSignalingInfo(room)
+        })
+
+        this.peer.on('data', data => {
+            const answer = readPeerMessage(this, data)
+            if (answer !== null) {
+                sendWebrtcConn(this, answer)
+            }
+        })
+
+        // 수정 부분3: 'stream' 이벤트 추가 --> 비디오 태그 생성
+
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => { this.peer.addStream(stream) }).catch((err) => { console.log(err) })
+
+
+
+
+    }
+
+    destroy() {
         this.peer.destroy()
-        log('closed connection to ', logging.BOLD, remotePeerId)
-        announceSignalingInfo(room)
-      })
-
-      this.peer.on('error', err => {
-        log('Error in connection to ', logging.BOLD, remotePeerId, ': ', err)
-        announceSignalingInfo(room)
-      })
-
-      this.peer.on('data', data => {
-        const answer = readPeerMessage(this, data)
-        if (answer !== null) {
-          sendWebrtcConn(this, answer)
-        }
-      })
-
-      // 수정 부분3: 'stream' 이벤트 추가 --> 비디오 태그 생성
-      this.peer.on('stream', stream => {
-        let newVid = document.createElement('video');
-        newVid.srcObject = stream;
-        // newVid.playsinline = false;
-        newVid.autoplay = true;
-        newVid.className = "vid";
-        // newVid.width = 200;
-        // newVid.height = 300;
-        document.body.appendChild(newVid);
-      })
-
-    
-    }).catch(e => alert(`getusermedia error!`));
-  }
-
-  destroy () {
-    this.peer.destroy()
-  }
+    }
 }
 
 /**
@@ -613,6 +616,7 @@ export class SignalingConn extends ws.WebsocketClient {
                                 break
                             case 'signal':
                                 if (data.to === peerId) {
+                                    // console.log(data)
                                     map.setIfUndefined(webrtcConns, data.from, () => new WebrtcConn(this, false, data.from, room)).peer.signal(data.signal)
                                     emitPeerChange()
                                 }

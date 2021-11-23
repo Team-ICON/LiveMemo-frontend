@@ -182,37 +182,43 @@ function CreateMemo({ currentUser }) {
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-        navigate('/', { replace: true })
+        setTimeout(() => {
+            navigate('/', { replace: true })
+
+        }, 250);
 
     }
 
 
-    const curUserUpdate = useCallback((webrtcPeers) => {
-        webrtcPeers.map((member) => {
-            api.post('/getCurUser', { userEmail: member })
-                .then(response => {
-                    if (response.data.success) {
-                        setCurMemberList([...curMemberList, response.data.userdata]);
-                    }
-                }).catch(error => { alert("메일 주소를 확인해주세요."); });
-        })
+    // const curUserUpdate = useCallback((webrtcPeers) => {
+    //     webrtcPeers.map((member) => {
+    //         api.post('/getCurUser', { userEmail: member })
+    //             .then(response => {
+    //                 if (response.data.success) {
+    //                     setCurMemberList([...curMemberList, response.data.userdata]);
+    //                 }
+    //             }).catch(error => { alert("메일 주소를 확인해주세요."); });
+    //     })
 
-    }, [curMemberList])
+    // }, [curMemberList])
 
 
     useEffect(() => {
 
-        if (CurUserList['webrtcPeers'])
-            curUserUpdate(CurUserList['webrtcPeers'])
+        if (CurUserList['webrtcPeers']) {
+            setCurMemberList(CurUserList['webrtcPeers'])
+        }
+        //     curUserUpdate(CurUserList['webrtcPeers'])
 
         return () => {
 
             // let ret = curMemberList.filter(member => member.email !== currentUser)
-            setCurMemberList([])
-            let retList = []
-            dispatch(setCurUserList({
-                retList
-            }))
+
+
+            // dispatch(setCurUserList({
+            //     retList
+            // }))
+            setCurMemberList(CurUserList['webrtcPeers'])
             // checkSetCurUser(CurUserList['webrtcPeers'], currentUser)
             console.log(CurUserList['webrtcPeers'])
 
@@ -415,9 +421,20 @@ function CreateMemo({ currentUser }) {
             </div>
             <div className="curMemberList">
                 <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
-                {curMemberList.map((item, index) => (
-                    <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
-                ))}
+                {curMemberList.map((member, index) => {
+                    let photo = null
+                    api.post('/getCurUser', { userEmail: member })
+                        .then(response => {
+                            if (response.data.success) {
+                                console.log(response.data.userdata.picture)
+                                photo = response.data.userdata.picture
+                                // return 
+                            }
+                        }).catch(error => { alert("메일 주소를 확인해주세요."); });
+
+                    return <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[500] }} src={photo} />
+                }
+                )}
 
             </div>
             <div className="createMemo__title">
