@@ -81,6 +81,7 @@ const App = () => {
                   <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={user} />} />
                   {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                   <Route path="/folder" element={<FolderList />} />
+                  {/* <Route path="/token/:token" element={<Get />} /> */}
                 </Routes>
               </div>
 

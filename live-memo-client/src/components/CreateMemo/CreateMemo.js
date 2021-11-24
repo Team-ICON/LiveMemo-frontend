@@ -87,7 +87,7 @@ function CreateMemo({ currentUser }) {
         try {
             if (state.first) {
                 console.log("처음 만듬");
-                handleSave(state.roomId, JSON.stringify(firstState));
+                handleSave(state.roomId, JSON.stringify(firstState), false);
                 return firstState;
             }
             else {
@@ -187,7 +187,9 @@ function CreateMemo({ currentUser }) {
 
 
     const curUserUpdate = useCallback((webrtcPeers) => {
-
+        // filteredWebrtcPerrs = 복사(webrtcPeers)
+        // filtered --> 중복제거 차리
+        //
         webrtcPeers.map((member) => {
             api.post('/getCurUser', { userEmail: member })
                 .then(response => {

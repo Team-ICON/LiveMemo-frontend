@@ -1,19 +1,24 @@
 // Import the functions you need from the SDKs you need
-import firebase from 'firebase/compat/app'
-import { initializeApp } from "firebase/app";
+import firebase from 'firebase'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCRJ2vmzI2lIniKVEywfd8xeGsb-p7tP3U",
-    authDomain: "live-memo-e4ba7.firebaseapp.com",
-    projectId: "live-memo-e4ba7",
-    storageBucket: "live-memo-e4ba7.appspot.com",
-    messagingSenderId: "749530565265",
-    appId: "1:749530565265:web:7c40c35fce17a864f94d30",
-    measurementId: "G-BTB12XZLWX"
+    apiKey: "AIzaSyC2XKZyh4QMPROuZXDneko-9X9MoGde-Lc",
+    authDomain: "live-memo-610d4.firebaseapp.com",
+    projectId: "live-memo-610d4",
+    storageBucket: "live-memo-610d4.appspot.com",
+    messagingSenderId: "874159596175",
+    appId: "1:874159596175:web:4d4f2d7bff1500d59286fa"
 };
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+const db = firebaseApp.firestore();
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+// Initialize Firebase
+export { db, auth, provider };

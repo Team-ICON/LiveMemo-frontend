@@ -60,7 +60,7 @@ const Header = () => {
     return (
         <div className="header">
             <IconButton className="header__right" onClick={handleClick}>
-                <Avatar src={user?.picture}>ID</Avatar>
+                <Avatar src={user?.picture} />
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
