@@ -6,7 +6,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
 } from "react-router-dom";
 import Box from '@mui/material/Box';
 import { selectUser, login } from "../features/userSlice"
