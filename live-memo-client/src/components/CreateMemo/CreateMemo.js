@@ -48,6 +48,7 @@ function CreateMemo({ currentUser }) {
     const [memberList, setMemberList] = useState([]);
     const [curMemberList, setCurMemberList] = useState([])
     // three dot button
+    const [isBookMark, setIsBookMark] = useState(state.isBookMark);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
@@ -141,29 +142,32 @@ function CreateMemo({ currentUser }) {
 
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
 
-        // const ret = curMemberList.filter(member => member.email !== currentUser)
-        // console.log(ret)
-        // setCurMemberList(ret)
-
-
-
-
-
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-
-
         navigate('/', { replace: true })
 
-        // window.history.pushState(null, null, window.location.pathname);
+
     }
 
     const addBookMark = (event) => {
         event.preventDefault();
+        setIsBookMark(true)
         const findMemoId = selectedProvider.documentId
         api.post("/addbookmark", {
             memoId: findMemoId
+        }).then((response) => {
+            console.log(response)
+        })
+    }
+    const removeBookMark = (event) => {
+        event.preventDefault();
+        setIsBookMark(false)
+        const findMemoId = selectedProvider.documentId
+        api.post("/removebookmark", {
+            memoId: findMemoId
+        }).then((response) => {
+            console.log(response)
         })
     }
 
@@ -187,23 +191,7 @@ function CreateMemo({ currentUser }) {
 
     }
 
-
-
-    // const curUserUpdate = useCallback((webrtcPeerEmails) => {
-
-
-    //     webrtcPeerEmails.map((memberEmail) => {
-    //         api.post('/getCurUser', { userEmail: memberEmail })
-    //             .then(response => {
-    //                 if (response.data.success) {
-    //                     setCurMemberList(Array.from(new Set([...curMemberList, response.data.userdata])));
-    //                     console.log(curMemberList)
-    //                 }
-    //             }).catch(error => { console.log("UserUpdate Error"); });
-    //     })
-
-    // }, [CurUserList])
-
+    //실시간 유저 변경
     useEffect(() => {
 
         if (CurUserList) {
@@ -429,15 +417,15 @@ function CreateMemo({ currentUser }) {
                 open={open}
             >
                 <DrawerHeader>
-                        <div className='icon__left'>
-                            <IconButton onClick={handleDrawerClose}>
-                                <CloseIcon style={{ color: 'white' }} />
-                            </IconButton>
-                        </div>
+                    <div className='icon__left'>
+                        <IconButton onClick={handleDrawerClose}>
+                            <CloseIcon style={{ color: 'white' }} />
+                        </IconButton>
+                    </div>
 
-                        <div className='icon__right'>
-                            <GroupAddIcon style={{ color: 'white' }} />
-                        </div>
+                    <div className='icon__right'>
+                        <GroupAddIcon style={{ color: 'white' }} />
+                    </div>
                 </DrawerHeader>
                 <Divider />
                 <List>
@@ -478,11 +466,16 @@ function CreateMemo({ currentUser }) {
                     <IconButton style={{ color: 'white' }} onClick={onSubmit}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
+
                 </div>
                 <div className="memo__toolsRight">
-                    <IconButton style={{ color: 'white' }} onClick={addBookMark}>
+                    {isBookMark === false && <IconButton style={{ color: 'white' }} onClick={addBookMark}>
                         <BookmarkIcon />
-                    </IconButton>
+                    </IconButton>}
+                    {isBookMark &&
+                        <IconButton style={{ color: 'yellow' }} onClick={removeBookMark}>
+                            <BookmarkIcon />
+                        </IconButton>}
                     <IconButton style={{ color: 'white' }} onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>

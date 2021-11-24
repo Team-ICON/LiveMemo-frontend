@@ -36,7 +36,7 @@ function MemoList({ currentUser }) {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
-
+    //새 메모를 위해 필요
     const roomId = uuid();
     useEffect(() => {
         api.get('/getMemos')
@@ -48,6 +48,7 @@ function MemoList({ currentUser }) {
                         roomId: memo._id,
                         doc: memo.content,
                         updatedTime: memo.updateTime,
+                        isBookMark: memo.bookmarked
                     })
                     ))
                 } else {
@@ -60,7 +61,7 @@ function MemoList({ currentUser }) {
     useEffect(() => {
         let temp = []
 
-        memos.map(({ roomId, doc, updatedTime }) => {
+        memos.map(({ roomId, doc, updatedTime, isBookMark }) => {
             if (doc !== null) {
                 let cur_list = []
                 // console.log(doc)
@@ -75,7 +76,7 @@ function MemoList({ currentUser }) {
                         }
 
                     })
-                    temp.push({ roomId: roomId, context: cur_list, updatedTime: updatedTime })
+                    temp.push({ roomId: roomId, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
                 }
             }
         })
@@ -103,7 +104,7 @@ function MemoList({ currentUser }) {
 
                 </div>
                 <div className="footer__right">
-                    <Fab size="small" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${roomId}`, { state: { roomId, first: true } })}>
+                    <Fab size="small" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${roomId}`, { state: { roomId, first: true, isBookMark: false } })}>
                         <AddIcon />
                     </Fab>
                 </div>
@@ -157,6 +158,7 @@ function MemoList({ currentUser }) {
                                         key={memo.roomId}
                                         roomId={memo.roomId}
                                         contents={memo.context}
+                                        isBookMark={memo.isBookMark}
                                         time={new Date(memo.updatedTime).toDateString()} />
 
 
