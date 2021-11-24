@@ -254,15 +254,6 @@ export class WebrtcConn {
         /**
          * @type {any}
          */
-        // 수정 부분1: 전체를 navigator.mediaDevices.getUserMedia(constraints) 로 감싼다
-        let constraints = { audio: true, video: true };
-
-
-
-
-        // 수정 부분2: new Peer 생성시 옵션으로 stream 추가
-
-
         this.peer = new Peer({ initiator, ...room.provider.peerOpts }) // initiator: true/ false
 
         this.peer.on('signal', signal => {
@@ -270,15 +261,17 @@ export class WebrtcConn {
         })
 
 
+        // 수정 부분: 'stream' 이벤트 추가 --> 비디오 태그 생성
         this.peer.on('stream', stream => {
             console.log(stream)
-            let newVid = document.createElement('audio');
-            newVid.srcObject = stream;
-            // newVid.playsinline = false;
-            newVid.autoplay = true;
-
-            document.body.appendChild(newVid)
-
+            let newAud = document.createElement('audio');
+            newAud.srcObject = stream;
+            // newAud.playsinline = false;
+            newAud.autoplay = true;
+            // 기본 상태: muted
+            newAud.muted = true;
+            // div#audio-boxes에 생성된 aud
+            document.querySelector("div#audio-boxes").appendChild(newAud);
         })
 
 
@@ -333,9 +326,13 @@ export class WebrtcConn {
             }
         })
 
-        // 수정 부분3: 'stream' 이벤트 추가 --> 비디오 태그 생성
-
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => { this.peer.addStream(stream) }).catch((err) => { console.log(err) })
+        // 수정 부분: 'stream' 이벤트 추가 --> 비디오 태그 생성
+        let constraints = { audio: true, video: false };
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => { 
+                this.peer.addStream(stream)
+            })
+            .catch(console.log);
 
 
 
