@@ -12,12 +12,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableHead from '@mui/material/TableHead';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
@@ -26,6 +20,8 @@ import {
     Link,
 } from "react-router-dom";
 import { formControlUnstyledClasses } from "@mui/core";
+import "./FolderList.css"
+
 
 
 const cookies = new Cookies();
@@ -136,15 +132,14 @@ function FolderList() {
     }
 
     return (
-        <div className="memoList">
-            <div className="header">
-                <div className="createMemo__tools">
+        <div className="header__folderlist">
+
+            <div className="folderList">
+                <IconButton style={{ color: 'white' }}>
                     <Link to="/">
-                        <IconButton>
-                            <ArrowBackIosNewIcon />
-                        </IconButton>
+                        <ArrowBackIosNewIcon />
                     </Link>
-                </div>
+                </IconButton>
             </div>
 
 

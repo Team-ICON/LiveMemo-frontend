@@ -4,12 +4,12 @@
 .app__body{
   display:flex;
   height:100vh;
+  background-color: rgb(37, 36, 36);
 
 }
 .header{
   display:flex;
   justify-content: space-between;
-  border-bottom: 1px solid whitesmoke;
   padding-bottom: 10px;
 }
 .header__left {

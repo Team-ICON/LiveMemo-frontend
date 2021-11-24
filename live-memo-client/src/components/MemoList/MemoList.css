@@ -1,7 +1,8 @@
 .memoList{
     flex:1;
     overflow:scroll;
-    background-color: rgb(199, 181, 199);
+    /* background-color: rgb(199, 181, 199); */
+    background-color: rgb(37, 36, 36);
 
 }
 .memoList::-webkit-scrollbar{
@@ -10,14 +11,41 @@
 .memoList__list{
    flex:1;
 }
+.footer{
+
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    align-items:right;
+    /* background-color: rgb(212, 172, 172); */
+    background-color: black;
+    height: 8vh;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+}
 
 .footer__right{
-    display: flex;
+    display: 2;
+    flex-direction: row;
     margin-top:10px;
-    justify-content: flex-end
+    margin-right: 13px;
+}
+
+.footer__left{
+    display: 1;
+    flex-direction: row;
+    margin-top:10px;
+    margin-left: 13px;
 }
 
 .MuiPaper-root{
     border-radius: 20px;
+    background-color: whitesmoke;
+    color: black;
 
 }

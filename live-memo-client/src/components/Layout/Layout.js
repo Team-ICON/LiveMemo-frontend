@@ -21,7 +21,6 @@ import ListItemText from '@mui/material/ListItemText';
 import { MenuItem } from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
-import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
 
 import {
     Link,
@@ -75,7 +74,7 @@ const Header = () => {
             >
                 <MenuItem onClick={handleClose}>
                     <IconButton>
-                        <LogoutIcon />
+                        <LogoutIcon style= {{ color : 'black' }} />
                     </IconButton>
                 </MenuItem>
             </Menu>

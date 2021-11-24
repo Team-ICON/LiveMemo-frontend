@@ -1,0 +1,17 @@
+.header__folderlist{
+    display:flex;
+    flex-direction: column;
+    height: 6.3vh;
+    background-color: black;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+  }
+
+.folderList{
+    display: flex;
+
+}

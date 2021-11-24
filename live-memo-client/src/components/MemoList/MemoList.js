@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import "./MemoList.css"
 import MemoRow from "../MemoRow/MemoRow"
 import { useDispatch } from 'react-redux';
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Layout from '../Layout/Layout'
@@ -11,6 +11,7 @@ import { Cookies } from "react-cookie";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
 import axios from "axios"
 
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
@@ -93,8 +94,16 @@ function MemoList({ currentUser }) {
         // console.log(newRoomId)
         return (
             <div className="footer">
+                <div className="footer__left">
+                    <Link to="/folder">
+                        <Fab size="small">
+                            <FolderOpenTwoToneIcon />
+                        </Fab>
+                    </Link>
+
+                </div>
                 <div className="footer__right">
-                    <Fab size="small" color="secondary" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${roomId}`, { state: { roomId, first: true } })}>
+                    <Fab size="small" aria-label="add" className="footer__addicon" onClick={() => navigate(`/createMemo/${roomId}`, { state: { roomId, first: true } })}>
                         <AddIcon />
                     </Fab>
                 </div>
@@ -136,7 +145,7 @@ function MemoList({ currentUser }) {
     return (
         <div className="memoList">
             <Layout >
-                <div style={{ width: '85%', margin: '3rem auto' }}>
+                <div style={{ width: '84%', margin: '5rem auto' }}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={{ xs: 2, md: 3 }} >
                             {contents.map((memo, index) =>

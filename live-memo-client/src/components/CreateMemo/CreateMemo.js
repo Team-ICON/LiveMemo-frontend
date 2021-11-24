@@ -427,10 +427,15 @@ function CreateMemo({ currentUser }) {
                 open={open}
             >
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        <CloseIcon />
-                    </IconButton>
-                    <GroupAddIcon />
+                        <div className='icon__left'>
+                            <IconButton onClick={handleDrawerClose}>
+                                <CloseIcon style={{ color: 'white' }} />
+                            </IconButton>
+                        </div>
+
+                        <div className='icon__right'>
+                            <GroupAddIcon style={{ color: 'white' }} />
+                        </div>
                 </DrawerHeader>
                 <Divider />
                 <List>
@@ -456,7 +461,7 @@ function CreateMemo({ currentUser }) {
                     {memberList.map((item, index) => (
                         <List key={index}>
                             <div className="userList" key={index}>
-                                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
+                                <Avatar className="avatar_skin" sx={{ bgcolor: 'deepPurple[500]' }} src={item?.picture} />
                                 <div key={index} className="profileList">
                                     {item.profileName}
                                 </div>
@@ -468,18 +473,18 @@ function CreateMemo({ currentUser }) {
             </Drawer>
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
-                    <IconButton onClick={onSubmit}>
+                    <IconButton style={{ color: 'white' }} onClick={onSubmit}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
                 </div>
                 <div className="memo__toolsRight">
-                    <IconButton onClick={addBookMark}>
+                    <IconButton style={{ color: 'white' }} onClick={addBookMark}>
                         <BookmarkIcon />
                     </IconButton>
-                    <IconButton onClick={handleDrawerOpen}>
+                    <IconButton style={{ color: 'white' }} onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>
-                    <IconButton onClick={toggleMute}>
+                    <IconButton style={{ color: 'white' }} onClick={toggleMute}>
                         <MicIcon />
                     </IconButton>
                     <IconButton
@@ -488,6 +493,7 @@ function CreateMemo({ currentUser }) {
                         aria-expanded={threeDotOpen ? 'true' : undefined}
                         aria-haspopup="true"
                         onClick={handleClick}
+                        style={{ color: 'white' }}
                     >
                         <MoreVertIcon />
                     </IconButton>
@@ -503,17 +509,17 @@ function CreateMemo({ currentUser }) {
                         }}
                     >
                         <MenuItem onClick={handleClose}>
-                            <IconButton>
+                            <IconButton style={{ color: 'black' }}>
                                 <DriveFolderUploadIcon />
                             </IconButton>
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
-                            <IconButton>
+                            <IconButton style={{ color: 'black' }}>
                                 <NotificationsIcon />
                             </IconButton>
                         </MenuItem>
                         <MenuItem onClick={deleteMemo}>
-                            <IconButton>
+                            <IconButton style={{ color: 'black' }}>
                                 <DeleteIcon />
                             </IconButton>
                         </MenuItem>
@@ -521,7 +527,7 @@ function CreateMemo({ currentUser }) {
                 </div>
             </div>
             <div className="curMemberList">
-                <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
+                <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: 'black' }}>ID</Avatar>
                 {curMemberList.map((item, index) => (
                     <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[400] }} src={item.picture} />
                 ))}
