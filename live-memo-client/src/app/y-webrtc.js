@@ -263,7 +263,6 @@ export class WebrtcConn {
 
         // 수정 부분: 'stream' 이벤트 추가 --> 비디오 태그 생성
         this.peer.on('stream', stream => {
-            console.log(stream)
             let newAud = document.createElement('audio');
             newAud.srcObject = stream;
             // newAud.playsinline = false;
@@ -526,7 +525,6 @@ export class Room {
         this.doc.off('update', this._docUpdateHandler)
         this.awareness.off('update', this._awarenessUpdateHandler)
         this.webrtcConns.forEach(conn => conn.destroy())
-        console.log("사라짐")
     }
 
     destroy() {
@@ -613,7 +611,6 @@ export class SignalingConn extends ws.WebsocketClient {
                                 break
                             case 'signal':
                                 if (data.to === peerId) {
-                                    console.log(data)
                                     map.setIfUndefined(webrtcConns, data.from, () => new WebrtcConn(this, false, data.from, room)).peer.signal(data.signal)
                                     emitPeerChange()
                                 }
@@ -736,7 +733,6 @@ export class WebrtcProvider extends Observable {
         // need to wait for key before deleting room
         this.key.then(() => {
       /** @type {Room} */ (this.room).destroy()
-            console.log("삭제된 룸", (this.roomName))
             rooms.delete(this.roomName)
         })
         super.destroy()

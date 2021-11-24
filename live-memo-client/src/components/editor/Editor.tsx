@@ -69,11 +69,9 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const handleSave = useCallback(
         newDocState => {
             if (isSynced || clientCount === 0) {
-                console.log(clientCount, "make")
                 onSave(documentId, JSON.stringify(newDocState), false);
                 const meta = provider.doc.getMap('meta');
                 meta.set('lastSaved', Date.now());
-                console.log(meta)
             }
         },
         [onSave, documentId, provider.doc, isSynced, clientCount],
@@ -89,11 +87,9 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         ({ webrtcPeers }) => {
             // console.log("사람수:", webrtcPeers.length)
             setClientCount(webrtcPeers.length);
-            console.log(webrtcPeers);
             dispatch(setCurUserList({
                 webrtcPeers
             }))
-            console.log(CurUserList)
 
         },
         [setClientCount, provider.room?.webrtcConns],
@@ -104,7 +100,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const handleSynced = useCallback(
         ({ synced }) => {
             setIsSynced(synced);
-            console.log(synced)
         },
         [setIsSynced],
     );
@@ -152,13 +147,11 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     useEffect(() => {
 
         if (usedFallbackRef.current) {
-            console.log("두번쨰")
             return;
         }
         const fetchFallback = async () => {
 
             if (provider.connected && clientCount === 0) {
-                console.log("첫번째", provider)
 
 
                 const res = await onFetch(documentId);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router';
 import Editor from '../editor/Editor';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -10,8 +10,8 @@ import { deepPurple } from '@mui/material/colors';
 import axios from 'axios';
 import UserProvider from '../../UserProvider'
 import { useSelector, } from 'react-redux';
-import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, } from '../../features/memoSlice';
-import { getCurUsers, checkSetCurUser, setCurUserList } from '../../features/userSlice';
+import { selectOpenProvider, selectOpenDoc, } from '../../features/memoSlice';
+import { getCurUsers} from '../../features/userSlice';
 import { useDispatch } from 'react-redux';
 
 import { Cookies } from "react-cookie";
@@ -65,7 +65,6 @@ function CreateMemo({ currentUser }) {
             quit,
             first: state.first
         }).then(res => {
-            console.log("succes save", res)
         });
     }, [memoTitle]);
     // const handleSave = useCallback(async (_id, body) => {
@@ -87,18 +86,14 @@ function CreateMemo({ currentUser }) {
         try {
             setCurMemberList([])
             if (state.first) {
-                console.log("처음 만듬");
                 handleSave(state.roomId, JSON.stringify(firstState), false);
                 return firstState;
             }
             else {
-                console.log("기존 메모");
                 const res = await api.get(`getMemo/${id}`);
                 const curMem = res.data.roomsStatus[id]
-                console.log("createMemo  ", res)
                 setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
-
 
                 if (curMem.length == 1)
                     return res.data.memInfo.content;
@@ -137,26 +132,15 @@ function CreateMemo({ currentUser }) {
     const onSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(selectedDoc.docState)
-
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
-
-        // const ret = curMemberList.filter(member => member.email !== currentUser)
-        // console.log(ret)
-        // setCurMemberList(ret)
-
-
-
 
 
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
 
-
         navigate('/', { replace: true })
 
-        // window.history.pushState(null, null, window.location.pathname);
     }
 
     const addBookMark = (event) => {
@@ -210,8 +194,6 @@ function CreateMemo({ currentUser }) {
             // curUserUpdate(CurUserList)
             setCurMemberList(Array.from([...CurUserList]))
 
-            console.log(CurUserList)
-            console.log("curUserList is: ", curMemberList);
         }
 
 
@@ -310,14 +292,10 @@ function CreateMemo({ currentUser }) {
                 if (response.data.success) {
                     setMemberList([...memberList, response.data.userdata]);
                 }
-                console.log(response)
-                console.log(memberList)
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
 
     const handleDrawerOpen = () => {
-
-
         setOpen(true);
     };
 

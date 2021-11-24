@@ -6,7 +6,7 @@ import "./MemoRow.css"
 import Paper from '@mui/material/Paper';
 import { experimentalStyled as styled } from '@mui/material/styles';
 
-const MemoRow = ({ roomId, contents, time }) => {
+const MemoRow = ({ roomId, title, contents, time }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -40,9 +40,13 @@ const MemoRow = ({ roomId, contents, time }) => {
             title={blog.writer.name}
             description="This is the description"
         /> */}
+
             <Item>
+
                 {contents.map((content, index) => (
                     <div key={index}>
+                        <p className="memoRow__title">{title}</p>
+                        <hr/>
                         <p>{content}</p>
                     </div>
                 ))}

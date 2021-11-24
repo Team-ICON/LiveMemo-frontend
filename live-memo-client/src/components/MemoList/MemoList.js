@@ -31,8 +31,8 @@ const api = axios.create({
 
 
 function MemoList({ currentUser }) {
-    const [memos, setMemos] = useState([])
-    const [contents, setContents] = useState([])
+    const [memos, setMemos] = useState([]);
+    const [contents, setContents] = useState([]);
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -43,10 +43,11 @@ function MemoList({ currentUser }) {
             .then(response => {
 
                 if (response.data.success) {
-                    // console.log("memoList 49 : ", response.data.memos)
+                    console.log("memoList 49 : ", response.data.memos)
                     setMemos(response.data.memos.map(memo => ({
                         roomId: memo._id,
                         doc: memo.content,
+                        title: memo.title,
                         updatedTime: memo.updateTime,
                     })
                     ))
@@ -60,7 +61,7 @@ function MemoList({ currentUser }) {
     useEffect(() => {
         let temp = []
 
-        memos.map(({ roomId, doc, updatedTime }) => {
+        memos.map(({ roomId, doc, title, updatedTime }) => {
             if (doc !== null) {
                 let cur_list = []
                 // console.log(doc)
@@ -75,7 +76,7 @@ function MemoList({ currentUser }) {
                         }
 
                     })
-                    temp.push({ roomId: roomId, context: cur_list, updatedTime: updatedTime })
+                    temp.push({ roomId: roomId, title: title,  context: cur_list, updatedTime: updatedTime })
                 }
             }
         })
@@ -141,7 +142,6 @@ function MemoList({ currentUser }) {
 
 
 
-
     return (
         <div className="memoList">
             <Layout >
@@ -156,6 +156,7 @@ function MemoList({ currentUser }) {
                                     <MemoRow
                                         key={memo.roomId}
                                         roomId={memo.roomId}
+                                        title={memo.title}
                                         contents={memo.context}
                                         time={new Date(memo.updatedTime).toDateString()} />
 
