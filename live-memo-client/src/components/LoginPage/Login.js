@@ -9,7 +9,6 @@ import { IconButton } from '@mui/material';
 import axios from 'axios';
 import { Cookies } from "react-cookie";
 
-
 function Login() {
     const cookies = new Cookies();
     const token = cookies.get('livememo-token');
@@ -33,7 +32,7 @@ function Login() {
 
     const signIn = async (dispatch) => {
         try {
-            window.location.href = 'http://localhost:4000/api/user/auth/google';
+            window.location.href = 'https://livememo-backend.herokuapp.com/api/user/auth/google';
         } catch (err) {
             console.log(`err`, err);
         }
