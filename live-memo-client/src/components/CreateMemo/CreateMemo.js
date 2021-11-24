@@ -85,6 +85,7 @@ function CreateMemo({ currentUser }) {
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
         try {
+            setCurMemberList([])
             if (state.first) {
                 console.log("처음 만듬");
                 handleSave(state.roomId, JSON.stringify(firstState), false);
@@ -146,6 +147,8 @@ function CreateMemo({ currentUser }) {
 
 
 
+
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
@@ -180,47 +183,46 @@ function CreateMemo({ currentUser }) {
         setTimeout(() => {
             navigate('/', { replace: true })
 
-        }, 250);
+        }, 350);
 
     }
 
 
 
-    const curUserUpdate = useCallback((webrtcPeers) => {
-        // filteredWebrtcPerrs = 복사(webrtcPeers)
-        // filtered --> 중복제거 차리
-        //
-        webrtcPeers.map((member) => {
-            api.post('/getCurUser', { userEmail: member })
-                .then(response => {
-                    if (response.data.success) {
+    // const curUserUpdate = useCallback((webrtcPeerEmails) => {
 
-                        setCurMemberList([...curMemberList, response.data.userdata]);
-                    }
-                }).catch(error => { console.log("UserUpdate Error"); });
-        })
 
-    }, [CurUserList])
+    //     webrtcPeerEmails.map((memberEmail) => {
+    //         api.post('/getCurUser', { userEmail: memberEmail })
+    //             .then(response => {
+    //                 if (response.data.success) {
+    //                     setCurMemberList(Array.from(new Set([...curMemberList, response.data.userdata])));
+    //                     console.log(curMemberList)
+    //                 }
+    //             }).catch(error => { console.log("UserUpdate Error"); });
+    //     })
+
+    // }, [CurUserList])
 
     useEffect(() => {
 
         if (CurUserList) {
-            curUserUpdate(CurUserList)
+            // curUserUpdate(CurUserList)
+            setCurMemberList(Array.from([...CurUserList]))
 
+            console.log(CurUserList)
+            console.log("curUserList is: ", curMemberList);
         }
 
 
 
         return () => {
+            //     // let list = curMemberList.filter(member => member.email !== currentUser)
+            //     // console.log("curMemberList", curMemberList)
+            //     // console.log("CurUserList", CurUserList)
             setCurMemberList([])
 
-            let retList = []
-            dispatch(setCurUserList({
-                retList
-            }))
-
         }
-
 
     }, [CurUserList])
 
@@ -523,7 +525,8 @@ function CreateMemo({ currentUser }) {
             <div className="curMemberList">
                 <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
                 {curMemberList.map((item, index) => (
-                    <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[400] }} src={item.picture} />
+                    // { console.log(item) }
+                    <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[400] }} src={item} />
                 ))}
 
             </div>

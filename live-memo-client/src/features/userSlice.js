@@ -33,7 +33,7 @@ export const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(checkSetCurUser.fulfilled, (state, action) => {
-            state.curUserList = action.payload
+            state.curUserList = action.payload.webrtcPeers
         })
     }
 
