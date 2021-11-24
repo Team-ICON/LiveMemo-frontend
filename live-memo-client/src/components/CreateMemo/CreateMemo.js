@@ -95,12 +95,11 @@ function CreateMemo({ currentUser }) {
                 const res = await api.get(`getMemo/${id}`);
                 const curMem = res.data.roomsStatus[id]
                 console.log("createMemo  ", res)
-                console.log(curMem)
                 setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
 
 
-                if (curMem == 1)
+                if (curMem.length == 1)
                     return res.data.memInfo.content;
                 else {
                     return firstState
@@ -120,16 +119,11 @@ function CreateMemo({ currentUser }) {
     function popstateHandler() {
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
 
-        // const ret = curMemberList.filter(member => member.email !== currentUser)
-        // console.log(ret)
-        // setCurMemberList(ret)
 
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
         navigate('/', { replace: true })
-        // window.location.reload()
-        // console.log(window.location.pathname)
-        // window.history.pushState(null, null, window.location.pathname);
+
     }
     useEffect(() => {
         window.addEventListener('popstate', popstateHandler, false);
@@ -150,9 +144,10 @@ function CreateMemo({ currentUser }) {
         // console.log(ret)
         // setCurMemberList(ret)
 
+
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
-
 
 
 
@@ -190,44 +185,60 @@ function CreateMemo({ currentUser }) {
     }
 
 
-    // const curUserUpdate = useCallback((webrtcPeers) => {
-    //     webrtcPeers.map((member) => {
-    //         api.post('/getCurUser', { userEmail: member })
-    //             .then(response => {
-    //                 if (response.data.success) {
-    //                     setCurMemberList([...curMemberList, response.data.userdata]);
-    //                 }
-    //             }).catch(error => { alert("메일 주소를 확인해주세요."); });
-    //     })
 
-    // }, [curMemberList])
+    const curUserUpdate = useCallback((webrtcPeers) => {
 
+        webrtcPeers.map((member) => {
+            api.post('/getCurUser', { userEmail: member })
+                .then(response => {
+                    if (response.data.success) {
+
+                        setCurMemberList([...curMemberList, response.data.userdata]);
+                    }
+                }).catch(error => { alert("err"); });
+        })
+
+    }, [CurUserList])
 
     useEffect(() => {
 
-        if (CurUserList['webrtcPeers']) {
-            setCurMemberList(CurUserList['webrtcPeers'])
+        if (CurUserList) {
+            curUserUpdate(CurUserList)
+
         }
-        //     curUserUpdate(CurUserList['webrtcPeers'])
+
+
 
         return () => {
+            setCurMemberList([])
 
-            // let ret = curMemberList.filter(member => member.email !== currentUser)
-
-
-            // dispatch(setCurUserList({
-            //     retList
-            // }))
-            setCurMemberList(CurUserList['webrtcPeers'])
-            // checkSetCurUser(CurUserList['webrtcPeers'], currentUser)
-            console.log(CurUserList['webrtcPeers'])
+            let retList = []
+            dispatch(setCurUserList({
+                retList
+            }))
 
         }
-    }, [state.roomId, CurUserList['webrtcPeers']])
+
+
+    }, [CurUserList])
+
+
+    // useEffect(() => {
+
+    //     api.post('/afterCurUser', { roomId: state.roomId })
+    //         .then(res => {
+    //             if (res.data.success) {
+    //                 console.log(res.data)
+    //                 setCurMemberList([res.data.userdata]);
+    //             }
+    //         }).catch(error => { alert("메일 주소를 확인해주세요."); });
+
+    //     console.log(curMemberList)
 
 
 
 
+    // }, [CurUserList['webrtcPeers']])
 
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
@@ -421,20 +432,9 @@ function CreateMemo({ currentUser }) {
             </div>
             <div className="curMemberList">
                 <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
-                {curMemberList.map((member, index) => {
-                    let photo = null
-                    api.post('/getCurUser', { userEmail: member })
-                        .then(response => {
-                            if (response.data.success) {
-                                console.log(response.data.userdata.picture)
-                                photo = response.data.userdata.picture
-                                // return 
-                            }
-                        }).catch(error => { alert("메일 주소를 확인해주세요."); });
-
-                    return <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[500] }} src={photo} />
-                }
-                )}
+                {curMemberList.map((item, index) => (
+                    <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[400] }} src={item.picture} />
+                ))}
 
             </div>
             <div className="createMemo__title">
@@ -451,7 +451,7 @@ function CreateMemo({ currentUser }) {
                     />
                 </UserProvider.Provider>
             </div>
-        </div>
+        </div >
     )
 }
 export default CreateMemo

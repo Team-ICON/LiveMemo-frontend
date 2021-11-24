@@ -27,7 +27,7 @@ export const userSlice = createSlice({
         },
 
         setCurUserList: (state, action) => {
-            state.curUserList = action.payload
+            state.curUserList = action.payload.webrtcPeers
         }
 
     },
