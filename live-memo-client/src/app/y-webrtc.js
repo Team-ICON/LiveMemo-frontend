@@ -269,7 +269,7 @@ export class WebrtcConn {
             // newAud.playsinline = false;
             newAud.autoplay = true;
             // 기본 상태: muted
-            newAud.muted = false;
+            newAud.muted = true;
             // div#audio-boxes에 생성된 aud
             document.querySelector("div#audio-boxes").appendChild(newAud);
         })

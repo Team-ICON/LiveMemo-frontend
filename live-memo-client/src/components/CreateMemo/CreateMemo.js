@@ -225,64 +225,64 @@ function CreateMemo({ currentUser }) {
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        return(<Drawer
-            sx={{
-                width: window.innerWidth,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    width: window.innerWidth,
-                },
-            }}
-            variant="persistent"
-            anchor="right"
-            open={open}
-        >
-            <DrawerHeader>
-                <IconButton onClick={handleDrawerClose}>
-                    <CloseIcon />
-                </IconButton>
-                <GroupAddIcon />
-            </DrawerHeader>
-            <Divider />
-            <List>
-                <div className="searchUser">
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="사용자 메일을 입력해주세요."
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={handleChange}
-                        />
-                    </Search>
-                    <button className="addButton" onClick={addUser}>
-                        Add
-                    </button>
-                </div >
+    //     return(<Drawer
+    //         sx={{
+    //             width: window.innerWidth,
+    //             flexShrink: 0,
+    //             '& .MuiDrawer-paper': {
+    //                 width: window.innerWidth,
+    //             },
+    //         }}
+    //         variant="persistent"
+    //         anchor="right"
+    //         open={open}
+    //     >
+    //         <DrawerHeader>
+    //             <IconButton onClick={handleDrawerClose}>
+    //                 <CloseIcon />
+    //             </IconButton>
+    //             <GroupAddIcon />
+    //         </DrawerHeader>
+    //         <Divider />
+    //         <List>
+    //             <div className="searchUser">
+    //                 <Search>
+    //                     <SearchIconWrapper>
+    //                         <SearchIcon />
+    //                     </SearchIconWrapper>
+    //                     <StyledInputBase
+    //                         placeholder="사용자 메일을 입력해주세요."
+    //                         inputProps={{ 'aria-label': 'search' }}
+    //                         onChange={handleChange}
+    //                     />
+    //                 </Search>
+    //                 <button className="addButton" onClick={addUser}>
+    //                     Add
+    //                 </button>
+    //             </div >
 
-            </List>
-            <Divider />
-            <div>
-                {memberList.map((item, index) => (
-                    <List key={index}>
-                        <div className="userList" key={index}>
-                            <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
-                            <div key={index} className="profileList">
-                                {item.profileName}
-                            </div>
-                        </div>
-                    </List>
-                ))}
+    //         </List>
+    //         <Divider />
+    //         <div>
+    //             {memberList.map((item, index) => (
+    //                 <List key={index}>
+    //                     <div className="userList" key={index}>
+    //                         <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
+    //                         <div key={index} className="profileList">
+    //                             {item.profileName}
+    //                         </div>
+    //                     </div>
+    //                 </List>
+    //             ))}
 
-            </div>
-        </Drawer>
-        )
+    //         </div>
+    //     </Drawer>
+    //     )
 
 
-    }, [memberList]) 
+    // }, [memberList]) 
 
 
     //E-Mail로 사용자 검색을 위한 API
@@ -299,6 +299,8 @@ function CreateMemo({ currentUser }) {
     }
 
     const handleDrawerOpen = () => {
+
+
         setOpen(true);
     };
 
