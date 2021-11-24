@@ -6,11 +6,14 @@ import { Avatar, IconButton } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
-import { deepOrange, deepPurple } from '@mui/material/colors';
+import { deepPurple } from '@mui/material/colors';
 import axios from 'axios';
-import UserProvider, { User } from '../../UserProvider'
-import { useSelector, useDispatch } from 'react-redux';
-import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, selectProvider } from '../../features/memoSlice';
+import UserProvider from '../../UserProvider'
+import { useSelector, } from 'react-redux';
+import { selectOpenProvider, selectOpenDoc, selectRoomsStatus, } from '../../features/memoSlice';
+import { getCurUsers, checkSetCurUser, setCurUserList } from '../../features/userSlice';
+import { useDispatch } from 'react-redux';
+
 import { Cookies } from "react-cookie";
 import "./CreateMemo.css"
 import Drawer from '@mui/material/Drawer';
@@ -26,8 +29,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
-import { colCount } from 'prosemirror-tables';
+
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 const api = axios.create({
@@ -44,26 +46,28 @@ function CreateMemo({ currentUser }) {
     const { state } = useLocation()
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
+    const [curMemberList, setCurMemberList] = useState([])
     // three dot button
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
-    const [memeTitle, setMemoTitle] = useState("");
+    const [memoTitle, setMemoTitle] = useState("");
     const navigate = useNavigate()
     const selectedProvider = useSelector(selectOpenProvider)
     const selectedDoc = useSelector(selectOpenDoc)
-    const curRoomsStatus = useSelector(selectRoomsStatus)
+    const CurUserList = useSelector(getCurUsers)
+    const dispatch = useDispatch()
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/createMemo", {
             _id,
-            title: memeTitle,
+            title: memoTitle,
             body,
             quit,
             first: state.first
         }).then(res => {
             console.log("succes save", res)
         });
-    }, []);
+    }, [memoTitle]);
     // const handleSave = useCallback(async (_id, body) => {
     //     try {
     //         console.log(_id, body)
@@ -92,14 +96,16 @@ function CreateMemo({ currentUser }) {
                 const curMem = res.data.roomsStatus[id]
                 console.log("createMemo  ", res)
                 console.log(curMem)
+                setMemoTitle(res.data.memInfo.title);
+                setMemberList(res.data.memInfo.userList);
+
 
                 if (curMem == 1)
                     return res.data.memInfo.content;
                 else {
                     return firstState
                 }
-                setMemberList(res.data.memInfo.userList);
-                return res.data.memInfo.content;
+
             }
         } catch {
             console.log("못가져옴");
@@ -107,13 +113,21 @@ function CreateMemo({ currentUser }) {
 
     }, []);
 
+
+
+
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
+
+        // const ret = curMemberList.filter(member => member.email !== currentUser)
+        // console.log(ret)
+        // setCurMemberList(ret)
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
         navigate('/', { replace: true })
-        window.location.reload()
+        // window.location.reload()
         // console.log(window.location.pathname)
         // window.history.pushState(null, null, window.location.pathname);
     }
@@ -129,13 +143,21 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
 
         console.log(selectedDoc.docState)
+
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
+
+        // const ret = curMemberList.filter(member => member.email !== currentUser)
+        // console.log(ret)
+        // setCurMemberList(ret)
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-        setTimeout(() => {
-            navigate('/', { replace: true })
-        }, 250);
+
+
+
+        navigate('/', { replace: true })
+
         // window.history.pushState(null, null, window.location.pathname);
     }
 
@@ -153,17 +175,56 @@ function CreateMemo({ currentUser }) {
         api.post("/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
+
+        // const ret = curMemberList.filter(member => member.email !== currentUser)
+        // setCurMemberList(ret)
+
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
+
         setTimeout(() => {
             navigate('/', { replace: true })
+
         }, 250);
+
     }
 
-    //현재 룸 체크
+
+    const curUserUpdate = useCallback((webrtcPeers) => {
+        webrtcPeers.map((member) => {
+            api.post('/getCurUser', { userEmail: member })
+                .then(response => {
+                    if (response.data.success) {
+                        setCurMemberList([...curMemberList, response.data.userdata]);
+                    }
+                }).catch(error => { alert("메일 주소를 확인해주세요."); });
+        })
+
+    }, [curMemberList])
+
+
     useEffect(() => {
-        console.log(state.roomId)
-    }, [state.roomId])
+
+        if (CurUserList['webrtcPeers'])
+            curUserUpdate(CurUserList['webrtcPeers'])
+
+        return () => {
+
+            // let ret = curMemberList.filter(member => member.email !== currentUser)
+            setCurMemberList([])
+            let retList = []
+            dispatch(setCurUserList({
+                retList
+            }))
+            // checkSetCurUser(CurUserList['webrtcPeers'], currentUser)
+            console.log(CurUserList['webrtcPeers'])
+
+        }
+    }, [state.roomId, CurUserList['webrtcPeers']])
+
+
+
+
 
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
@@ -173,6 +234,7 @@ function CreateMemo({ currentUser }) {
                 if (response.data.success) {
                     setMemberList([...memberList, response.data.userdata]);
                 }
+                console.log(response)
                 console.log(memberList)
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
     }
@@ -245,6 +307,9 @@ function CreateMemo({ currentUser }) {
     const handleTitleNameChange = (e) => {
         setMemoTitle(e.target.value);
     }
+
+ 
+
     return (
         <div className="createMemo">
             <Drawer
@@ -313,7 +378,7 @@ function CreateMemo({ currentUser }) {
                     <IconButton onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton id="audio-mute-button">
                         <MicIcon />
                     </IconButton>
                     <IconButton
@@ -354,11 +419,15 @@ function CreateMemo({ currentUser }) {
                     </Menu>
                 </div>
             </div>
-            <div className="memberList">
-                <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }}>ID</Avatar>
+            <div className="curMemberList">
+                <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: deepPurple[400] }}>ID</Avatar>
+                {curMemberList.map((item, index) => (
+                    <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
+                ))}
+
             </div>
             <div className="createMemo__title">
-                <input placeholder="제목 없음" className="input_css" type="text" value={memeTitle}
+                <input placeholder="제목 없음" className="input_css" type="text" value={memoTitle}
                     onChange={handleTitleNameChange}
 
                 />

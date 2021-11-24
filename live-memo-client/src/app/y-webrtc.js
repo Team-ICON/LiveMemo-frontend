@@ -11,7 +11,6 @@ import * as bc from 'lib0/broadcastchannel'
 import * as buffer from 'lib0/buffer'
 import * as math from 'lib0/math'
 import { createMutex } from 'lib0/mutex'
-
 import * as Y from 'yjs' // eslint-disable-line
 import Peer from 'simple-peer/simplepeer.min.js'
 
@@ -163,6 +162,81 @@ const broadcastWebrtcConn = (room, m) => {
     })
 }
 
+// export class WebrtcConn {
+//     /**
+//      * @param {SignalingConn} signalingConn
+//      * @param {boolean} initiator
+//      * @param {string} remotePeerId
+//      * @param {Room} room
+//      */
+//     constructor(signalingConn, initiator, remotePeerId, room) {
+//         log('establishing connection to ', logging.BOLD, remotePeerId)
+//         this.room = room
+//         this.remotePeerId = remotePeerId
+//         this.closed = false
+//         this.connected = false
+//         this.synced = false
+//         /**
+//          * @type {any}
+//          */
+//         this.peer = new Peer({ initiator, ...room.provider.peerOpts })
+//         this.peer.on('signal', signal => { //이건 피어 끼리 통신하는데 시그널타입이 오면 뒤에 데이터 객체는 묶어서 시그널링 서버로 보내버림
+//             publishSignalingMessage(signalingConn, room, { to: remotePeerId, from: room.peerId, type: 'signal', signal })
+//         })
+//         this.peer.on('connect', () => {
+//             log('connected to ', logging.BOLD, remotePeerId)
+//             this.connected = true
+//             // send sync step 1
+//             const provider = room.provider
+//             const doc = provider.doc
+//             const awareness = room.awareness
+//             const encoder = encoding.createEncoder()
+//             encoding.writeVarUint(encoder, messageSync)
+//             syncProtocol.writeSyncStep1(encoder, doc)
+//             sendWebrtcConn(this, encoder)
+//             const awarenessStates = awareness.getStates()
+//             if (awarenessStates.size > 0) {
+//                 const encoder = encoding.createEncoder()
+//                 encoding.writeVarUint(encoder, messageAwareness)
+//                 encoding.writeVarUint8Array(encoder, awarenessProtocol.encodeAwarenessUpdate(awareness, Array.from(awarenessStates.keys())))
+//                 sendWebrtcConn(this, encoder)
+//             }
+//         })
+//         this.peer.on('close', () => {
+//             this.connected = false
+//             this.closed = true
+//             if (room.webrtcConns.has(this.remotePeerId)) {
+//                 room.webrtcConns.delete(this.remotePeerId)
+//                 room.provider.emit('peers', [{
+//                     removed: [this.remotePeerId],
+//                     added: [],
+//                     webrtcPeers: Array.from(room.webrtcConns.keys()),
+//                     bcPeers: Array.from(room.bcConns)
+//                 }])
+//             }
+//             checkIsSynced(room)
+//             this.peer.destroy()
+//             log('closed connection to ', logging.BOLD, remotePeerId)
+//             announceSignalingInfo(room)
+//         })
+//         this.peer.on('error', err => {
+//             log('Error in connection to ', logging.BOLD, remotePeerId, ': ', err)
+//             announceSignalingInfo(room)
+//         })
+//         this.peer.on('data', data => {
+//             const answer = readPeerMessage(this, data)
+//             if (answer !== null) {
+//                 sendWebrtcConn(this, answer)
+//             }
+//         })
+//     }
+
+//     destroy() {
+//         this.peer.destroy()
+//     }
+// }
+
+// jinh version
 export class WebrtcConn {
     /**
      * @param {SignalingConn} signalingConn
@@ -180,10 +254,28 @@ export class WebrtcConn {
         /**
          * @type {any}
          */
-        this.peer = new Peer({ initiator, ...room.provider.peerOpts })
-        this.peer.on('signal', signal => { //이건 피어 끼리 통신하는데 시그널타입이 오면 뒤에 데이터 객체는 묶어서 시그널링 서버로 보내버림
+        this.peer = new Peer({ initiator, ...room.provider.peerOpts }) // initiator: true/ false
+
+        this.peer.on('signal', signal => {
             publishSignalingMessage(signalingConn, room, { to: remotePeerId, from: room.peerId, type: 'signal', signal })
         })
+
+
+        // 수정 부분: 'stream' 이벤트 추가 --> 비디오 태그 생성
+        this.peer.on('stream', stream => {
+            console.log(stream)
+            let newAud = document.createElement('audio');
+            newAud.srcObject = stream;
+            // newAud.playsinline = false;
+            newAud.autoplay = true;
+            // 기본 상태: muted
+            newAud.muted = false;
+            // div#audio-boxes에 생성된 aud
+            document.querySelector("div#audio-boxes").appendChild(newAud);
+        })
+
+
+
         this.peer.on('connect', () => {
             log('connected to ', logging.BOLD, remotePeerId)
             this.connected = true
@@ -203,6 +295,7 @@ export class WebrtcConn {
                 sendWebrtcConn(this, encoder)
             }
         })
+
         this.peer.on('close', () => {
             this.connected = false
             this.closed = true
@@ -220,16 +313,30 @@ export class WebrtcConn {
             log('closed connection to ', logging.BOLD, remotePeerId)
             announceSignalingInfo(room)
         })
+
         this.peer.on('error', err => {
             log('Error in connection to ', logging.BOLD, remotePeerId, ': ', err)
             announceSignalingInfo(room)
         })
+
         this.peer.on('data', data => {
             const answer = readPeerMessage(this, data)
             if (answer !== null) {
                 sendWebrtcConn(this, answer)
             }
         })
+
+        // 수정 부분: 'stream' 이벤트 추가 --> 비디오 태그 생성
+        let constraints = { audio: true, video: false };
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => { 
+                this.peer.addStream(stream)
+            })
+            .catch(console.log);
+
+
+
+
     }
 
     destroy() {
@@ -506,6 +613,7 @@ export class SignalingConn extends ws.WebsocketClient {
                                 break
                             case 'signal':
                                 if (data.to === peerId) {
+                                    console.log(data)
                                     map.setIfUndefined(webrtcConns, data.from, () => new WebrtcConn(this, false, data.from, room)).peer.signal(data.signal)
                                     emitPeerChange()
                                 }

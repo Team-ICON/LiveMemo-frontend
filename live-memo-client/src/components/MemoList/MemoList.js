@@ -98,7 +98,7 @@ function MemoList({ currentUser }) {
                         <AddIcon />
                     </Fab>
                 </div>
-            </div>
+            </div >
 
         )
 
