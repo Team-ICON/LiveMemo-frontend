@@ -15,7 +15,7 @@ function useWebRtcProvider(user: User, documentId: string) {
 	return useMemo(() => {
 		const roomName = `remirror-yjs-webrtc-demo-room-${documentId}`;
 		// @ts-ignore opts param seems to expect ALL options
-		const newProvider = new WebrtcProvider(user.email, roomName, ydoc, {
+		const newProvider = new WebrtcProvider(user.picture, roomName, ydoc, {
 			awareness,
 			// signaling: ['wss://livememo.herokuapp.com']
 		});
