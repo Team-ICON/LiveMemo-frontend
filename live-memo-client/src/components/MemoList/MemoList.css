@@ -16,3 +16,8 @@
     margin-top:10px;
     justify-content: flex-end
 }
+
+.MuiPaper-root{
+    border-radius: 20px;
+
+}

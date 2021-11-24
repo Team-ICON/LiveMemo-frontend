@@ -18,10 +18,6 @@ const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
 const Login = lazy(() => import("../components/LoginPage/Login"))
 const FolderList = lazy(() => import("./FolderList/FolderList"))
-const History = lazy(() => import("./History/History"))
-
-
-
 
 
 const cookies = new Cookies();
@@ -85,7 +81,6 @@ const App = () => {
                   <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={user} />} />
                   {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                   <Route path="/folder" element={<FolderList />} />
-                  <Route path="/history" element={<History />} />
                 </Routes>
               </div>
 

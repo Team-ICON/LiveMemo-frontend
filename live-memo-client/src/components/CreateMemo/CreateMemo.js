@@ -197,7 +197,7 @@ function CreateMemo({ currentUser }) {
                     if (response.data.success) {
                         setCurMemberList([...curMemberList, response.data.userdata]);
                     }
-                }).catch(error => { alert("메일 주소를 확인해주세요."); });
+                }).catch(error => { console.log("UserUpdate Error"); });
         })
 
     }, [curMemberList])
@@ -224,6 +224,65 @@ function CreateMemo({ currentUser }) {
 
 
 
+
+    useEffect(() => {
+
+        return(<Drawer
+            sx={{
+                width: window.innerWidth,
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                    width: window.innerWidth,
+                },
+            }}
+            variant="persistent"
+            anchor="right"
+            open={open}
+        >
+            <DrawerHeader>
+                <IconButton onClick={handleDrawerClose}>
+                    <CloseIcon />
+                </IconButton>
+                <GroupAddIcon />
+            </DrawerHeader>
+            <Divider />
+            <List>
+                <div className="searchUser">
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="사용자 메일을 입력해주세요."
+                            inputProps={{ 'aria-label': 'search' }}
+                            onChange={handleChange}
+                        />
+                    </Search>
+                    <button className="addButton" onClick={addUser}>
+                        Add
+                    </button>
+                </div >
+
+            </List>
+            <Divider />
+            <div>
+                {memberList.map((item, index) => (
+                    <List key={index}>
+                        <div className="userList" key={index}>
+                            <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
+                            <div key={index} className="profileList">
+                                {item.profileName}
+                            </div>
+                        </div>
+                    </List>
+                ))}
+
+            </div>
+        </Drawer>
+        )
+
+
+    }, [memberList]) 
 
 
     //E-Mail로 사용자 검색을 위한 API
@@ -308,7 +367,33 @@ function CreateMemo({ currentUser }) {
         setMemoTitle(e.target.value);
     }
 
- 
+    // 음소거 버튼 js 스크립트 by jinh
+    const [toggleState, setToggleState] = useState(false);
+    const toggleMute = (event) => {
+        event.preventDefault();
+        // 버튼 상태: 로몬형 왈, 토글을 어떻게 구현할건지한다음 적용할것
+        // 그렇기때문에 여기서는 그냥 true/ false로 임시로 지정해서 구분
+        // audio-tags 가져옴
+        const audioTags = document.querySelectorAll("div#audio-boxes audio");
+
+        if (toggleState) {
+            // 음소거 해야할 경우
+            for (let i = 0; i < audioTags.length; i++) {
+                audioTags[i].muted = true;
+            }
+        }
+        else {
+            // 음소거 해제해야 할 경우
+            for (let i = 0; i < audioTags.length; i++) {
+                audioTags[i].muted = false;
+            }
+        }
+
+        setToggleState((toggleState) => !toggleState)
+
+    }
+
+
 
     return (
         <div className="createMemo">
@@ -359,7 +444,6 @@ function CreateMemo({ currentUser }) {
                                     {item.profileName}
                                 </div>
                             </div>
-
                         </List>
                     ))}
 
@@ -378,7 +462,7 @@ function CreateMemo({ currentUser }) {
                     <IconButton onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>
-                    <IconButton id="audio-mute-button">
+                    <IconButton onClick={toggleMute}>
                         <MicIcon />
                     </IconButton>
                     <IconButton

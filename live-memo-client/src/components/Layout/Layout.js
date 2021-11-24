@@ -19,6 +19,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { MenuItem } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Menu from '@mui/material/Menu';
+import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
+
 import {
     Link,
 } from "react-router-dom";
@@ -39,61 +43,42 @@ const Header = () => {
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const logOutOpen = Boolean(anchorEl);
+    const ITEM_HEIGHT = 20;
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
 
     return (
         <div className="header">
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                    },
-                }}
-                variant="persistent"
-                anchor="right"
-                open={open}
-            >
-                <DrawerHeader onClick={handleDrawerClose}>
-                    <IconButton>
-                        <ChevronRightIcon />
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    <Link to="/folder" style={{ textDecoration: 'none', color: "black" }}>
-                        <MenuItem>폴더 리스트</MenuItem>
-                    </Link>
-                    <Link to="/history" style={{ textDecoration: 'none', color: "black" }}>
-                        <MenuItem>히스토리</MenuItem>
-                    </Link>
-                </List>
-                <Divider />
-                <List>
-                    {['로그아웃'].map((text, index) => (
-                        <ListItem button key={text}>
-                            {/* <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon> */}
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-
-            <IconButton className="header__right" onClick={handleDrawerOpen}>
+            <IconButton className="header__right" onClick={handleClick}>
                 <Avatar src={user?.picture}>ID</Avatar>
             </IconButton>
-
+            <Menu
+                anchorEl={anchorEl}
+                open={logOutOpen}
+                onClose={handleClose}
+                PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: '8ch',
+                    },
+                }}
+            >
+                <MenuItem onClick={handleClose}>
+                    <IconButton>
+                        <LogoutIcon />
+                    </IconButton>
+                </MenuItem>
+            </Menu>
         </div >
     )
 }
