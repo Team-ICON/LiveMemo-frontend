@@ -26,7 +26,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    api.get('/userinfo')
+    api.get('/user/userinfo')
       .then((response) => {
         let User = response.data.user;
         dispatch(login({

@@ -107,7 +107,7 @@ function FolderList() {
     const [folders, setFolders] = useState([])
 
     useEffect(() => {
-        api.get('/show')
+        api.get('/folder/show')
             .then(response => {
                 if (response.data.success) {
                     setFolders(response.data.folders);
@@ -198,7 +198,7 @@ function FolderList() {
                                 return;
                             }
                             // folder create 추가
-                            api.post('/create', { folderName: folderName })
+                            api.post('/folder/create', { folderName: folderName })
                                 .then(response => {
                                     if (response.data.success) {
                                         setFolders([...folders, folderName])

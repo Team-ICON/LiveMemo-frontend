@@ -60,7 +60,7 @@ function CreateMemo({ currentUser }) {
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
     const handleSave = useCallback(async (_id, body, quit) => {
-        await api.put("/createMemo", {
+        await api.put("/memo/createMemo", {
             _id,
             title: memoTitle,
             body,
@@ -92,7 +92,7 @@ function CreateMemo({ currentUser }) {
                 return firstState;
             }
             else {
-                const res = await api.get(`getMemo/${id}`);
+                const res = await api.get(`/memo/getMemo/${id}`);
                 const curMem = res.data.roomsStatus[id]
                 setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
@@ -148,7 +148,7 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
         setIsBookMark(true)
         const findMemoId = selectedProvider.documentId
-        api.post("/addbookmark", {
+        api.post("/memo/addbookmark", {
             memoId: findMemoId
         }).then((response) => {
             console.log(response)
@@ -158,7 +158,7 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
         setIsBookMark(false)
         const findMemoId = selectedProvider.documentId
-        api.post("/removebookmark", {
+        api.post("/memo/removebookmark", {
             memoId: findMemoId
         }).then((response) => {
             console.log(response)
@@ -168,7 +168,7 @@ function CreateMemo({ currentUser }) {
     const deleteMemo = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-        api.post("/delete", {
+        api.post("/memo/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
         
@@ -286,7 +286,7 @@ function CreateMemo({ currentUser }) {
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
         event.preventDefault();
-        api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
+        api.post('/memo/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
             .then(response => {
                 if (response.data.success) {
                     setMemberList([...memberList, response.data.userdata]);
