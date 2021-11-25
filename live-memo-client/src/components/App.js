@@ -12,55 +12,39 @@ import { selectUser, login } from "../features/userSlice"
 import { useSelector, useDispatch } from 'react-redux';
 // import CreateMemo from "./CreateMemo/CreateMemo"
 import CircularProgress from '@mui/material/CircularProgress';
+import { api } from "../axios";
 
 const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
 const Login = lazy(() => import("../components/LoginPage/Login"))
 const FolderList = lazy(() => import("./FolderList/FolderList"))
-
-
-const cookies = new Cookies();
-const token = cookies.get('livememo-token');
-const api = axios.create({
-  baseURL: 'http://localhost:4000/api/user',
-  headers: {
-    'Content-Type': 'application/json',
-    'authorization': token ? `Bearer ${token}` : ''
-  }
-});
-
+const GetToken = lazy(() => import("./GetToken/GetToken"))
 
 const App = () => {
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    api.get('/userinfo')
+    api.get('/user/userinfo')
       .then((response) => {
         let User = response.data.user;
         dispatch(login({
           displayName: User.profileName,
           email: User.email,
           picture: User.picture
-
         }))
-
       })
-
   }, [])
 
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
 
-
-
-  const [token, setToken] = useState('');
+  const isToken = localStorage.getItem('livememo-token');
+  // console.log(`fromCookies`, fromCookies);
+  const [token, setToken] = useState();
+  // console.log(`token`, token);
 
   useEffect(() => {
-    setToken(cookies.get('livememo-token'));
-
-  }, [])
-
-
+    setToken(isToken);
+  }, [token])
 
   return (
     <Router>
@@ -69,8 +53,12 @@ const App = () => {
           <CircularProgress className="spinner__icon" color="secondary" />
         </Box>
       }>
-
-        {!token ? (<Login />) :
+        {!token ? (
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/token/:token" element={<GetToken />} />
+          </Routes>
+        ) :
           (
             <div className="app">
               <div className="app__body">
@@ -80,10 +68,10 @@ const App = () => {
                   <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={user} />} />
                   {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                   <Route path="/folder" element={<FolderList />} />
-                  {/* <Route path="/token/:token" element={<Get />} /> */}
+                  {/* <Route path="/history" element={<History />} /> */}
+
                 </Routes>
               </div>
-
             </div>
           )}
       </Suspense>

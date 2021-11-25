@@ -18,12 +18,19 @@ const Header = () => {
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
+        
     };
 
     const handleClose = () => {
         setAnchorEl(null);
+        
     };
 
+    const handleLogout = () => {
+        setAnchorEl(null);
+        localStorage.removeItem('livememo-token');
+        window.location.href = "/";
+    }
 
     return (
         <div className="header">
@@ -41,7 +48,7 @@ const Header = () => {
                     },
                 }}
             >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogout}>
                     <IconButton>
                         <LogoutIcon style= {{ color : 'black' }} />
                     </IconButton>

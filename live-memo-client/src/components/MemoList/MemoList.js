@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
-import axios from "axios"
+import { api } from "../../axios";
 
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
@@ -20,13 +20,13 @@ const { Title } = Typography
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
-const api = axios.create({
-    baseURL: 'http://localhost:4000/api/memo',
-    headers: {
-        'Content-Type': 'application/json',
-        'authorization': token ? `Bearer ${token}` : ''
-    }
-});
+// const api = axios.create({
+//     baseURL: 'http://localhost:4000/api/memo',
+//     headers: {
+//         'Content-Type': 'application/json',
+//         'authorization': token ? `Bearer ${token}` : ''
+//     }
+// });
 
 
 
@@ -39,7 +39,7 @@ function MemoList({ currentUser }) {
     //새 메모를 위해 필요
     const roomId = uuid();
     useEffect(() => {
-        api.get('/getMemos')
+        api.get('/memo/getMemos')
             .then(response => {
 
                 if (response.data.success) {

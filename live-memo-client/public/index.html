@@ -25,21 +25,13 @@
   -->
   <title>Live Memo</title>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then((reg) => {
-          console.log('서비스 워커가 등록됨.', reg);
-        });
-    }
-  </script>
-
 <div id="audio-boxes"></div>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+  <script src="./scripts/main.js"></script>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
