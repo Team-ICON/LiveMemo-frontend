@@ -41,7 +41,7 @@ const token = cookies.get('livememo-token');
 //     }
 // });
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
-function CreateMemo({ currentUser }) {
+function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
     const [open, setOpen] = useState(false);
     const { state } = useLocation()
@@ -50,6 +50,7 @@ function CreateMemo({ currentUser }) {
     const [curMemberList, setCurMemberList] = useState([])
     // three dot button
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
+    const [isMicOn, setIsMicOn] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
@@ -59,6 +60,8 @@ function CreateMemo({ currentUser }) {
     const selectedDoc = useSelector(selectOpenDoc)
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
+    let searchEmail = "";
+
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/memo/createMemo", {
             _id,
@@ -196,11 +199,9 @@ function CreateMemo({ currentUser }) {
 
         if (CurUserList) {
             // curUserUpdate(CurUserList)
-            setCurMemberList(Array.from([...CurUserList]))
+            setCurMemberList([...CurUserList])
 
         }
-
-
 
         return () => {
             //     // let list = curMemberList.filter(member => member.email !== currentUser)
@@ -224,6 +225,8 @@ function CreateMemo({ currentUser }) {
                     setMemberList([...memberList, response.data.userdata]);
                 }
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
+
+        socket.emit('newUser', searchEmail);
     }
 
     const handleDrawerOpen = () => {
@@ -286,7 +289,6 @@ function CreateMemo({ currentUser }) {
 
         },
     }));
-    let searchEmail = "";
     const handleChange = (e) => {
         searchEmail = e.target.value;
     }
@@ -296,7 +298,7 @@ function CreateMemo({ currentUser }) {
     }
 
     // 음소거 버튼 js 스크립트 by jinh
-    const [toggleState, setToggleState] = useState(false);
+
     const toggleMute = (event) => {
         event.preventDefault();
         // 버튼 상태: 로몬형 왈, 토글을 어떻게 구현할건지한다음 적용할것
@@ -304,7 +306,7 @@ function CreateMemo({ currentUser }) {
         // audio-tags 가져옴
         const audioTags = document.querySelectorAll("div#audio-boxes audio");
 
-        if (toggleState) {
+        if (isMicOn) {
             // 음소거 해야할 경우
             for (let i = 0; i < audioTags.length; i++) {
                 audioTags[i].muted = true;
@@ -317,7 +319,7 @@ function CreateMemo({ currentUser }) {
             }
         }
 
-        setToggleState((toggleState) => !toggleState)
+        setIsMicOn((isMicOn) => !isMicOn)
 
     }
 
@@ -400,9 +402,13 @@ function CreateMemo({ currentUser }) {
                     <IconButton style={{ color: 'white' }} onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>
-                    <IconButton style={{ color: 'white' }} onClick={toggleMute}>
+                    {isMicOn === false && <IconButton style={{ color: 'white' }} onClick={toggleMute}>
                         <MicIcon />
-                    </IconButton>
+                    </IconButton>}
+                    {isMicOn && <IconButton style={{ color: 'red' }} onClick={toggleMute}>
+                        <MicIcon />
+                    </IconButton>}
+
                     <IconButton
                         aria-label="more"
                         id="long-button"
