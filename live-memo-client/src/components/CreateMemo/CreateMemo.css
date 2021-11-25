@@ -60,7 +60,7 @@
     margin: 8px;
 }
 
-input:focus {outline: rgb(90, 88, 88) solid 2px;}
+input:focus {outline: gray solid 2px;}
 
 .input_css{
     height: 40px;
@@ -70,7 +70,7 @@ input:focus {outline: rgb(90, 88, 88) solid 2px;}
     border-bottom-left-radius: 7px;
     text-indent: 0.8em;
     font-size: large;
-    border: 2px solid rgb(172, 129, 212);
+    border: 2px solid gray;
 
 }
 
@@ -109,9 +109,8 @@ input:focus {outline: rgb(90, 88, 88) solid 2px;}
     margin-top: 7px;
     font-size: large;
     font-weight: bold;
-
-
 }
+
 
 .css-1mbri1u{
     display: flex;
@@ -122,6 +121,7 @@ input:focus {outline: rgb(90, 88, 88) solid 2px;}
     background-color: black;
     border-bottom: 1px solid rgb(199, 181, 199);
 }
+
 .curMemberList{
     display:flex;
     
@@ -137,6 +137,7 @@ input:focus {outline: rgb(90, 88, 88) solid 2px;}
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
 }
+
 .curMember{
     display:flex;
     margin-left:10px;

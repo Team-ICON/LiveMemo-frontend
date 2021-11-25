@@ -28,22 +28,18 @@
   justify-content: flex-end
 }
 
+
 /* editor css */
 .remirror-editor.ProseMirror{
   background-color: white;
-  width: 80vw;
-  height: 50vh;
   margin-top: -15px;
   width: 100%;
   height: 100%;
-
 }
 
 .remirror-theme{
   width: 100%;
   height: 100%;
-  
-
 }
 
 .remirror-editor-wrapper{
