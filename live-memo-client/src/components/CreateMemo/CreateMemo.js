@@ -396,7 +396,7 @@ function CreateMemo({ currentUser, socket }) {
                         <BookmarkIcon />
                     </IconButton>}
                     {isBookMark &&
-                        <IconButton style={{ color: 'yellow' }} onClick={removeBookMark}>
+                        <IconButton style={{ color: 'orange' }} onClick={removeBookMark}>
                             <BookmarkIcon />
                         </IconButton>}
                     <IconButton style={{ color: 'white' }} onClick={handleDrawerOpen}>

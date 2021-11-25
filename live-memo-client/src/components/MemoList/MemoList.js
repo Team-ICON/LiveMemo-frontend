@@ -33,6 +33,7 @@ function MemoList({ currentUser, socket }) {
                         roomId: memo._id,
                         doc: memo.content,
                         title: memo.title,
+                        shareUserCount: memo.howManyShare,
                         updatedTime: memo.updateTime,
                         isBookMark: memo.bookmarked
                     })
@@ -62,7 +63,7 @@ function MemoList({ currentUser, socket }) {
     useEffect(() => {
         let temp = []
 
-        memos.map(({ roomId, doc, title, updatedTime, isBookMark }) => {
+        memos.map(({ roomId, doc, title, shareUserCount, updatedTime, isBookMark }) => {
             if (doc !== null) {
                 let cur_list = []
                 // console.log(doc)
@@ -77,7 +78,7 @@ function MemoList({ currentUser, socket }) {
                         }
 
                     })
-                    temp.push({ roomId: roomId, title: title, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
+                    temp.push({ roomId: roomId, title: title, shareUserCount: shareUserCount, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
                 }
             }
         })
@@ -118,6 +119,27 @@ function MemoList({ currentUser, socket }) {
 
 
 
+    const timeFormatting = (updatedTime) => {
+        const time = new Date(updatedTime);
+        var year = time.getFullYear();
+        var month = ('0' + (time.getMonth() + 1)).slice(-2);
+        var day = ('0' + time.getDate()).slice(-2);
+
+        var dateString = year + '-' + month + '-' + day;
+
+        var hours = ('0' + time.getHours()).slice(-2);
+        var minutes = ('0' + time.getMinutes()).slice(-2);
+        var seconds = ('0' + time.getSeconds()).slice(-2);
+
+        var timeString = hours + ':' + minutes + ':' + seconds;
+
+        return (dateString + " " + timeString);
+
+
+    }
+
+
+
     return (
         <div className="memoList">
             <Layout >
@@ -134,8 +156,9 @@ function MemoList({ currentUser, socket }) {
                                         roomId={memo.roomId}
                                         title={memo.title}
                                         contents={memo.context}
+                                        shareUserCount={memo.shareUserCount}
                                         isBookMark={memo.isBookMark}
-                                        time={new Date(memo.updatedTime).toDateString()} />
+                                        time={timeFormatting(memo.updatedTime)} />
 
 
                                 </Grid>

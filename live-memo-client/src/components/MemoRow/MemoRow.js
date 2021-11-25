@@ -4,12 +4,16 @@ import { useDispatch } from 'react-redux';
 import { selectMemo } from "../../features/memoSlice"
 import "./MemoRow.css"
 import Paper from '@mui/material/Paper';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { IconButton } from '@mui/material';
+import PeopleIcon from '@mui/icons-material/People';
+
+
 import { experimentalStyled as styled } from '@mui/material/styles';
 
-const MemoRow = ({ roomId, title, contents, isBookMark, time }) => {
+const MemoRow = ({ roomId, title, contents, shareUserCount, isBookMark, time }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const openMemo = () => {
 
 
@@ -37,13 +41,26 @@ const MemoRow = ({ roomId, title, contents, isBookMark, time }) => {
             title={blog.writer.name}
             description="This is the description"
         /> */}
-
             <Item>
-
+                <div className="memoRow__header">
+                    <p className="memoRow__title">{title}</p>
+                    <div className="memoInfo">
+                        <div className="memoRow__icons">
+                            <div className="userCnt_info">
+                                <PeopleIcon style={{ color: 'black' }} />
+                                <p className="userCnt">{shareUserCount}</p>
+                            </div>
+                            {isBookMark ?
+                                <BookmarkIcon style={{ color: 'orange' }} /> : null}
+                        </div>
+                        <div className="memoRow__time">
+                            {time}
+                        </div>
+                    </div>
+                </div>
+                <hr />
                 {contents.map((content, index) => (
                     <div key={index}>
-                        <p className="memoRow__title">{title}</p>
-                        <hr />
                         <p>{content}</p>
                     </div>
                 ))}
