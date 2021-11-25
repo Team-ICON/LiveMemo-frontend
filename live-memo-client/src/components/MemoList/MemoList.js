@@ -39,7 +39,7 @@ function MemoList({ currentUser }) {
     //새 메모를 위해 필요
     const roomId = uuid();
     useEffect(() => {
-        api.get('/getMemos')
+        api.get('/memo/getMemos')
             .then(response => {
 
                 if (response.data.success) {

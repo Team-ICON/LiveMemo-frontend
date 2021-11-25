@@ -60,7 +60,7 @@ function CreateMemo({ currentUser }) {
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
     const handleSave = useCallback(async (_id, body, quit) => {
-        await api.put("/createMemo", {
+        await api.put("/memo/createMemo", {
             _id,
             title: memoTitle,
             body,
@@ -88,11 +88,16 @@ function CreateMemo({ currentUser }) {
         try {
             setCurMemberList([])
             if (state.first) {
-                handleSave(state.roomId, JSON.stringify(firstState), false);
+                handleSave(state.roomId, JSON.stringify(firstState), true);
+                // const res = await api.post("/memo/setCurUser", {
+                //     userId: currentUser._id,
+                //     roomId: id
+                // }).then(res => {
+                // });
                 return firstState;
             }
             else {
-                const res = await api.get(`getMemo/${id}`);
+                const res = await api.get(`/memo/getMemo/${id}`);
                 const curMem = res.data.roomsStatus[id]
                 setMemoTitle(res.data.memInfo.title);
                 setMemberList(res.data.memInfo.userList);
@@ -148,7 +153,7 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
         setIsBookMark(true)
         const findMemoId = selectedProvider.documentId
-        api.post("/addbookmark", {
+        api.post("/memo/addbookmark", {
             memoId: findMemoId
         }).then((response) => {
             console.log(response)
@@ -158,7 +163,7 @@ function CreateMemo({ currentUser }) {
         event.preventDefault();
         setIsBookMark(false)
         const findMemoId = selectedProvider.documentId
-        api.post("/removebookmark", {
+        api.post("/memo/removebookmark", {
             memoId: findMemoId
         }).then((response) => {
             console.log(response)
@@ -168,10 +173,10 @@ function CreateMemo({ currentUser }) {
     const deleteMemo = (event) => {
         event.preventDefault();
         const findMemoId = selectedProvider.documentId
-        api.post("/delete", {
+        api.post("/memo/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
-        
+
 
         // const ret = curMemberList.filter(member => member.email !== currentUser)
         // setCurMemberList(ret)
@@ -208,85 +213,12 @@ function CreateMemo({ currentUser }) {
     }, [CurUserList])
 
 
-    // useEffect(() => {
-
-    //     api.post('/afterCurUser', { roomId: state.roomId })
-    //         .then(res => {
-    //             if (res.data.success) {
-    //                 console.log(res.data)
-    //                 setCurMemberList([res.data.userdata]);
-    //             }
-    //         }).catch(error => { alert("메일 주소를 확인해주세요."); });
-
-    //     console.log(curMemberList)
-
-
-    // }, [CurUserList['webrtcPeers']])
-
-    // useEffect(() => {
-
-    //     return(<Drawer
-    //         sx={{
-    //             width: window.innerWidth,
-    //             flexShrink: 0,
-    //             '& .MuiDrawer-paper': {
-    //                 width: window.innerWidth,
-    //             },
-    //         }}
-    //         variant="persistent"
-    //         anchor="right"
-    //         open={open}
-    //     >
-    //         <DrawerHeader>
-    //             <IconButton onClick={handleDrawerClose}>
-    //                 <CloseIcon />
-    //             </IconButton>
-    //             <GroupAddIcon />
-    //         </DrawerHeader>
-    //         <Divider />
-    //         <List>
-    //             <div className="searchUser">
-    //                 <Search>
-    //                     <SearchIconWrapper>
-    //                         <SearchIcon />
-    //                     </SearchIconWrapper>
-    //                     <StyledInputBase
-    //                         placeholder="사용자 메일을 입력해주세요."
-    //                         inputProps={{ 'aria-label': 'search' }}
-    //                         onChange={handleChange}
-    //                     />
-    //                 </Search>
-    //                 <button className="addButton" onClick={addUser}>
-    //                     Add
-    //                 </button>
-    //             </div >
-
-    //         </List>
-    //         <Divider />
-    //         <div>
-    //             {memberList.map((item, index) => (
-    //                 <List key={index}>
-    //                     <div className="userList" key={index}>
-    //                         <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
-    //                         <div key={index} className="profileList">
-    //                             {item.profileName}
-    //                         </div>
-    //                     </div>
-    //                 </List>
-    //             ))}
-
-    //         </div>
-    //     </Drawer>
-    //     )
-
-
-    // }, [memberList]) 
 
 
     //E-Mail로 사용자 검색을 위한 API
     const addUser = (event) => {
         event.preventDefault();
-        api.post('/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
+        api.post('/memo/addUser', { userEmail: searchEmail, memoId: selectedProvider.documentId })
             .then(response => {
                 if (response.data.success) {
                     setMemberList([...memberList, response.data.userdata]);

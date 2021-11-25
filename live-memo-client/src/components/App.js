@@ -18,15 +18,13 @@ const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
 const Login = lazy(() => import("../components/LoginPage/Login"))
 const FolderList = lazy(() => import("./FolderList/FolderList"))
-// const History = lazy(() => import("./History/History"))
 const GetToken = lazy(() => import("./GetToken/GetToken"))
-const Signout = lazy(() => import("./Signout/Signout"))
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    api.get('/userinfo')
+    api.get('/user/userinfo')
       .then((response) => {
         let User = response.data.user;
         dispatch(login({
@@ -38,7 +36,7 @@ const App = () => {
   }, [])
 
   const user = useSelector(selectUser);
-  
+
   const isToken = localStorage.getItem('livememo-token');
   // console.log(`fromCookies`, fromCookies);
   const [token, setToken] = useState();
@@ -57,7 +55,7 @@ const App = () => {
       }>
         {!token ? (
           <Routes>
-            <Route path="/" element={<Login/>} />
+            <Route path="/" element={<Login />} />
             <Route path="/token/:token" element={<GetToken />} />
           </Routes>
         ) :
@@ -71,7 +69,7 @@ const App = () => {
                   {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                   <Route path="/folder" element={<FolderList />} />
                   {/* <Route path="/history" element={<History />} /> */}
-                  <Route path="/signout" element={<Signout />} />
+
                 </Routes>
               </div>
             </div>
