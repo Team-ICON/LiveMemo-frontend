@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Cookies } from "react-cookie";
-import axios from "axios"
+// import axios from "axios"
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -22,18 +22,19 @@ import {
 import { formControlUnstyledClasses } from "@mui/core";
 import "./FolderList.css"
 
+import { api } from "../../axios";
 
 
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
-const api = axios.create({
-    baseURL: 'http://localhost:4000/api/folder',
-    headers: {
-        'Content-Type': 'application/json',
-        'authorization': token ? `Bearer ${token}` : ''
-    }
-});
+// const api = axios.create({
+//     baseURL: 'http://localhost:4000/api/folder',
+//     headers: {
+//         'Content-Type': 'application/json',
+//         'authorization': token ? `Bearer ${token}` : ''
+//     }
+// });
 
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({

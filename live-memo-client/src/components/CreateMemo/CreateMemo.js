@@ -7,7 +7,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
 import { deepPurple } from '@mui/material/colors';
-import axios from 'axios';
+// import axios from 'axios';
+import { api } from "../../axios";
 import UserProvider from '../../UserProvider'
 import { useSelector, } from 'react-redux';
 import { selectOpenProvider, selectOpenDoc, } from '../../features/memoSlice';
@@ -32,13 +33,13 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
-const api = axios.create({
-    baseURL: 'http://localhost:4000/api/memo',
-    headers: {
-        'Content-Type': 'application/json',
-        'authorization': token ? `Bearer ${token}` : ''
-    }
-});
+// const api = axios.create({
+//     baseURL: 'http://localhost:4000/api/memo',
+//     headers: {
+//         'Content-Type': 'application/json',
+//         'authorization': token ? `Bearer ${token}` : ''
+//     }
+// });
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser }) {
     // 사용자 추가 클릭 시 Drawer 
@@ -170,6 +171,7 @@ function CreateMemo({ currentUser }) {
         api.post("/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
+        
 
         // const ret = curMemberList.filter(member => member.email !== currentUser)
         // setCurMemberList(ret)

@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
-import axios from "axios"
+import { api } from "../../axios";
 
 // const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 const { Title } = Typography
@@ -20,13 +20,13 @@ const { Title } = Typography
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
-const api = axios.create({
-    baseURL: 'http://localhost:4000/api/memo',
-    headers: {
-        'Content-Type': 'application/json',
-        'authorization': token ? `Bearer ${token}` : ''
-    }
-});
+// const api = axios.create({
+//     baseURL: 'http://localhost:4000/api/memo',
+//     headers: {
+//         'Content-Type': 'application/json',
+//         'authorization': token ? `Bearer ${token}` : ''
+//     }
+// });
 
 
 
