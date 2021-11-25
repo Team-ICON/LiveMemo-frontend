@@ -33,28 +33,28 @@ function updateBtn() {
     return;
   }
 
-  if (isSubscribed) {
-    pushButton.textContent = 'Disable Push Messaging';
-  } else {
-    pushButton.textContent = 'Enable Push Messaging';
-  }
+  // if (isSubscribed) {
+  //   pushButton.textContent = 'Disable Push Messaging';
+  // } else {
+  //   pushButton.textContent = 'Enable Push Messaging';
+  // }
 
-  pushButton.disabled = false;
+  // pushButton.disabled = false;
 }
 
 function updateSubscriptionOnServer(subscription) {
   // TODO: Send subscription to application server
 
-  const subscriptionJson = document.querySelector('.js-subscription-json');
-  const subscriptionDetails =
-    document.querySelector('.js-subscription-details');
+  // const subscriptionJson = document.querySelector('.js-subscription-json');
+  // const subscriptionDetails =
+  //   document.querySelector('.js-subscription-details');
 
-  if (subscription) {
-    subscriptionJson.textContent = JSON.stringify(subscription);
-    subscriptionDetails.classList.remove('is-invisible');
-  } else {
-    subscriptionDetails.classList.add('is-invisible');
-  }
+  // if (subscription) {
+  //   subscriptionJson.textContent = JSON.stringify(subscription);
+  //   subscriptionDetails.classList.remove('is-invisible');
+  // } else {
+  //   subscriptionDetails.classList.add('is-invisible');
+  // }
 }
 
 function subscribeUser() {
@@ -65,6 +65,7 @@ function subscribeUser() {
   })
   .then(function(subscription) {
     console.log('User is subscribed.');
+    console.log(`subscription`, subscription);
 
     updateSubscriptionOnServer(subscription);
 
@@ -99,15 +100,6 @@ function unsubscribeUser() {
 }
 
 function initializeUI() {
-  pushButton.addEventListener('click', function() {
-    pushButton.disabled = true;
-    if (isSubscribed) {
-      unsubscribeUser();
-    } else {
-      subscribeUser();
-    }
-  });
-
   // Set the initial subscription value
   swRegistration.pushManager.getSubscription()
   .then(function(subscription) {
@@ -117,18 +109,19 @@ function initializeUI() {
 
     if (isSubscribed) {
       console.log('User IS subscribed.');
+      console.log(`subscription`, subscription);
     } else {
       console.log('User is NOT subscribed.');
+      subscribeUser();
     }
 
-    updateBtn();
   });
 }
 
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
-  navigator.serviceWorker.register('sw.js')
+  navigator.serviceWorker.register('firebase-messaging-sw.js')
   .then(function(swReg) {
     console.log('Service Worker is registered', swReg);
 

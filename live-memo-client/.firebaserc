@@ -1,9 +1,5 @@
 {
   "projects": {
-<<<<<<< HEAD
     "default": "livememo-frontend"
-=======
-    "default": "live-memo-e4ba7"
->>>>>>> main
   }
 }

@@ -79,14 +79,9 @@ const Header = () => {
                 </List>
                 <Divider />
                 <List>
-                    {['로그아웃'].map((text, index) => (
-                        <ListItem button key={text}>
-                            {/* <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon> */}
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    <Link to="/signout" style={{ textDecoration: 'none', color: "black" }}>
+                        <MenuItem>로그아웃</MenuItem>
+                    </Link>
                 </List>
             </Drawer>
 
