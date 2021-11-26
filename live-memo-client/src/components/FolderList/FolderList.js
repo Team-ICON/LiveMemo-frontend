@@ -118,7 +118,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 const openFolder = (name) => {
     // folder open
-    api.post('/open', { folderName: name })
+    api.post('/folder/open', { folderName: name })
         .then(response => {
             if (response.data.success) {
                 console.log("Success Open Folder");
@@ -128,8 +128,7 @@ const openFolder = (name) => {
 
 const deleteFolder = (name) => {
     // folder delete
-    console.log(name);
-    api.post('/delete', { folderName: name })
+    api.post('/folder/delete', { folderName: name })
         .then(response => {
             if (response.data.success) {
                 console.log("Success Delete Folder");
@@ -160,7 +159,7 @@ function FolderList() {
             return;
         }
         // folder create 추가
-        api.post('/create', { folderName: name })
+        api.post('/folder/create', { folderName: name })
             .then(response => {
                 if (response.data.success) {
                     console.log("Success Make Folder");
