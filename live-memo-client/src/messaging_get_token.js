@@ -12,8 +12,7 @@ dotenv.config();
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-console.log(`REACT_APP_FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
-console.log(`FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
+
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 //   authDomain: "livememo-frontend.firebaseapp.com",
@@ -30,7 +29,7 @@ const firebaseConfig = {
   projectId: "live-memo-610d4",
   storageBucket: "live-memo-610d4.appspot.com",
   messagingSenderId: "874159596175",
-  appId: "1:874159596175:web:4d4f2d7bff1500d59286fa"
+  appId: "1:874159596175:web:f2a1236ba6e24f5a9286fa"
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -40,7 +39,7 @@ const analytics = getAnalytics(app);
 const messaging = getMessaging();
 
 
-getToken(messaging, { vapidKey: 'BEQA-GyE9tre2RN7z0CWpDpTU3q0sf-7xXZthInZhHfyNO0tg_tJEYy2mZMpPXTBl2749U7lZS9z36fhwA0UEmA' }).then(async (currentToken) => {
+getToken(messaging, { vapidKey: 'BEqPyH6fNMq7qKa5Sn81R3VeI5Nw0kjR3gea79SkfJpzEocFro5ljOubelpLcn7QX7JiQAksBWT1VudTQklyfWQ' }).then(async (currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
     // ...
