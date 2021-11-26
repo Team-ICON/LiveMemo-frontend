@@ -30,6 +30,7 @@ import Menu from '@mui/material/Menu';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+import Autocomplete from '@mui/material/Autocomplete';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -38,15 +39,6 @@ import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
 import "./CreateMemo.css"
 
-
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import { height } from '@mui/system';
 
 
 
@@ -99,12 +91,6 @@ function CreateMemo({ currentUser, socket }) {
                 }
             })
     }, [])
-
-
-
-
-
-
 
     const handleDrawerOpen = () => {
         setDrawerOpen(true);
@@ -576,8 +562,8 @@ function CreateMemo({ currentUser, socket }) {
                             </DialogActions>
                         </Dialog>
 
-                        <MenuItem onClick={handleClose}>
-                            <IconButton style={{ color: 'black' }}>
+                        <MenuItem>
+                            <IconButton onClick={handleDialogOpen} style={{ color: 'black' }}>
                                 <NotificationsIcon />
                             </IconButton>
                             <Dialog open={dialogOpen} onClose={handleDialogClose}>
