@@ -77,25 +77,25 @@ function subscribeUser() {
   });
 }
 
-function unsubscribeUser() {
-  swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    if (subscription) {
-      return subscription.unsubscribe();
-    }
-  })
-  .catch(function(error) {
-    console.log('Error unsubscribing', error);
-  })
-  .then(function() {
-    updateSubscriptionOnServer(null);
+// function unsubscribeUser() {
+//   swRegistration.pushManager.getSubscription()
+//   .then(function(subscription) {
+//     if (subscription) {
+//       return subscription.unsubscribe();
+//     }
+//   })
+//   .catch(function(error) {
+//     console.log('Error unsubscribing', error);
+//   })
+//   .then(function() {
+//     updateSubscriptionOnServer(null);
 
-    console.log('User is unsubscribed.');
-    isSubscribed = false;
+//     console.log('User is unsubscribed.');
+//     isSubscribed = false;
 
-    updateBtn();
-  });
-}
+//     updateBtn();
+//   });
+// }
 
 function initializeUI() {
   // Set the initial subscription value
@@ -103,7 +103,7 @@ function initializeUI() {
   .then(function(subscription) {
     isSubscribed = !(subscription === null);
 
-    updateSubscriptionOnServer(subscription);
+    // updateSubscriptionOnServer(subscription);
 
     if (isSubscribed) {
       console.log('User IS subscribed.');

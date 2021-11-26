@@ -42,13 +42,6 @@ import { api } from "../../axios";
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
-// const api = axios.create({
-//     baseURL: 'http://localhost:4000/api/folder',
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'authorization': token ? `Bearer ${token}` : ''
-//     }
-// });
 
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
