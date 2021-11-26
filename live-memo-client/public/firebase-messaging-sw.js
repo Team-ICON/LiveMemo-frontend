@@ -1,13 +1,17 @@
-self.addEventListener('push', function (event) {
-    console.log('[Service Worker] Push Received.');
-    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+importScripts("/__/firebase/8.3.0/firebase-app.js")
+importScripts("/__/firebase/8.3.0/firebase-messaging.js")
 
-    const title = 'Push Codelab';
-    const options = {
-        body: 'Yay it works.',
-        icon: 'images/icon.png',
-        badge: 'images/badge.png'
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyDF1Fl1YdCAddX6ToplB4LC58dEYKhMqls",
+    authDomain: "apppush-3b5aa.firebaseapp.com",
+    projectId: "apppush-3b5aa",
+    storageBucket: "apppush-3b5aa.appspot.com",
+    messagingSenderId: "150342264977",
+    appId: "1:150342264977:web:27b62b14eadbc0af167730",
+    measurementId: "G-SZ4VFV0T6H"
+  };
 
-    event.waitUntil(self.registration.showNotification(title, options));
-});
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+const messaging = firebase.messaging();
