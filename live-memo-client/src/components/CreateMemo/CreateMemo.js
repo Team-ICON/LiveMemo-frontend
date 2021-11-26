@@ -40,13 +40,7 @@ import "./CreateMemo.css"
 
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
-// const api = axios.create({
-//     baseURL: 'http://localhost:4000/api/memo',
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'authorization': token ? `Bearer ${token}` : ''
-//     }
-// });
+
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
@@ -72,6 +66,34 @@ function CreateMemo({ currentUser, socket }) {
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
     let searchEmail = "";
+
+
+
+    const handleDrawerOpen = () => {
+        setDrawerOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+    };
+
+    const handleThreeDotClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleThreeDotClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDialogOpen = () => {
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+    };
+
+
 
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/memo/createMemo", {
@@ -224,6 +246,56 @@ function CreateMemo({ currentUser, socket }) {
 
     }, [CurUserList])
 
+    //for push alarm
+    const sendNotification = async () => {
+        const title = document.getElementById('title').value
+        const msg = document.getElementById('message').value
+
+
+        let targetFcmTokenList = []
+        // api서버로부터 해당 메모의 userlist에 있는 유저들의 토큰 요청하기(본인 제외)
+        // method : POST
+        // api.POST('/push/fcmTokenList')
+
+        await api.put("/push/fcmTokenList", {
+            memoId: state.roomId
+        }).then(res => {
+            targetFcmTokenList = res.data.fcmTokenList
+        });
+
+
+        // 각 유저마다 push 보내기
+
+
+        targetFcmTokenList.forEach(fcmToken => {
+            let body = {
+                to: fcmToken,
+                notification: {
+                    title: title,
+                    body: msg,
+                    icon: "ori.jpg",
+                    // click_action : "https://livememoshop.shop"
+                }
+            }
+
+            let options = {
+                method: "POST",
+                headers: new Headers({
+                    Authorization: "AAAAIwEY6JE:APA91bGbj3Z6HuZqZxFvKcbuyEhjWeU24g4kGRjiLLH-kMhQzubFoXLiQe8EvaOKTt0ZFl2sxLWHw3nYNZiIReEUnN0phUaiD-T-Xbi2Fnd4L0Lcpn89JtaUANDk0s7vrzxj5p7fDVWO",
+                    "Content-Type": "application/json"
+                }),
+                body: JSON.stringify(body)
+            }
+
+            fetch("https://fcm.googleapis.com/fcm/send", options).then(res => {
+                console.log(res)
+                console.log('SENT')
+            }).catch(e => console.log(e))
+        })
+
+        handleDialogClose()
+
+    }
 
 
 
@@ -240,29 +312,7 @@ function CreateMemo({ currentUser, socket }) {
         socket.emit('newUser', searchEmail);
     }
 
-    const handleDrawerOpen = () => {
-        setDrawerOpen(true);
-    };
 
-    const handleDrawerClose = () => {
-        setDrawerOpen(false);
-    };
-
-    const handleThreeDotClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleThreeDotClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleDialogOpen = () => {
-        setDialogOpen(true);
-    };
-
-    const handleDialogClose = () => {
-        setDialogOpen(false);
-    };
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
@@ -483,7 +533,7 @@ function CreateMemo({ currentUser, socket }) {
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handleDialogClose}>Cancel</Button>
-                                    <Button onClick={handleDialogClose}>push</Button>
+                                    <Button onClick={sendNotification}>push</Button>
                                 </DialogActions>
                             </Dialog>
                         </MenuItem>

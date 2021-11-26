@@ -13,7 +13,10 @@ import { useSelector, useDispatch } from 'react-redux';
 // import CreateMemo from "./CreateMemo/CreateMemo"
 import CircularProgress from '@mui/material/CircularProgress';
 import { api } from "../axios";
-
+import { SubscribeUser } from "../push"
+import useImportScript from "./hooks/useImportScript"
+const firebase_app = "https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"
+const firebase_messaging = "https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"
 const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
 const Login = lazy(() => import("../components/LoginPage/Login"))
@@ -35,6 +38,7 @@ const App = ({ socket }) => {
       })
   }, [])
 
+
   const user = useSelector(selectUser);
 
   const isToken = localStorage.getItem('livememo-token');
@@ -45,6 +49,10 @@ const App = ({ socket }) => {
   useEffect(() => {
     setToken(isToken);
   }, [token])
+
+  useImportScript(firebase_app)
+  useImportScript(firebase_messaging)
+
 
   return (
     <Router>
