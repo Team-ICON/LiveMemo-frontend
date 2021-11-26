@@ -18,12 +18,14 @@ import { api } from "../../axios";
 function MemoList({ currentUser, socket }) {
     const [memos, setMemos] = useState([]);
     const [contents, setContents] = useState([]);
+    const [beReload, setBeRealod] = useState(false)
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
     //새 메모를 위해 필요
     const roomId = uuid();
     useEffect(() => {
+        console.log("28", beReload)
         api.get('/memo/getMemos')
             .then(response => {
 
@@ -44,19 +46,29 @@ function MemoList({ currentUser, socket }) {
             })
 
 
-    }, [])
+    }, [beReload])
+
+
 
 
     useEffect(() => {
-
         (() => {
             socket.on('newUser', (email) => {
-                if (email === currentUser.email)
-                    window.location.reload()
+                if (email === currentUser.email) {
+                    console.log(email)
+                    setTimeout(() => {
+                        setBeRealod(beReload => !beReload)
+                    }, 500);
+
+                }
+
             });
 
         })();
 
+        return () => {
+            setBeRealod(beReload => !beReload)
+        }
     }, [])
 
     //컨텐츠 파싱
