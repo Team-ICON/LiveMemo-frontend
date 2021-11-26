@@ -94,7 +94,6 @@ function CreateMemo({ currentUser, socket }) {
     };
 
 
-
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/memo/createMemo", {
             _id,
@@ -105,20 +104,7 @@ function CreateMemo({ currentUser, socket }) {
         }).then(res => {
         });
     }, [memoTitle]);
-    // const handleSave = useCallback(async (_id, body) => {
-    //     try {
-    //         console.log(_id, body)
-    //         let result = await api.put("createMemo", {
-    //             _id,
-    //             body,
-    //         });
-    //         console.log(`result in handleSave at CreateMemo.js`, result);
-    //         newRoomId = result.data.roomId;
-    //         setCurRoomId(newRoomId);
-    //     } catch(err) {
-    //         console.log(`err in handleSave at CreateMemo.js`, err);
-    //     }
-    // }, []);
+
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
         try {
@@ -151,6 +137,22 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
+    //새로고침 핸들러
+    const beforeunloadHandler = (event) => {
+        event.preventDefault();
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), false)
+
+        selectedProvider.newProvider.disconnect();
+        selectedProvider.newProvider.destroy();
+
+        event.returnValue = ""
+    }
+    useEffect(() => {
+        window.addEventListener('beforeunload', beforeunloadHandler);
+        return () => {
+            window.removeEventListener("beforeunload", beforeunloadHandler);
+        };
+    }, []);
 
 
 
@@ -257,7 +259,7 @@ function CreateMemo({ currentUser, socket }) {
         // method : POST
         // api.POST('/push/fcmTokenList')
 
-        await api.put("/push/fcmTokenList", {
+        await api.post("/push/fcmTokenList", {
             memoId: state.roomId
         }).then(res => {
             targetFcmTokenList = res.data.fcmTokenList

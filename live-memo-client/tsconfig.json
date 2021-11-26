@@ -21,6 +21,9 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "public/push.js",
+    "public/firebase-messaging-sw.js",
+    "firebase.js"
   ]
 }

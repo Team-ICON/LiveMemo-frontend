@@ -1,5 +1,5 @@
-import firebase from 'firebase'
-
+importScripts("https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js")
+importScripts("https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js")
 
 const firebaseConfig = {
   apiKey: "AIzaSyDF1Fl1YdCAddX6ToplB4LC58dEYKhMqls",
@@ -16,4 +16,3 @@ firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
-export { firebaseConfig, messaging, firebase }
