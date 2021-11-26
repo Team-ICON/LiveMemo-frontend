@@ -38,17 +38,6 @@ import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
 import "./CreateMemo.css"
 
-//////////////////////
-// Import the functions you need from the SDKs you need
-
-// import { onBackgroundMessage } from "firebase/messaging/sw";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-////////////
-
-
 
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -568,16 +557,16 @@ function CreateMemo({ currentUser, socket }) {
                         </MenuItem>
                         <Dialog className="moveFolderDia" open={openMoveFolder} onClose={handleMoveClickClose}>
                             <DialogTitle>폴더로 이동</DialogTitle>
-                            <DialogContent sx={{width:300}}>
+                            <DialogContent sx={{ width: 300 }}>
                                 <Autocomplete
                                     id="combo-box-demo"
                                     options={folderList}
-                                    sx={{ width: 250}}
-                                    renderInput={(params) => <TextField {...params}/>}
+                                    sx={{ width: 250 }}
+                                    renderInput={(params) => <TextField {...params} />}
                                     value={selectFolderName || folderList[0]}
                                     onChange={(event, newValue) => {
                                         setSelectFolderName(newValue);
-                                      }}
+                                    }}
                                     isOptionEqualToValue={(option, value) => option.id === value.id}
                                 />
                             </DialogContent>
