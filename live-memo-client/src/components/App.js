@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // import CreateMemo from "./CreateMemo/CreateMemo"
 import CircularProgress from '@mui/material/CircularProgress';
 import { api } from "../axios";
+import useImportScript from "./hooks/useImportScript"
 
 const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
@@ -36,6 +37,7 @@ const App = ({ socket }) => {
       })
   }, [])
 
+
   const user = useSelector(selectUser);
 
   const isToken = localStorage.getItem('livememo-token');
@@ -46,6 +48,8 @@ const App = ({ socket }) => {
   useEffect(() => {
     setToken(isToken);
   }, [token])
+
+
 
   return (
     <Router>

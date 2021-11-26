@@ -1,7 +1,6 @@
 'use strict';
 
-const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQ' +
-  'C_496a12auzzKFnjgFjCsys_YtWkeMLhogfSlyM0CaIktx7o';
+const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQC_496a12auzzKFnjgFjCsys_YtWkeMLhogfSlyM0CaIktx7o';
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -63,74 +62,73 @@ function subscribeUser() {
     userVisibleOnly: true,
     applicationServerKey: applicationServerKey
   })
-  .then(function(subscription) {
-    console.log('User is subscribed.');
-    console.log(`subscription`, subscription);
+    .then(function (subscription) {
+      console.log('User is subscribed.');
+      console.log(`subscription`, subscription);
 
-    updateSubscriptionOnServer(subscription);
+      updateSubscriptionOnServer(subscription);
 
-    isSubscribed = true;
+      isSubscribed = true;
 
-    updateBtn();
-  })
-  .catch(function(err) {
-    console.log('Failed to subscribe the user: ', err);
-    updateBtn();
-  });
+    })
+    .catch(function (err) {
+      console.log('Failed to subscribe the user: ', err);
+      updateBtn();
+    });
 }
 
-function unsubscribeUser() {
-  swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    if (subscription) {
-      return subscription.unsubscribe();
-    }
-  })
-  .catch(function(error) {
-    console.log('Error unsubscribing', error);
-  })
-  .then(function() {
-    updateSubscriptionOnServer(null);
+// function unsubscribeUser() {
+//   swRegistration.pushManager.getSubscription()
+//   .then(function(subscription) {
+//     if (subscription) {
+//       return subscription.unsubscribe();
+//     }
+//   })
+//   .catch(function(error) {
+//     console.log('Error unsubscribing', error);
+//   })
+//   .then(function() {
+//     updateSubscriptionOnServer(null);
 
-    console.log('User is unsubscribed.');
-    isSubscribed = false;
+//     console.log('User is unsubscribed.');
+//     isSubscribed = false;
 
-    updateBtn();
-  });
-}
+//     updateBtn();
+//   });
+// }
 
 function initializeUI() {
   // Set the initial subscription value
   swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    isSubscribed = !(subscription === null);
+    .then(function (subscription) {
+      isSubscribed = !(subscription === null);
 
-    updateSubscriptionOnServer(subscription);
+      // updateSubscriptionOnServer(subscription);
 
-    if (isSubscribed) {
-      console.log('User IS subscribed.');
-      console.log(`subscription`, subscription);
-    } else {
-      console.log('User is NOT subscribed.');
-      subscribeUser();
-    }
+      if (isSubscribed) {
+        console.log('User IS subscribed.');
+        console.log(`subscription`, subscription);
+      } else {
+        console.log('User is NOT subscribed.');
+        subscribeUser();
+      }
 
-  });
+    });
 }
 
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
   navigator.serviceWorker.register('firebase-messaging-sw.js')
-  .then(function(swReg) {
-    console.log('Service Worker is registered', swReg);
+    .then(function (swReg) {
+      console.log('Service Worker is registered', swReg);
 
-    swRegistration = swReg;
-    initializeUI();
-  })
-  .catch(function(error) {
-    console.error('Service Worker Error', error);
-  });
+      swRegistration = swReg;
+      initializeUI();
+    })
+    .catch(function (error) {
+      console.error('Service Worker Error', error);
+    });
 } else {
   console.warn('Seems PushManager or serviceWorker in navigator is not supported');
   pushButton.textContent = 'Push Not Supported';
