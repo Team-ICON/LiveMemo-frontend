@@ -6873,7 +6873,11 @@ dom-helpers@^5.0.1:
 
 dom-serializer@0:
   version "0.2.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.2.2.tgz#1afb81f533717175d478655debc5e332d9f9bb51"
+=======
   resolved "https://registry.npmjs.org/dom-serializer/-/dom-serializer-0.2.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==
   dependencies:
     domelementtype "^2.0.1"
@@ -6881,13 +6885,22 @@ dom-serializer@0:
 
 dom-serializer@^1.0.1:
   version "1.3.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-1.3.2.tgz#6206437d32ceefaec7161803230c7a20bc1b4d91"
+=======
   resolved "https://registry.npmjs.org/dom-serializer/-/dom-serializer-1.3.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-5c54Bk5Dw4qAxNOI1pFEizPSjVsx5+bpJKmL2kPn8JhBUq2q09tTCa3mjijun2NfK78NMouDYNMBkOrPZiS+ig==
   dependencies:
     domelementtype "^2.0.1"
     domhandler "^4.2.0"
     entities "^2.0.0"
 
+<<<<<<< HEAD
+dom-walk@^0.1.0:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
+=======
 dom-storage@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/dom-storage/-/dom-storage-2.1.0.tgz#00fb868bc9201357ea243c7bcfd3304c1e34ea39"
@@ -6896,45 +6909,74 @@ dom-storage@2.1.0:
 dom-walk@^0.1.0:
   version "0.1.2"
   resolved "https://registry.npmjs.org/dom-walk/-/dom-walk-0.1.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
 
 domain-browser@^1.1.1:
   version "1.2.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
+=======
   resolved "https://registry.npmjs.org/domain-browser/-/domain-browser-1.2.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==
 
 domelementtype@1:
   version "1.3.1"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-1.3.1.tgz#d048c44b37b0d10a7f2a3d5fee3f4333d790481f"
+=======
   resolved "https://registry.npmjs.org/domelementtype/-/domelementtype-1.3.1.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-BSKB+TSpMpFI/HOxCNr1O8aMOTZ8hT3pM3GQ0w/mWRmkhEDSFJkkyzz4XQsBV44BChwGkrDfMyjVD0eA2aFV3w==
 
 domelementtype@^2.0.1, domelementtype@^2.2.0:
   version "2.2.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-2.2.0.tgz#9a0b6c2782ed6a1c7323d42267183df9bd8b1d57"
+=======
   resolved "https://registry.npmjs.org/domelementtype/-/domelementtype-2.2.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-DtBMo82pv1dFtUmHyr48beiuq792Sxohr+8Hm9zoxklYPfa6n0Z3Byjj2IV7bmr2IyqClnqEQhfgHJJ5QF0R5A==
 
 domexception@^2.0.1:
   version "2.0.1"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domexception/-/domexception-2.0.1.tgz#fb44aefba793e1574b0af6aed2801d057529f304"
+=======
   resolved "https://registry.npmjs.org/domexception/-/domexception-2.0.1.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==
   dependencies:
     webidl-conversions "^5.0.0"
 
 domhandler@^4.0.0, domhandler@^4.2.0:
   version "4.2.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-4.2.2.tgz#e825d721d19a86b8c201a35264e226c678ee755f"
+=======
   resolved "https://registry.npmjs.org/domhandler/-/domhandler-4.2.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-PzE9aBMsdZO8TK4BnuJwH0QT41wgMbRzuZrHUcpYncEjmQazq8QEaBWgLG7ZyC/DAZKEgglpIA6j4Qn/HmxS3w==
   dependencies:
     domelementtype "^2.2.0"
 
 domino@^2.1.6:
   version "2.1.6"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domino/-/domino-2.1.6.tgz#fe4ace4310526e5e7b9d12c7de01b7f485a57ffe"
+=======
   resolved "https://registry.npmjs.org/domino/-/domino-2.1.6.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==
 
 domutils@^1.7.0:
   version "1.7.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.7.0.tgz#56ea341e834e06e6748af7a1cb25da67ea9f8c2a"
+=======
   resolved "https://registry.npmjs.org/domutils/-/domutils-1.7.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-Lgd2XcJ/NjEw+7tFvfKxOzCYKZsdct5lczQ2ZaQY8Djz7pfAD3Gbp8ySJWtreII/vDlMVmxwa6pHmdxIYgttDg==
   dependencies:
     dom-serializer "0"
@@ -6942,7 +6984,11 @@ domutils@^1.7.0:
 
 domutils@^2.5.2, domutils@^2.6.0:
   version "2.8.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/domutils/-/domutils-2.8.0.tgz#4437def5db6e2d1f5d6ee859bd95ca7d02048135"
+=======
   resolved "https://registry.npmjs.org/domutils/-/domutils-2.8.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-w96Cjofp72M5IIhpjgobBimYEfoPjx1Vx0BSX9P30WBdZW2WIKU0T1Bd0kz2eNZ9ikjKgHbEyKx8BB6H1L3h3A==
   dependencies:
     dom-serializer "^1.0.1"
@@ -6951,7 +6997,11 @@ domutils@^2.5.2, domutils@^2.6.0:
 
 dot-case@^3.0.4:
   version "3.0.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dot-case/-/dot-case-3.0.4.tgz#9b2b670d00a431667a8a75ba29cd1b98809ce751"
+=======
   resolved "https://registry.npmjs.org/dot-case/-/dot-case-3.0.4.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==
   dependencies:
     no-case "^3.0.4"
@@ -6959,46 +7009,84 @@ dot-case@^3.0.4:
 
 dot-prop@^5.2.0:
   version "5.3.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-5.3.0.tgz#90ccce708cd9cd82cc4dc8c3ddd9abdd55b20e88"
+=======
   resolved "https://registry.npmjs.org/dot-prop/-/dot-prop-5.3.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==
   dependencies:
     is-obj "^2.0.0"
 
 dotenv-expand@5.1.0:
   version "5.1.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
+=======
   resolved "https://registry.npmjs.org/dotenv-expand/-/dotenv-expand-5.1.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
 
 dotenv@8.2.0:
   version "8.2.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
+dotenv@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
+  integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
+
+dotenv@^6.1.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
+=======
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-8.2.0.tgz"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 dotenv@^6.1.0:
   version "6.2.0"
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-6.2.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
 duplexer2@~0.1.4:
   version "0.1.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.1.4.tgz#8b12dab878c0d69e3e7891051662a32fc6bddcc1"
+=======
   resolved "https://registry.npmjs.org/duplexer2/-/duplexer2-0.1.4.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha1-ixLauHjA1p4+eJEFFmKjL8a93ME=
   dependencies:
     readable-stream "^2.0.2"
 
 duplexer3@^0.1.4:
   version "0.1.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
+=======
   resolved "https://registry.npmjs.org/duplexer3/-/duplexer3-0.1.4.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
 
 duplexer@^0.1.1:
   version "0.1.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
+=======
   resolved "https://registry.npmjs.org/duplexer/-/duplexer-0.1.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
 
 duplexify@^3.4.2, duplexify@^3.6.0:
   version "3.7.1"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/duplexify/-/duplexify-3.7.1.tgz#2a4df5317f6ccfd91f86d6fd25d8d8a103b88309"
+=======
   resolved "https://registry.npmjs.org/duplexify/-/duplexify-3.7.1.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-07z8uv2wMyS51kKhD1KsdXJg5WQ6t93RneqRxUHnskXVtlYYkLqM0gqStQZ3pj073g687jPCHrqNfCzawLYh5g==
   dependencies:
     end-of-stream "^1.0.0"
@@ -7008,7 +7096,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
 
 duplexify@^4.0.0:
   version "4.1.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/duplexify/-/duplexify-4.1.2.tgz#18b4f8d28289132fa0b9573c898d9f903f81c7b0"
+=======
   resolved "https://registry.npmjs.org/duplexify/-/duplexify-4.1.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-fz3OjcNCHmRP12MJoZMPglx8m4rrFP8rovnk4vT8Fs+aonZoCwGg10dSsQsfP/E62eZcPTMSMP6686fu9Qlqtw==
   dependencies:
     end-of-stream "^1.4.1"
@@ -7018,7 +7110,11 @@ duplexify@^4.0.0:
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
+=======
   resolved "https://registry.npmjs.org/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha1-OoOpBOVDUyh4dMVkt1SThoSamMk=
   dependencies:
     jsbn "~0.1.0"
@@ -7026,29 +7122,49 @@ ecc-jsbn@~0.1.1:
 
 ecdsa-sig-formatter@1.0.11, ecdsa-sig-formatter@^1.0.11:
   version "1.0.11"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz#ae0f0fa2d85045ef14a817daa3ce9acd0489e5bf"
+=======
   resolved "https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==
   dependencies:
     safe-buffer "^5.0.1"
 
 ee-first@1.1.1:
   version "1.1.1"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
+=======
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 ejs@^2.6.1:
   version "2.7.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.7.4.tgz#48661287573dcc53e366c7a1ae52c3a120eec9ba"
+=======
   resolved "https://registry.npmjs.org/ejs/-/ejs-2.7.4.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
 electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.896:
   version "1.3.906"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.906.tgz#144e212691e35fa8c294431e2ecb51e4b03f7577"
+=======
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.906.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-UjoECdcOYIVzWmrbtNnYpPrDuu+RtiO5W08Vdbid9ydGQMSdnqtJUtvOqQEAVQqpoXN9kSW9YnQufvzLQMYQOw==
 
 elliptic@^6.5.3:
   version "6.5.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
+=======
   resolved "https://registry.npmjs.org/elliptic/-/elliptic-6.5.4.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==
   dependencies:
     bn.js "^4.11.9"
@@ -7061,86 +7177,150 @@ elliptic@^6.5.3:
 
 emittery@^0.7.1:
   version "0.7.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.7.2.tgz#25595908e13af0f5674ab419396e2fb394cdfa82"
+=======
   resolved "https://registry.npmjs.org/emittery/-/emittery-0.7.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-A8OG5SR/ij3SsJdWDJdkkSYUjQdCUx6APQXem0SaEePBSRg4eymGYwBkKo1Y6DU+af/Jn2dBQqDBvjnr9Vi8nQ==
 
 emoji-regex@^7.0.1:
   version "7.0.3"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
+=======
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-7.0.3.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
+=======
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==
 
 emoji-regex@^9.2.2:
   version "9.2.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.2.2.tgz#840c8803b0d8047f4ff0cf963176b32d4ef3ed72"
+=======
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-9.2.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==
 
 emojibase-data@^6.1.0:
   version "6.2.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojibase-data/-/emojibase-data-6.2.0.tgz#db6c75c36905284fa623f4aa5f468d2be6ed364a"
+=======
   resolved "https://registry.npmjs.org/emojibase-data/-/emojibase-data-6.2.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-SWKaXD2QeQs06IE7qfJftsI5924Dqzp+V9xaa5RzZIEWhmlrG6Jt2iKwfgOPHu+5S8MEtOI7GdpKsXj46chXOw==
 
 emojibase-regex@^5.1.1:
   version "5.1.3"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojibase-regex/-/emojibase-regex-5.1.3.tgz#f0ef621ed6ec624becd2326f999fd4ea01b94554"
+=======
   resolved "https://registry.npmjs.org/emojibase-regex/-/emojibase-regex-5.1.3.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-gT8T9LxLA8VJdI+8KQtyykB9qKzd7WuUL3M2yw6y9tplFeufOUANg3UKVaKUvkMcRNvZsSElWhxcJrx8WPE12g==
 
 emojibase-regex@^6.0.0:
   version "6.0.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojibase-regex/-/emojibase-regex-6.0.0.tgz#2d236f6bd38e6aa69089707eb06fe1f6a3270198"
+=======
   resolved "https://registry.npmjs.org/emojibase-regex/-/emojibase-regex-6.0.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-vpo76XcjjFapY4Q1vZAp8fu07p9lNCZi0TMtpZ3XyHYRqnqYZTzHgSI7tMvpYmnD8xt9o4XC5oUaSJXT4Ky9Tw==
 
 emojibase@^5.1.0:
   version "5.2.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojibase/-/emojibase-5.2.0.tgz#3b53899f9a9f8aae1280db446c83ce28f1d286d5"
+=======
   resolved "https://registry.npmjs.org/emojibase/-/emojibase-5.2.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-5T02oTJaWpScAtYbukKVc8vQ1367MyfVtFHUMoOVZ9/r1kFcbYqjSktD56TICBAeyW9uc1t+7qQuXEtntM6p5A==
 
 emojibase@^6.0.0:
   version "6.0.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojibase/-/emojibase-6.0.2.tgz#1e76996b2bd9e6927e51f54c3995245b03eacb02"
+=======
   resolved "https://registry.npmjs.org/emojibase/-/emojibase-6.0.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-2h2eblOm86tj+lsJLgLYmEni13H74KNNu1NI1ZgMOX9ByWuvjFZLhETEUH1edpcd8srAlzhfJSD892UbpxfwsA==
 
 emojis-list@^2.0.0:
   version "2.1.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
+=======
   resolved "https://registry.npmjs.org/emojis-list/-/emojis-list-2.1.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
 
 emojis-list@^3.0.0:
   version "3.0.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
+=======
   resolved "https://registry.npmjs.org/emojis-list/-/emojis-list-3.0.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
 
 enabled@2.0.x:
   version "2.0.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/enabled/-/enabled-2.0.0.tgz#f9dd92ec2d6f4bbc0d5d1e64e21d61cd4665e7c2"
+=======
   resolved "https://registry.npmjs.org/enabled/-/enabled-2.0.0.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==
 
 encodeurl@~1.0.2:
   version "1.0.2"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
+=======
   resolved "https://registry.npmjs.org/encodeurl/-/encodeurl-1.0.2.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
 
 encoding@^0.1.12:
   version "0.1.13"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.13.tgz#56574afdd791f54a8e9b2785c0582a2d26210fa9"
+=======
   resolved "https://registry.npmjs.org/encoding/-/encoding-0.1.13.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==
   dependencies:
     iconv-lite "^0.6.2"
 
 end-of-stream@^1.0.0, end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   version "1.4.4"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.4.tgz#5ae64a5f45057baf3626ec14da0ca5e4b2431eb0"
+=======
   resolved "https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.4.4.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==
   dependencies:
     once "^1.4.0"
 
 engine.io-client@~6.1.1:
   version "6.1.1"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-6.1.1.tgz#800d4b9db5487d169686729e5bd887afa78d36b0"
+=======
   resolved "https://registry.npmjs.org/engine.io-client/-/engine.io-client-6.1.1.tgz"
+>>>>>>> 1a4390e91e939f28a3609b42c5e83582392a5a1e
   integrity sha512-V05mmDo4gjimYW+FGujoGmmmxRaDsrVr7AXA3ZIfa04MWM1jOfZfUwou0oNqhNwy/votUDvGDt4JA4QF4e0b4g==
   dependencies:
     "@socket.io/component-emitter" "~3.0.0"

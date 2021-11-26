@@ -4,9 +4,14 @@ import './index.css';
 import App from './components/App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
-import socketio from 'socket.io-client';
+import dotenv from 'dotenv';
+import "./messaging_get_token";
 
-const socket = socketio.connect('http://localhost:4000');
+import socketio from 'socket.io-client';
+import { baseUrl } from "./axios";
+
+
+const socket = socketio.connect(baseUrl);
 
 
 ReactDOM.render(

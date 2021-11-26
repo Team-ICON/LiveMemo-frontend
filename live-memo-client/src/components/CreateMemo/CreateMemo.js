@@ -38,6 +38,44 @@ import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
 import "./CreateMemo.css"
 
+//////////////////////
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// import { onBackgroundMessage } from "firebase/messaging/sw";
+import dotenv from "dotenv";
+
+dotenv.config();
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+console.log(`REACT_APP_FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
+console.log(`FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: "livememo-frontend.firebaseapp.com",
+  projectId: "livememo-frontend",
+  storageBucket: "livememo-frontend.appspot.com",
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+// Get registration token. Initially this makes a network call, once retrieved
+// subsequent calls to getToken will return from cache.
+const messaging = getMessaging();
+
+
+////////////
+
+
+
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
@@ -253,7 +291,6 @@ function CreateMemo({ currentUser, socket }) {
         const title = document.getElementById('title').value
         const msg = document.getElementById('message').value
 
-
         let targetFcmTokenList = []
         // api서버로부터 해당 메모의 userlist에 있는 유저들의 토큰 요청하기(본인 제외)
         // method : POST
@@ -265,38 +302,34 @@ function CreateMemo({ currentUser, socket }) {
             targetFcmTokenList = res.data.fcmTokenList
         });
 
-
+        
         // 각 유저마다 push 보내기
-
-
-        targetFcmTokenList.forEach(fcmToken => {
+        let result = targetFcmTokenList.map(fcmToken => {
             let body = {
-                to: fcmToken,
-                notification: {
+                    to: fcmToken,
+                    notification: {
                     title: title,
-                    body: msg,
-                    icon: "ori.jpg",
-                    // click_action : "https://livememoshop.shop"
+                    body: msg
                 }
             }
 
             let options = {
-                method: "POST",
+                method : "POST",
                 headers: new Headers({
-                    Authorization: "AAAAIwEY6JE:APA91bGbj3Z6HuZqZxFvKcbuyEhjWeU24g4kGRjiLLH-kMhQzubFoXLiQe8EvaOKTt0ZFl2sxLWHw3nYNZiIReEUnN0phUaiD-T-Xbi2Fnd4L0Lcpn89JtaUANDk0s7vrzxj5p7fDVWO",
-                    "Content-Type": "application/json"
-                }),
+                Authorization:"key=AAAA4sQcU_I:APA91bEqamNYS8VueqCFncNdPGEQqEsRdTuKM3vyj7nJIlcVUfceWocALD-mQrxba6plVRkRJMCXwmc0rLqgfneJQpuIOIKnViwzq_xnmsbF_c2auVxq371NWL1S8OgsbOaW2iAxGGyo",
+                'Content-Type': 'application/json'
+            }),
                 body: JSON.stringify(body)
             }
 
-            fetch("https://fcm.googleapis.com/fcm/send", options).then(res => {
-                console.log(res)
-                console.log('SENT')
-            }).catch(e => console.log(e))
+            fetch("https://fcm.googleapis.com/fcm/send", options).then(res=>{
+                console.log(`SENT`);
+                console.log(res);
+            })
+            return 1;
         })
 
         handleDialogClose()
-
     }
 
 

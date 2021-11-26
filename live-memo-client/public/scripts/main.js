@@ -1,7 +1,6 @@
 'use strict';
 
-const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQ' +
-  'C_496a12auzzKFnjgFjCsys_YtWkeMLhogfSlyM0CaIktx7o';
+const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQC_496a12auzzKFnjgFjCsys_YtWkeMLhogfSlyM0CaIktx7o';
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -71,51 +70,32 @@ function subscribeUser() {
 
       isSubscribed = true;
 
-      updateBtn();
     })
     .catch(function (err) {
       console.log('Failed to subscribe the user: ', err);
       updateBtn();
     });
-
-  Notification.requestPermission().then(permission => {
-    console.log(permission);
-    if (permission === "granted") {
-      messaging.getToken({
-        vapidKey: "BHlhjOwtc7AzNvzguw-_aWnUTPR0xXOND8Mi8IjxnbVZZEkCbj"
-          + "2L4fNiUKsruorbzSHLYDtzoxfjR2zVOfdYz9I"
-      }).then(currentToken => {
-        console.log(currentToken);
-        api.put('/user/userFcmToken', {
-          fcmToken: currentToken
-        })
-      })
-    }
-  })
-
-
-
 }
 
-function unsubscribeUser() {
-  swRegistration.pushManager.getSubscription()
-    .then(function (subscription) {
-      if (subscription) {
-        return subscription.unsubscribe();
-      }
-    })
-    .catch(function (error) {
-      console.log('Error unsubscribing', error);
-    })
-    .then(function () {
-      updateSubscriptionOnServer(null);
+// function unsubscribeUser() {
+//   swRegistration.pushManager.getSubscription()
+//   .then(function(subscription) {
+//     if (subscription) {
+//       return subscription.unsubscribe();
+//     }
+//   })
+//   .catch(function(error) {
+//     console.log('Error unsubscribing', error);
+//   })
+//   .then(function() {
+//     updateSubscriptionOnServer(null);
 
-      console.log('User is unsubscribed.');
-      isSubscribed = false;
+//     console.log('User is unsubscribed.');
+//     isSubscribed = false;
 
-      updateBtn();
-    });
-}
+//     updateBtn();
+//   });
+// }
 
 function initializeUI() {
   // Set the initial subscription value
@@ -123,7 +103,7 @@ function initializeUI() {
     .then(function (subscription) {
       isSubscribed = !(subscription === null);
 
-      updateSubscriptionOnServer(subscription);
+      // updateSubscriptionOnServer(subscription);
 
       if (isSubscribed) {
         console.log('User IS subscribed.');
