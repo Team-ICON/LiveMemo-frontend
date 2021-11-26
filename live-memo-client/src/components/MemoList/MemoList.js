@@ -18,6 +18,7 @@ import { api } from "../../axios";
 function MemoList({ currentUser, socket }) {
     const [memos, setMemos] = useState([]);
     const [contents, setContents] = useState([]);
+    const [beReload, setBeRealod] = useState(false)
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -44,15 +45,17 @@ function MemoList({ currentUser, socket }) {
             })
 
 
-    }, [])
+    }, [beReload])
 
 
     useEffect(() => {
 
         (() => {
             socket.on('newUser', (email) => {
-                if (email === currentUser.email)
-                    window.location.reload()
+                if (email === currentUser.email) {
+                    setBeRealod(beReload => !beReload)
+                }
+
             });
 
         })();
