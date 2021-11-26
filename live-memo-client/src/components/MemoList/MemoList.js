@@ -14,23 +14,8 @@ import Typography from '@mui/material/Typography';
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
 import { api } from "../../axios";
 
-// const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
-const { Title } = Typography
 
-const cookies = new Cookies();
-const token = cookies.get('livememo-token');
-
-// const api = axios.create({
-//     baseURL: 'http://localhost:4000/api/memo',
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'authorization': token ? `Bearer ${token}` : ''
-//     }
-// });
-
-
-
-function MemoList({ currentUser }) {
+function MemoList({ currentUser, socket }) {
     const [memos, setMemos] = useState([]);
     const [contents, setContents] = useState([]);
     const dispatch = useDispatch();
@@ -57,6 +42,21 @@ function MemoList({ currentUser }) {
                     alert('Couldnt get memo`s lists')
                 }
             })
+
+
+    }, [])
+
+
+    useEffect(() => {
+
+        (() => {
+            socket.on('newUser', (email) => {
+                if (email === currentUser.email)
+                    window.location.reload()
+            });
+
+        })();
+
     }, [])
 
     //컨텐츠 파싱
@@ -117,30 +117,7 @@ function MemoList({ currentUser }) {
     };
 
 
-    // console.log(contents)
-    // return (
 
-    //     <div className="memoList">
-    //         <Layout>
-    //             <div className="memoList__list">
-
-    //                 {contents.map(({ roomId, context, updatedTime }) => (
-    // <MemoRow
-    //     key={roomId}
-    //     roomId={roomId}
-    //     contents={context}
-    //     time={new Date(updatedTime).toDateString()} />
-    //                     //  {/* new Date(createdAt).toDateString() */}
-    //                 ))}
-
-
-
-    //                 <Footer />
-
-    //             </div>
-    //         </Layout>
-    //     </div>
-    // )
 
     const timeFormatting = (updatedTime) => {
         const time = new Date(updatedTime);
@@ -156,7 +133,7 @@ function MemoList({ currentUser }) {
 
         var timeString = hours + ':' + minutes + ':' + seconds;
 
-        return (dateString +" "+ timeString);
+        return (dateString + " " + timeString);
 
 
     }
@@ -179,7 +156,7 @@ function MemoList({ currentUser }) {
                                         roomId={memo.roomId}
                                         title={memo.title}
                                         contents={memo.context}
-                                        shareUserCount= {memo.shareUserCount}
+                                        shareUserCount={memo.shareUserCount}
                                         isBookMark={memo.isBookMark}
                                         time={timeFormatting(memo.updatedTime)} />
 
