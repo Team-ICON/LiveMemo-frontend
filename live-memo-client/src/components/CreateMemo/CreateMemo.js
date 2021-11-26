@@ -31,6 +31,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
 
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import { height } from '@mui/system';
+
+
+
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 // const api = axios.create({
@@ -41,13 +52,16 @@ const token = cookies.get('livememo-token');
 //     }
 // });
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
+let folderList = [];
+
 function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
     const [open, setOpen] = useState(false);
     const { state } = useLocation()
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
-    const [curMemberList, setCurMemberList] = useState([])
+    const [curMemberList, setCurMemberList] = useState([]);
+
     // three dot button
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
     const [isMicOn, setIsMicOn] = useState(false);
@@ -61,6 +75,29 @@ function CreateMemo({ currentUser, socket }) {
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
     let searchEmail = "";
+    // 이동할 폴더 이름
+    const [selectFolderName, setSelectFolderName] = useState(folderList[0]);
+
+    //최초 실행 시 폴더 리스트를 받아옴
+    useEffect(() => {
+        let tempFolderList = [];
+
+        api.get('/folder/show')
+            .then(response => {
+                if (response.data.success) {
+                    response.data.folders.map((item) => (
+                        tempFolderList = [...tempFolderList, { label: item }]
+                    ))
+                    folderList = tempFolderList;
+                } else {
+                    alert('폴더가 없습니다.')
+                }
+            })
+    }, [])
+
+
+
+
 
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/memo/createMemo", {
@@ -117,8 +154,6 @@ function CreateMemo({ currentUser, socket }) {
         }
 
     }, []);
-
-
 
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
@@ -194,23 +229,43 @@ function CreateMemo({ currentUser, socket }) {
 
     }
 
+
+    // 메모를 특정 폴더로 이동
+
+    const [openMoveFolder, setOpenMoveFolder] = useState(false);
+    const handleMoveClickOpen = () => {
+        setOpenMoveFolder(true);
+    };
+    const handleMoveClickClose = () => {
+        setOpenMoveFolder(false);
+    };
+
+    const moveMemo = (event) => {
+        event.preventDefault();
+
+        const findMemoId = selectedProvider.documentId
+        const selectFolder = selectFolderName.label;
+        api.post("/folder/move", {
+            memoId: findMemoId,
+            afterFolder: selectFolder
+
+        }).then(response => { handleMoveClickClose() })
+
+    }
+
+
     //실시간 유저 변경
     useEffect(() => {
-
         if (CurUserList) {
             // curUserUpdate(CurUserList)
             setCurMemberList([...CurUserList])
-
         }
-
         return () => {
             //     // let list = curMemberList.filter(member => member.email !== currentUser)
             //     // console.log("curMemberList", curMemberList)
             //     // console.log("CurUserList", CurUserList)
             setCurMemberList([])
-
         }
-
     }, [CurUserList])
 
 
@@ -360,7 +415,7 @@ function CreateMemo({ currentUser, socket }) {
                             <StyledInputBase
                                 placeholder="사용자 메일을 입력해주세요."
                                 inputProps={{ 'aria-label': 'search' }}
-                                onChange={handleChange}
+                                onChange={(e) => handleChange(e)}
                             />
                         </Search>
                         <button className="addButton" onClick={addUser}>
@@ -430,11 +485,32 @@ function CreateMemo({ currentUser, socket }) {
                             },
                         }}
                     >
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={handleMoveClickOpen}>
                             <IconButton style={{ color: 'black' }}>
                                 <DriveFolderUploadIcon />
                             </IconButton>
                         </MenuItem>
+                        <Dialog className="moveFolderDia" open={openMoveFolder} onClose={handleMoveClickClose}>
+                            <DialogTitle>폴더로 이동</DialogTitle>
+                            <DialogContent sx={{width:300}}>
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={folderList}
+                                    sx={{ width: 250}}
+                                    renderInput={(params) => <TextField {...params}/>}
+                                    value={selectFolderName || folderList[0]}
+                                    onChange={(event, newValue) => {
+                                        setSelectFolderName(newValue);
+                                      }}
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={moveMemo}>이동</Button>
+                                <Button onClick={handleMoveClickClose}>취소</Button>
+                            </DialogActions>
+                        </Dialog>
+
                         <MenuItem onClick={handleClose}>
                             <IconButton style={{ color: 'black' }}>
                                 <NotificationsIcon />
@@ -473,4 +549,6 @@ function CreateMemo({ currentUser, socket }) {
         </div >
     )
 }
+
+
 export default CreateMemo
