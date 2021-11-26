@@ -1,7 +1,6 @@
 'use strict';
 
-const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQ' +
-  'C_496a12auzzKFnjgFjCsys_YtWkeMLhogfSlyM0CaIktx7o';
+const applicationServerPublicKey = process.env.REACT_APP_DB_HOST;
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -71,7 +70,6 @@ function subscribeUser() {
 
     isSubscribed = true;
 
-    updateBtn();
   })
   .catch(function(err) {
     console.log('Failed to subscribe the user: ', err);
