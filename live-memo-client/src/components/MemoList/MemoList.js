@@ -25,6 +25,7 @@ function MemoList({ currentUser, socket }) {
     //새 메모를 위해 필요
     const roomId = uuid();
     useEffect(() => {
+        console.log("28", beReload)
         api.get('/memo/getMemos')
             .then(response => {
 
@@ -48,18 +49,26 @@ function MemoList({ currentUser, socket }) {
     }, [beReload])
 
 
-    useEffect(() => {
 
+
+    useEffect(() => {
         (() => {
             socket.on('newUser', (email) => {
                 if (email === currentUser.email) {
-                    setBeRealod(beReload => !beReload)
+                    console.log(email)
+                    setTimeout(() => {
+                        setBeRealod(beReload => !beReload)
+                    }, 500);
+
                 }
 
             });
 
         })();
 
+        return () => {
+            setBeRealod(beReload => !beReload)
+        }
     }, [])
 
     //컨텐츠 파싱
