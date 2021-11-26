@@ -1,6 +1,6 @@
 'use strict';
 
-const applicationServerPublicKey = process.env.REACT_APP_APPLICATION_SERVER_PUBLIC_KEY;
+const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQC_496a12auzzKFnjgFjCsys_YtWkeMLhogfSlyM0CaIktx7o';
 
 const pushButton = document.querySelector('.js-push-btn');
 

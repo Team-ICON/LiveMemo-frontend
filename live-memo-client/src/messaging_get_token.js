@@ -14,14 +14,24 @@ dotenv.config();
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 console.log(`REACT_APP_FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
 console.log(`FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
+// const firebaseConfig = {
+//   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+//   authDomain: "livememo-frontend.firebaseapp.com",
+//   projectId: "livememo-frontend",
+//   storageBucket: "livememo-frontend.appspot.com",
+//   messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+//   appId: process.env.REACT_APP_FIREBASE_APP_ID,
+//   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+// };
+
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: "AIzaSyAZmO_8FXsRmWTDjxOSAjEyyLhFAoAF2zU",
   authDomain: "livememo-frontend.firebaseapp.com",
   projectId: "livememo-frontend",
   storageBucket: "livememo-frontend.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+  messagingSenderId: "973952799730",
+  appId: "1:973952799730:web:240348ea1675df615b116b",
+  measurementId: "G-BKD7HTN2N0"
 };
 
 // Initialize Firebase
