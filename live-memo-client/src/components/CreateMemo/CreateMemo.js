@@ -1,35 +1,42 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router';
+import { Cookies } from "react-cookie";
 import Editor from '../editor/Editor';
+import { api } from "../../axios";
+import UserProvider from '../../UserProvider'
+//redux
+import { useSelector, useDispatch } from 'react-redux';
+import { selectOpenProvider, selectOpenDoc, } from '../../features/memoSlice';
+import { getCurUsers } from '../../features/userSlice';
+//material ui
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Drawer from '@mui/material/Drawer';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Avatar, IconButton } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import MicIcon from '@mui/icons-material/Mic';
 import { deepPurple } from '@mui/material/colors';
-// import axios from 'axios';
-import { api } from "../../axios";
-import UserProvider from '../../UserProvider'
-import { useSelector, } from 'react-redux';
-import { selectOpenProvider, selectOpenDoc, } from '../../features/memoSlice';
-import { getCurUsers } from '../../features/userSlice';
-import { useDispatch } from 'react-redux';
-
-import { Cookies } from "react-cookie";
-import "./CreateMemo.css"
-import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import { MenuItem } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
+import "./CreateMemo.css"
 
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
@@ -43,14 +50,18 @@ const token = cookies.get('livememo-token');
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
-    const [open, setOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false)
     const { state } = useLocation()
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
+    //current connect member state
     const [curMemberList, setCurMemberList] = useState([])
-    // three dot button
+    //bookmark
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
+    //mic button
     const [isMicOn, setIsMicOn] = useState(false);
+    //three dot state
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
@@ -230,21 +241,28 @@ function CreateMemo({ currentUser, socket }) {
     }
 
     const handleDrawerOpen = () => {
-        setOpen(true);
+        setDrawerOpen(true);
     };
 
     const handleDrawerClose = () => {
-        setOpen(false);
+        setDrawerOpen(false);
     };
 
-    const handleClick = (event) => {
+    const handleThreeDotClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleThreeDotClose = () => {
         setAnchorEl(null);
     };
 
+    const handleDialogOpen = () => {
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+    };
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
@@ -337,7 +355,7 @@ function CreateMemo({ currentUser, socket }) {
                 }}
                 variant="persistent"
                 anchor="right"
-                open={open}
+                open={drawerOpen}
             >
                 <DrawerHeader>
                     <div className='icon__left'>
@@ -414,7 +432,7 @@ function CreateMemo({ currentUser, socket }) {
                         id="long-button"
                         aria-expanded={threeDotOpen ? 'true' : undefined}
                         aria-haspopup="true"
-                        onClick={handleClick}
+                        onClick={handleThreeDotClick}
                         style={{ color: 'white' }}
                     >
                         <MoreVertIcon />
@@ -422,7 +440,7 @@ function CreateMemo({ currentUser, socket }) {
                     <Menu
                         anchorEl={anchorEl}
                         open={threeDotOpen}
-                        onClose={handleClose}
+                        onClose={handleThreeDotClose}
                         PaperProps={{
                             style: {
                                 maxHeight: ITEM_HEIGHT * 4.5,
@@ -430,15 +448,44 @@ function CreateMemo({ currentUser, socket }) {
                             },
                         }}
                     >
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={handleThreeDotClose}>
                             <IconButton style={{ color: 'black' }}>
                                 <DriveFolderUploadIcon />
                             </IconButton>
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <IconButton style={{ color: 'black' }}>
+                        <MenuItem >
+                            <IconButton onClick={handleDialogOpen} style={{ color: 'black' }}>
                                 <NotificationsIcon />
                             </IconButton>
+                            <Dialog open={dialogOpen} onClose={handleDialogClose}>
+                                <DialogTitle>Push Message</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        To push message to other member, please enter your message here.
+                                    </DialogContentText>
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="title"
+                                        label="Title"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                    />
+                                    <TextField
+                                        margin="dense"
+                                        id="message"
+                                        label="Message"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleDialogClose}>Cancel</Button>
+                                    <Button onClick={handleDialogClose}>push</Button>
+                                </DialogActions>
+                            </Dialog>
                         </MenuItem>
                         <MenuItem onClick={deleteMemo}>
                             <IconButton style={{ color: 'black' }}>
