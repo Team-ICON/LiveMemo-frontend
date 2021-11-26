@@ -11,16 +11,30 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
+import CreateNewFolderTwoToneIcon from '@mui/icons-material/CreateNewFolderTwoTone';
+import Fab from '@mui/material/Fab';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FolderTwoToneIcon from '@mui/icons-material/FolderTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 import {
     Link,
 } from "react-router-dom";
 import { formControlUnstyledClasses } from "@mui/core";
 import "./FolderList.css"
+import { List } from "@mui/material";
 
 import { api } from "../../axios";
 
@@ -102,8 +116,31 @@ const ImageMarked = styled('span')(({ theme }) => ({
 }));
 
 
+const openFolder = (name) => {
+    // folder open
+    api.post('/folder/open', { folderName: name })
+        .then(response => {
+            if (response.data.success) {
+                console.log("Success Open Folder");
+            }
+        })
+}
+
+const deleteFolder = (name) => {
+    // folder delete
+    api.post('/folder/delete', { folderName: name })
+        .then(response => {
+            if (response.data.success) {
+                console.log("Success Delete Folder");
+            }
+        })
+
+}
+
+
 
 function FolderList() {
+    const [folderName, setFolderName] = useState("");
     const [folders, setFolders] = useState([])
 
     useEffect(() => {
@@ -115,7 +152,23 @@ function FolderList() {
                     alert('폴더가 없습니다.')
                 }
             })
-    }, [])
+    }, [folders])
+
+    const createFolder = (name) => {
+        if (name === "") {
+            return;
+        }
+        // folder create 추가
+        api.post('/folder/create', { folderName: name })
+            .then(response => {
+                if (response.data.success) {
+                    console.log("Success Make Folder");
+                }
+            })
+
+    }
+
+
 
 
     const [open, setOpen] = useState(false);
@@ -126,56 +179,50 @@ function FolderList() {
         setOpen(false);
     };
 
-    const [folderName, setFolderName] = useState("");
 
     const handleFolderNameChange = (e) => {
         setFolderName(e.target.value);
     }
 
-    return (
-        <div className="header__folderlist">
 
-            <div className="folderList">
-                <IconButton style={{ color: 'white' }}>
+
+    return (
+        <div className="folderlist">
+            <div className="header__folderlist">
+                <div>
                     <Link to="/">
-                        <ArrowBackIosNewIcon />
+                        <IconButton style={{ color: 'white' }}>
+                            <ArrowBackIosNewIcon />
+                        </IconButton>
                     </Link>
-                </IconButton>
+                </div>
             </div>
 
-
-            <div className="emailList__list">
+            <div className="bodyFolderList">
                 {folders.map((item) => (
-                    <ImageButton
-                        focusRipple
-                        key={item}
-                    >
-                        <ImageSrc style={{ backgroundImage: `url(${item.url})` }} />
-                        <ImageBackdrop className="MuiImageBackdrop-root" />
-                        <Image>
-                            <Typography
-                                component="span"
-                                variant="subtitle1"
-                                color="inherit"
-                                sx={{
-                                    position: 'relative',
-                                    p: 4,
-                                    pt: 2,
-                                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                                }}
-                            >
-                                {item}
-                                <ImageMarked className="MuiImageMarked-root" />
-                            </Typography>
-                        </Image>
-                    </ImageButton>
+                    <div className="folderElem" key={item}>
+                        <div className="folderElemName" onClick={() => { openFolder(item) }}>
+                            <ListItemAvatar>
+                                <FolderTwoToneIcon fontSize="large" />
+                            </ListItemAvatar>
+                            <ListItemText className="folderName"
+                                primary={item}
+                            />
+                        </div>
+                        <div className="folderElemDelete">
+                            <DeleteTwoToneIcon fontSize="large" onClick={() => { deleteFolder(item) }} />
+                        </div>
+                    </div>
                 ))}
             </div>
 
-            <div className="footer__right">
-                <IconButton onClick={handleClickOpen}>
-                    <FolderOpenIcon fontSize='large' />
-                </IconButton>
+
+            <div className="footer_folderList">
+                <div className="footer_folderList_right">
+                    <Fab size="small" aria-label="add" className="footer__addicon" onClick={handleClickOpen} >
+                        <CreateNewFolderTwoToneIcon />
+                    </Fab>
+                </div>
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>폴더 생성</DialogTitle>
                     <DialogContent>
@@ -192,24 +239,15 @@ function FolderList() {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setFolderName("");
-                            if (folderName === "") {
-                                handleClose();
-                                return;
-                            }
-                            // folder create 추가
-                            api.post('/folder/create', { folderName: folderName })
-                                .then(response => {
-                                    if (response.data.success) {
-                                        setFolders([...folders, folderName])
-                                    }
-                                })
+                            createFolder(folderName);
                             handleClose();
                         }}>생성</Button>
                         <Button onClick={handleClose}>취소</Button>
                     </DialogActions>
                 </Dialog>
-            </div>
+            </div >
+
+
         </div>
     );
 }

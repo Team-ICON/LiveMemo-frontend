@@ -13,23 +13,8 @@ import { baseUrl } from "../../axios";
 function Login() {
     const cookies = new Cookies();
     const token = cookies.get('livememo-token');
-    // const api = axios.create({
-    //     baseURL: 'http://localhost:4000/api/user',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'authorization': token ? `Bearer ${token}` : ''
-    //     }
-    // });
-    const dispatch = useDispatch()
-    // const signIn = () => {
-    //     auth.signInWithPopup(provider).then(({ user }) => {
-    //         dispatch(login({
-    //             displayName: user.displayName,
-    //             email: user.email,
-    //             photoUrl: user.photoURL
-    //         }))
-    //     }).catch(error => alert(error.message))
-    // }
+
+
 
     const signIn = async (dispatch) => {
         try {
@@ -39,6 +24,8 @@ function Login() {
             console.log(`err`, err);
         }
     }
+
+
     return (
 
         <div className="login" >

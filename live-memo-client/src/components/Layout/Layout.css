@@ -1,5 +1,6 @@
 .header{
     display:flex;
+    z-index:1;
     flex-direction: row-reverse;
     justify-content: space-between;
     padding-bottom: 10px;
@@ -7,6 +8,7 @@
     /* background-color: rgb(212, 172, 172); */
     background-color: black;
     height: 8vh;
+
 
     position: fixed;
     top: 0;

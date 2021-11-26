@@ -7,13 +7,16 @@ import { Provider } from 'react-redux';
 import dotenv from 'dotenv';
 import "./messaging_get_token";
 
+import socketio from 'socket.io-client';
+import { baseUrl } from "./axios";
 
 
+const socket = socketio.connect(baseUrl);
 
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <App socket={socket} />
   </Provider>
   , document.getElementById('root')
 );

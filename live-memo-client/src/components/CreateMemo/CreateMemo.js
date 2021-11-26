@@ -41,7 +41,7 @@ const token = cookies.get('livememo-token');
 //     }
 // });
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
-function CreateMemo({ currentUser }) {
+function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
     const [open, setOpen] = useState(false);
     const { state } = useLocation()
@@ -50,6 +50,7 @@ function CreateMemo({ currentUser }) {
     const [curMemberList, setCurMemberList] = useState([])
     // three dot button
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
+    const [isMicOn, setIsMicOn] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const threeDotOpen = Boolean(anchorEl);
     const ITEM_HEIGHT = 40;
@@ -59,6 +60,8 @@ function CreateMemo({ currentUser }) {
     const selectedDoc = useSelector(selectOpenDoc)
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
+    let searchEmail = "";
+
     const handleSave = useCallback(async (_id, body, quit) => {
         await api.put("/memo/createMemo", {
             _id,
@@ -88,7 +91,12 @@ function CreateMemo({ currentUser }) {
         try {
             setCurMemberList([])
             if (state.first) {
-                handleSave(state.roomId, JSON.stringify(firstState), false);
+                handleSave(state.roomId, JSON.stringify(firstState), true);
+                // const res = await api.post("/memo/setCurUser", {
+                //     userId: currentUser._id,
+                //     roomId: id
+                // }).then(res => {
+                // });
                 return firstState;
             }
             else {
@@ -171,7 +179,7 @@ function CreateMemo({ currentUser }) {
         api.post("/memo/delete", {
             memoId: findMemoId
         }).then(response => { console.log(response) })
-        
+
 
         // const ret = curMemberList.filter(member => member.email !== currentUser)
         // setCurMemberList(ret)
@@ -191,11 +199,9 @@ function CreateMemo({ currentUser }) {
 
         if (CurUserList) {
             // curUserUpdate(CurUserList)
-            setCurMemberList(Array.from([...CurUserList]))
+            setCurMemberList([...CurUserList])
 
         }
-
-
 
         return () => {
             //     // let list = curMemberList.filter(member => member.email !== currentUser)
@@ -208,79 +214,6 @@ function CreateMemo({ currentUser }) {
     }, [CurUserList])
 
 
-    // useEffect(() => {
-
-    //     api.post('/afterCurUser', { roomId: state.roomId })
-    //         .then(res => {
-    //             if (res.data.success) {
-    //                 console.log(res.data)
-    //                 setCurMemberList([res.data.userdata]);
-    //             }
-    //         }).catch(error => { alert("메일 주소를 확인해주세요."); });
-
-    //     console.log(curMemberList)
-
-
-    // }, [CurUserList['webrtcPeers']])
-
-    // useEffect(() => {
-
-    //     return(<Drawer
-    //         sx={{
-    //             width: window.innerWidth,
-    //             flexShrink: 0,
-    //             '& .MuiDrawer-paper': {
-    //                 width: window.innerWidth,
-    //             },
-    //         }}
-    //         variant="persistent"
-    //         anchor="right"
-    //         open={open}
-    //     >
-    //         <DrawerHeader>
-    //             <IconButton onClick={handleDrawerClose}>
-    //                 <CloseIcon />
-    //             </IconButton>
-    //             <GroupAddIcon />
-    //         </DrawerHeader>
-    //         <Divider />
-    //         <List>
-    //             <div className="searchUser">
-    //                 <Search>
-    //                     <SearchIconWrapper>
-    //                         <SearchIcon />
-    //                     </SearchIconWrapper>
-    //                     <StyledInputBase
-    //                         placeholder="사용자 메일을 입력해주세요."
-    //                         inputProps={{ 'aria-label': 'search' }}
-    //                         onChange={handleChange}
-    //                     />
-    //                 </Search>
-    //                 <button className="addButton" onClick={addUser}>
-    //                     Add
-    //                 </button>
-    //             </div >
-
-    //         </List>
-    //         <Divider />
-    //         <div>
-    //             {memberList.map((item, index) => (
-    //                 <List key={index}>
-    //                     <div className="userList" key={index}>
-    //                         <Avatar className="avatar_skin" sx={{ bgcolor: deepPurple[500] }} src={item?.picture} />
-    //                         <div key={index} className="profileList">
-    //                             {item.profileName}
-    //                         </div>
-    //                     </div>
-    //                 </List>
-    //             ))}
-
-    //         </div>
-    //     </Drawer>
-    //     )
-
-
-    // }, [memberList]) 
 
 
     //E-Mail로 사용자 검색을 위한 API
@@ -292,6 +225,8 @@ function CreateMemo({ currentUser }) {
                     setMemberList([...memberList, response.data.userdata]);
                 }
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
+
+        socket.emit('newUser', searchEmail);
     }
 
     const handleDrawerOpen = () => {
@@ -354,7 +289,6 @@ function CreateMemo({ currentUser }) {
 
         },
     }));
-    let searchEmail = "";
     const handleChange = (e) => {
         searchEmail = e.target.value;
     }
@@ -364,7 +298,7 @@ function CreateMemo({ currentUser }) {
     }
 
     // 음소거 버튼 js 스크립트 by jinh
-    const [toggleState, setToggleState] = useState(false);
+
     const toggleMute = (event) => {
         event.preventDefault();
         // 버튼 상태: 로몬형 왈, 토글을 어떻게 구현할건지한다음 적용할것
@@ -372,7 +306,7 @@ function CreateMemo({ currentUser }) {
         // audio-tags 가져옴
         const audioTags = document.querySelectorAll("div#audio-boxes audio");
 
-        if (toggleState) {
+        if (isMicOn) {
             // 음소거 해야할 경우
             for (let i = 0; i < audioTags.length; i++) {
                 audioTags[i].muted = true;
@@ -385,7 +319,7 @@ function CreateMemo({ currentUser }) {
             }
         }
 
-        setToggleState((toggleState) => !toggleState)
+        setIsMicOn((isMicOn) => !isMicOn)
 
     }
 
@@ -462,15 +396,19 @@ function CreateMemo({ currentUser }) {
                         <BookmarkIcon />
                     </IconButton>}
                     {isBookMark &&
-                        <IconButton style={{ color: 'yellow' }} onClick={removeBookMark}>
+                        <IconButton style={{ color: 'orange' }} onClick={removeBookMark}>
                             <BookmarkIcon />
                         </IconButton>}
                     <IconButton style={{ color: 'white' }} onClick={handleDrawerOpen}>
                         <GroupAddIcon />
                     </IconButton>
-                    <IconButton style={{ color: 'white' }} onClick={toggleMute}>
+                    {isMicOn === false && <IconButton style={{ color: 'white' }} onClick={toggleMute}>
                         <MicIcon />
-                    </IconButton>
+                    </IconButton>}
+                    {isMicOn && <IconButton style={{ color: 'red' }} onClick={toggleMute}>
+                        <MicIcon />
+                    </IconButton>}
+
                     <IconButton
                         aria-label="more"
                         id="long-button"

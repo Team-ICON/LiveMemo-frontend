@@ -1,15 +1,17 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 
-const token = window.localStorage.getItem('livememo-token');
+dotenv.config();
+
+const token = localStorage.getItem('livememo-token');
 
 export const api = axios.create({
-    // baseURL: 'http://localhost:4000/api',
-    baseURL: 'https://livememo-backend.herokuapp.com/api',
-    headers: {
-      'Content-Type': 'application/json',
-      'authorization': token ? `Bearer ${token}` : ''
-    }
+  baseURL: `${process.env.REACT_APP_SERVER}/api`,
+  headers: {
+    'Content-Type': 'application/json',
+    'authorization': token ? `Bearer ${token}` : ''
+  }
 });
 
-export const baseUrl = 'https://livememo-backend.herokuapp.com/';
-  
+export const baseUrl = 'http://localhost:4000/';
+

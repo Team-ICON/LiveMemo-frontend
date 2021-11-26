@@ -14,31 +14,18 @@ import Typography from '@mui/material/Typography';
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
 import { api } from "../../axios";
 
-// const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
-const { Title } = Typography
 
-const cookies = new Cookies();
-const token = cookies.get('livememo-token');
-
-// const api = axios.create({
-//     baseURL: 'http://localhost:4000/api/memo',
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'authorization': token ? `Bearer ${token}` : ''
-//     }
-// });
-
-
-
-function MemoList({ currentUser }) {
+function MemoList({ currentUser, socket }) {
     const [memos, setMemos] = useState([]);
     const [contents, setContents] = useState([]);
+    const [beReload, setBeRealod] = useState(false)
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
     //새 메모를 위해 필요
     const roomId = uuid();
     useEffect(() => {
+        console.log("28", beReload)
         api.get('/memo/getMemos')
             .then(response => {
 
@@ -48,6 +35,7 @@ function MemoList({ currentUser }) {
                         roomId: memo._id,
                         doc: memo.content,
                         title: memo.title,
+                        shareUserCount: memo.howManyShare,
                         updatedTime: memo.updateTime,
                         isBookMark: memo.bookmarked
                     })
@@ -56,13 +44,38 @@ function MemoList({ currentUser }) {
                     alert('Couldnt get memo`s lists')
                 }
             })
+
+
+    }, [beReload])
+
+
+
+
+    useEffect(() => {
+        (() => {
+            socket.on('newUser', (email) => {
+                if (email === currentUser.email) {
+                    console.log(email)
+                    setTimeout(() => {
+                        setBeRealod(beReload => !beReload)
+                    }, 500);
+
+                }
+
+            });
+
+        })();
+
+        return () => {
+            setBeRealod(beReload => !beReload)
+        }
     }, [])
 
     //컨텐츠 파싱
     useEffect(() => {
         let temp = []
 
-        memos.map(({ roomId, doc, title, updatedTime, isBookMark }) => {
+        memos.map(({ roomId, doc, title, shareUserCount, updatedTime, isBookMark }) => {
             if (doc !== null) {
                 let cur_list = []
                 // console.log(doc)
@@ -77,7 +90,7 @@ function MemoList({ currentUser }) {
                         }
 
                     })
-                    temp.push({ roomId: roomId, title: title, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
+                    temp.push({ roomId: roomId, title: title, shareUserCount: shareUserCount, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
                 }
             }
         })
@@ -116,30 +129,26 @@ function MemoList({ currentUser }) {
     };
 
 
-    // console.log(contents)
-    // return (
-
-    //     <div className="memoList">
-    //         <Layout>
-    //             <div className="memoList__list">
-
-    //                 {contents.map(({ roomId, context, updatedTime }) => (
-    // <MemoRow
-    //     key={roomId}
-    //     roomId={roomId}
-    //     contents={context}
-    //     time={new Date(updatedTime).toDateString()} />
-    //                     //  {/* new Date(createdAt).toDateString() */}
-    //                 ))}
 
 
+    const timeFormatting = (updatedTime) => {
+        const time = new Date(updatedTime);
+        var year = time.getFullYear();
+        var month = ('0' + (time.getMonth() + 1)).slice(-2);
+        var day = ('0' + time.getDate()).slice(-2);
 
-    //                 <Footer />
+        var dateString = year + '-' + month + '-' + day;
 
-    //             </div>
-    //         </Layout>
-    //     </div>
-    // )
+        var hours = ('0' + time.getHours()).slice(-2);
+        var minutes = ('0' + time.getMinutes()).slice(-2);
+        var seconds = ('0' + time.getSeconds()).slice(-2);
+
+        var timeString = hours + ':' + minutes + ':' + seconds;
+
+        return (dateString + " " + timeString);
+
+
+    }
 
 
 
@@ -159,8 +168,9 @@ function MemoList({ currentUser }) {
                                         roomId={memo.roomId}
                                         title={memo.title}
                                         contents={memo.context}
+                                        shareUserCount={memo.shareUserCount}
                                         isBookMark={memo.isBookMark}
-                                        time={new Date(memo.updatedTime).toDateString()} />
+                                        time={timeFormatting(memo.updatedTime)} />
 
 
                                 </Grid>

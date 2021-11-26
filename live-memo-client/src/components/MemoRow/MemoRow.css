@@ -32,17 +32,67 @@
     padding-right: 5px;
 }
 
+.memoRow__header{
+    display: flex;
+    flex-direction: row;
+
+}
+.memoInfo{
+    display: flex;
+    flex-direction: column;
+
+}
 
 .memoRow__title{
+    display: flex;
+    flex-wrap: wrap;
     font-size: 16px;
     flex:0.3;
     font-weight: bold;
+    flex-basis :60%;
 }
 
+.userCnt_info{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-right: 40%;
+}
 .memoRow__time{
     padding-right: 15px;
     font-size: 9px;
     font-weight: bold;
 }
 
+.memoRow__icons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis :40%;
+    height: 2vh;
+
+}
+
+.memoRow__time{
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis :10%;
+    width: 100%;
+    position: relative;
+    bottom: -40%;
+
+
+}
+
+.userCnt{
+    display: flex;
+    height: 1vh;
+    font-weight: bold;
+    font-size: large;
+    margin-top: 0px;
+    margin-left: 5px;
+
+}
+
 ::-webkit-scrollbar { display: none; }
+
