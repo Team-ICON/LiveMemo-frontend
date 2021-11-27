@@ -1,6 +1,6 @@
 'use strict';
 
-const applicationServerPublicKey = 'AAAAy4f44o8:APA91bGvvFhBsQYezMQ-V2NGV2Py64YUHvuLrXeXAtGEcf0Ktolkgh23WBmGsm2903V9ZBz5N0jO1e-8JRuxFAIXryjn-YmxtcuCSYKbzUaCON_7T2JIp63_NYrtKALtUgndhIm0aXzi';
+const applicationServerPublicKey = `${process.env.REACT_APP_APPLICATION_SERVER_PUBLIC_KEY}`;
 
 let isSubscribed = false;
 let swRegistration = null;

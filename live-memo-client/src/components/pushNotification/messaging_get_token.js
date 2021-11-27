@@ -9,13 +9,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDF1Fl1YdCAddX6ToplB4LC58dEYKhMqls",
-  authDomain: "apppush-3b5aa.firebaseapp.com",
-  projectId: "apppush-3b5aa",
-  storageBucket: "apppush-3b5aa.appspot.com",
-  messagingSenderId: "150342264977",
-  appId: "1:150342264977:web:27b62b14eadbc0af167730",
-  measurementId: "G-SZ4VFV0T6H"
+  apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
+  authDomain: `${process.env.REACT_APP_AUTHDOMAIN}`,
+  projectId: `${process.env.REACT_APP_PROJECT_ID}`,
+  storageBucket: `${process.env.REACT_APP_FIREBASE_STORAGEBUCKET}`,
+  messagingSenderId: `${process.env.REACT_APP_FIREBASE_SENDER_ID}`,
+  appId: `${process.env.REACT_APP_APPID}`,
+  measurementId: `${process.env.REACT_APP_MEASUREMENT_ID}`
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -23,7 +23,7 @@ const analytics = getAnalytics(app);
 const messaging = getMessaging();
 
 
-getToken(messaging, { vapidKey: 'BHlhjOwtc7AzNvzguw-_aWnUTPR0xXOND8Mi8IjxnbVZZEkCbj2L4fNiUKsruorbzSHLYDtzoxfjR2zVOfdYz9I' }).then(async (currentToken) => {
+getToken(messaging, { vapidKey: `${process.env.REACT_APP_VAPID_KEY}` }).then(async (currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
     console.log(`currentToken`, currentToken);

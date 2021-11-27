@@ -358,7 +358,7 @@ function CreateMemo({ currentUser, socket }) {
             let options = {
                 method: "POST",
                 headers: new Headers({
-                    Authorization: "key=AAAAy4f44o8:APA91bGvvFhBsQYezMQ-V2NGV2Py64YUHvuLrXeXAtGEcf0Ktolkgh23WBmGsm2903V9ZBz5N0jO1e-8JRuxFAIXryjn-YmxtcuCSYKbzUaCON_7T2JIp63_NYrtKALtUgndhIm0aXzi",
+                    Authorization: `key=${process.env.REACT_APP_SERVER_KEY}`,
                     'Content-Type': 'application/json'
                 }),
                 body: JSON.stringify(body)
