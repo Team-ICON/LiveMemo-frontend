@@ -37,10 +37,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
-import Autocomplete from '@mui/material/Autocomplete';
 import "./CreateMemo.css"
-
-import { Long, serialize, deserialize } from 'bson';
 
 
 
@@ -511,9 +508,11 @@ function CreateMemo({ currentUser, socket }) {
                                 onChange={(e) => handleChange(e)}
                             />
                         </Search>
-                        <button className="addButton" onClick={addUser}>
-                            Add
-                        </button>
+                        <div className="searchUserAdd">
+                            <button className="addButton" onClick={addUser}>
+                                Add
+                            </button>
+                        </div>
                     </div >
 
                 </List>

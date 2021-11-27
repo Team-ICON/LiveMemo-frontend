@@ -74,11 +74,14 @@ input:focus {outline: gray solid 2px;}
 
 }
 
+.searchUserAdd{
+    align-items: center;
+
+}
+
 .addButton{
-    margin-top: 2.5px;
-    margin-right: 10px;
     background-color: black;
-    width: 20vw;
+    width: 15vw;
     height: 5vh;
     border-top-left-radius: 7px; 
     border-top-right-radius: 7px; 
@@ -86,6 +89,8 @@ input:focus {outline: gray solid 2px;}
     border-bottom-left-radius: 7px;
     color: white;
     font-weight: bold;
+    margin-top: 2px;
+    margin-right: 8px;
 
 }
 
