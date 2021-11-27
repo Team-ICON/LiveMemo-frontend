@@ -310,16 +310,18 @@ function CreateMemo({ currentUser, socket }) {
         let result = targetFcmTokenList.map(fcmToken => {
             let body = {
                 to: fcmToken,
+                action : 'actionnnnnnnnnnnnnnnnnnnnnnnn',
                 notification: {
                     title: title,
-                    body: msg
+                    body: msg,
+                    // onclick : "https://livememo-frontend.web.app/",
                 }
             }
 
             let options = {
                 method: "POST",
                 headers: new Headers({
-                    Authorization: "key=AAAA4sQcU_I:APA91bEqamNYS8VueqCFncNdPGEQqEsRdTuKM3vyj7nJIlcVUfceWocALD-mQrxba6plVRkRJMCXwmc0rLqgfneJQpuIOIKnViwzq_xnmsbF_c2auVxq371NWL1S8OgsbOaW2iAxGGyo",
+                    Authorization: "key=AAAAIwEY6JE:APA91bGbj3Z6HuZqZxFvKcbuyEhjWeU24g4kGRjiLLH-kMhQzubFoXLiQe8EvaOKTt0ZFl2sxLWHw3nYNZiIReEUnN0phUaiD-T-Xbi2Fnd4L0Lcpn89JtaUANDk0s7vrzxj5p7fDVWO",
                     'Content-Type': 'application/json'
                 }),
                 body: JSON.stringify(body)
