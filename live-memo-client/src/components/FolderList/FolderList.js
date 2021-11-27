@@ -233,6 +233,7 @@ function FolderList() {
                             fullWidth
                             variant="standard"
                             onChange={handleFolderNameChange}
+                            autoComplete="off"
                         />
                     </DialogContent>
                     <DialogActions>

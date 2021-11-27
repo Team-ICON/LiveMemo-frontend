@@ -30,8 +30,12 @@ function Login() {
 
         <div className="login" >
             <div className="login__container">
-
-                <Button variant="contained" color="primary" onClick={signIn}>Login</Button>
+                <img className="main_img" src="./././icons/LiveMemo.png" />
+            </div>
+            <div className="login_google">
+                <button className="btn_login" variant="contained" onClick={signIn}>
+                    <img className="login_img" src="./././icons/btn_google.png" />
+                </button>
             </div>
         </div>
     )
