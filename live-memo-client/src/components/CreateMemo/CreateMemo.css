@@ -2,7 +2,7 @@
     display: table-column;
     background-color: rgb(37, 36, 36);
     /* background-color: rgb(199, 181, 199); */
-    
+    overscroll-behavior-y: none;
     height: 100%;
     width: 100%;
 }
@@ -157,4 +157,9 @@ input:focus {outline: gray solid 2px;}
     flex-direction: row;
     justify-content: flex-end
 
+}
+
+.moveFolderDia{
+    height: 100%;
+    
 }

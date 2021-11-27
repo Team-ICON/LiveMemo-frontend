@@ -30,6 +30,7 @@ import FolderTwoToneIcon from '@mui/icons-material/FolderTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 import {
+    useNavigate,
     Link,
 } from "react-router-dom";
 import { formControlUnstyledClasses } from "@mui/core";
@@ -37,7 +38,7 @@ import "./FolderList.css"
 import { List } from "@mui/material";
 
 import { api } from "../../axios";
-
+import { NamedShortcut } from "@remirror/core-constants";
 
 const cookies = new Cookies();
 const token = cookies.get('livememo-token');
@@ -115,26 +116,20 @@ const openFolder = (name) => {
         .then(response => {
             if (response.data.success) {
                 console.log("Success Open Folder");
+                console.log(response.data.memos);
             }
         })
 }
 
-const deleteFolder = (name) => {
-    // folder delete
-    api.post('/folder/delete', { folderName: name })
-        .then(response => {
-            if (response.data.success) {
-                console.log("Success Delete Folder");
-            }
-        })
 
-}
 
 
 
 function FolderList() {
+    const navigate = useNavigate();
     const [folderName, setFolderName] = useState("");
     const [folders, setFolders] = useState([])
+
 
     useEffect(() => {
         api.get('/folder/show')
@@ -145,7 +140,7 @@ function FolderList() {
                     alert('폴더가 없습니다.')
                 }
             })
-    }, [folders])
+    }, [])
 
     const createFolder = (name) => {
         if (name === "") {
@@ -155,13 +150,23 @@ function FolderList() {
         api.post('/folder/create', { folderName: name })
             .then(response => {
                 if (response.data.success) {
-                    console.log("Success Make Folder");
+                    setFolders([...folders, name]);
                 }
             })
 
     }
 
-
+    const deleteFolder = (name) => {
+        // folder delete
+        api.post('/folder/delete', { folderName: name })
+            .then(response => {
+                if (response.data.success) {
+                    const tempList = folders.filter(item => item !== name);
+                    setFolders(tempList);
+                }
+            })
+    
+    }
 
 
     const [open, setOpen] = useState(false);
@@ -194,7 +199,7 @@ function FolderList() {
             <div className="bodyFolderList">
                 {folders.map((item) => (
                     <div className="folderElem" key={item}>
-                        <div className="folderElemName" onClick={() => { openFolder(item) }}>
+                        <div className="folderElemName" onClick={() => navigate(`/folder/${item}`)}>
                             <ListItemAvatar>
                                 <FolderTwoToneIcon fontSize="large" />
                             </ListItemAvatar>
@@ -228,6 +233,7 @@ function FolderList() {
                             fullWidth
                             variant="standard"
                             onChange={handleFolderNameChange}
+                            autoComplete="off"
                         />
                     </DialogContent>
                     <DialogActions>

@@ -14,13 +14,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import { api } from "../axios";
 import useImportScript from "./hooks/useImportScript"
-const firebase_app = "https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"
-const firebase_messaging = "https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"
+
 const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
 const Login = lazy(() => import("../components/LoginPage/Login"))
 const FolderList = lazy(() => import("./FolderList/FolderList"))
 const GetToken = lazy(() => import("./GetToken/GetToken"))
+const FolderMemoList = lazy(() => import("./MemoList/FolderMemoList"))
 
 const App = ({ socket }) => {
   const dispatch = useDispatch();
@@ -49,8 +49,6 @@ const App = ({ socket }) => {
     setToken(isToken);
   }, [token])
 
-  useImportScript(firebase_app)
-  useImportScript(firebase_messaging)
 
 
   return (
@@ -72,6 +70,7 @@ const App = ({ socket }) => {
                 <Routes>
                   {/* 아니다 걍 doc 아이디랑 나중에 userid만 넘기면 됨 그럼 reducer로는 현 docid slice만 해서 여기서 주면됨 */}
                   <Route path="/" element={<MemoList currentUser={user} socket={socket} />} />
+                  <Route path="/folder/:folderName" element={<FolderMemoList currentUser={user} socket={socket} />} />
                   <Route path="createMemo/:newRoomId" element={<CreateMemo currentUser={user} socket={socket} />} />
                   {/* <Route path="createMemo" render={<CreateMemo />} /> */}
                   <Route path="/folder" element={<FolderList />} />

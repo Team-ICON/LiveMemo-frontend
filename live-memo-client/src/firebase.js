@@ -1,18 +1,51 @@
-// Import the functions you need from the SDKs you need
-// import firebase from 'firebase/compat/app'
+// import { getMessaging, getToken, onMessage } from "firebase/messaging";
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import { api } from "../../axios";
+// // import { onBackgroundMessage } from "firebase/messaging/sw";
+// import dotenv from "dotenv";
 
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
+// dotenv.config();
 
-// // Your web app's Firebase configuration
 // const firebaseConfig = {
-//     apiKey: "AIzaSyCRJ2vmzI2lIniKVEywfd8xeGsb-p7tP3U",
-//     authDomain: "live-memo-e4ba7.firebaseapp.com",
-//     projectId: "live-memo-e4ba7",
-//     storageBucket: "live-memo-e4ba7.appspot.com",
-//     messagingSenderId: "749530565265",
-//     appId: "1:749530565265:web:7c40c35fce17a864f94d30",
-//     measurementId: "G-BTB12XZLWX"
+//   apiKey: "AIzaSyDF1Fl1YdCAddX6ToplB4LC58dEYKhMqls",
+//   authDomain: "apppush-3b5aa.firebaseapp.com",
+//   projectId: "apppush-3b5aa",
+//   storageBucket: "apppush-3b5aa.appspot.com",
+//   messagingSenderId: "150342264977",
+//   appId: "1:150342264977:web:27b62b14eadbc0af167730",
+//   measurementId: "G-SZ4VFV0T6H"
 // };
 // // Initialize Firebase
-// const firebaseApp = firebase.initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// seo///
+
+// import { getMessaging, getToken, onMessage } from "firebase/messaging";
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import { api } from "../../axios";
+// // import { onBackgroundMessage } from "firebase/messaging/sw";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDF1Fl1YdCAddX6ToplB4LC58dEYKhMqls",
+//   authDomain: "apppush-3b5aa.firebaseapp.com",
+//   projectId: "apppush-3b5aa",
+//   storageBucket: "apppush-3b5aa.appspot.com",
+//   messagingSenderId: "150342264977",
+//   appId: "1:150342264977:web:27b62b14eadbc0af167730",
+//   measurementId: "G-SZ4VFV0T6H"
+// };
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+// const messaging = getMessaging();
+
+// export default messaging;

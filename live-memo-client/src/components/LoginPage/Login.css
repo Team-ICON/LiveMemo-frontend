@@ -1,16 +1,42 @@
 .login{
 
-    display:grid;
+    display:flex;
+    flex-direction: column;
     place-items: center;
     height: 100vh;
+    background-color: black;
 }
 
 .login__container{
     display: flex;
     flex-direction: column;
+    height: 80%;
+    justify-content: center;
 }
 
 .login__container > img{
     object-fit: contain;
     height:200px;
 }
+.main_img{
+    height: 100%;
+
+}
+
+
+.login_google{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn_login{
+    width: 80%;
+    background-color: transparent;
+    border: 0;
+}
+
+.login_img{
+    width: 100%;
+}
+

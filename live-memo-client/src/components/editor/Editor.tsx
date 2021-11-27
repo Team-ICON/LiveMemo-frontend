@@ -50,7 +50,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             //state 는 현재 editstate 뜸 tr은  트랜잭션 tr은 editstate 안에도 있음 
             if (tr?.docChanged) {
                 setDocState(state.toJSON().doc);
-                // console.log(state)
+                console.log(state.toJSON())
             }
         },
         [setDocState],
@@ -133,7 +133,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 getProvider: () => provider,
             }),
             new AnnotationExtension(),
-            new ImageExtension(),
+            new ImageExtension({ enableResizing: true }),
             linkExtension
         ];
     }, [provider]);
@@ -180,6 +180,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             <Remirror manager={manager} onChange={handleChange}>
                 <EditorComponent />
             </Remirror>
+
         </ThemeProvider>
     );
 }

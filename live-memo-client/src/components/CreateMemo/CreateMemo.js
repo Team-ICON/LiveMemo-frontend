@@ -30,49 +30,17 @@ import Menu from '@mui/material/Menu';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+import Autocomplete from '@mui/material/Autocomplete';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/material/Autocomplete';
 import "./CreateMemo.css"
 
-//////////////////////
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// import { onBackgroundMessage } from "firebase/messaging/sw";
-import dotenv from "dotenv";
-
-dotenv.config();
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-console.log(`REACT_APP_FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
-console.log(`FIREBASE_API_KEY`, process.env.REACT_APP_FIREBASE_API_KEY);
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: "livememo-frontend.firebaseapp.com",
-  projectId: "livememo-frontend",
-  storageBucket: "livememo-frontend.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-// Get registration token. Initially this makes a network call, once retrieved
-// subsequent calls to getToken will return from cache.
-const messaging = getMessaging();
-
-
-////////////
+import { Long, serialize, deserialize } from 'bson';
 
 
 
@@ -80,6 +48,8 @@ const cookies = new Cookies();
 const token = cookies.get('livememo-token');
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
+let folderList = [];
+
 function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -87,9 +57,9 @@ function CreateMemo({ currentUser, socket }) {
     const { state } = useLocation()
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
-    //current connect member state
-    const [curMemberList, setCurMemberList] = useState([])
-    //bookmark
+    const [curMemberList, setCurMemberList] = useState([]);
+
+    // three dot button
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
     //mic button
     const [isMicOn, setIsMicOn] = useState(false);
@@ -104,8 +74,25 @@ function CreateMemo({ currentUser, socket }) {
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
     let searchEmail = "";
+    // 이동할 폴더 이름
+    const [selectFolderName, setSelectFolderName] = useState(folderList[0]);
 
+    //최초 실행 시 폴더 리스트를 받아옴
+    useEffect(() => {
+        let tempFolderList = [];
 
+        api.get('/folder/show')
+            .then(response => {
+                if (response.data.success) {
+                    response.data.folders.map((item) => (
+                        tempFolderList = [...tempFolderList, { label: item }]
+                    ))
+                    folderList = tempFolderList;
+                } else {
+                    alert('폴더가 없습니다.')
+                }
+            })
+    }, [])
 
     const handleDrawerOpen = () => {
         setDrawerOpen(true);
@@ -131,9 +118,42 @@ function CreateMemo({ currentUser, socket }) {
         setDialogOpen(false);
     };
 
+    // const dataURLToBlob = useCallback((dataURL) => {
+    //     const BASE64_MARKER = ';base64,'
+
+    //     // base64로 인코딩 되어있지 않을 경우
+    //     if (dataURL.indexOf(BASE64_MARKER) === -1) {
+    //         const parts = dataURL.split(',')
+    //         const contentType = parts[0].split(':')[1]
+    //         const raw = parts[1]
+    //         return new Blob([raw], {
+    //             type: contentType,
+    //         })
+    //     }
+    //     // base64로 인코딩 된 이진데이터일 경우
+    //     const parts = dataURL.split(BASE64_MARKER)
+    //     const contentType = parts[0].split(':')[1]
+    //     const raw = window.atob(parts[1])
+    //     // atob()는 Base64를 디코딩하는 메서드
+    //     const rawLength = raw.length
+    //     // 부호 없는 1byte 정수 배열을 생성
+    //     const uInt8Array = new Uint8Array(rawLength) // 길이만 지정된 배열
+    //     let i = 0
+    //     while (i < rawLength) {
+    //         uInt8Array[i] = raw.charCodeAt(i)
+    //         i++
+    //     }
+    //     return new Blob([uInt8Array], {
+    //         type: contentType,
+    //     })
+    // })
+
 
 
     const handleSave = useCallback(async (_id, body, quit) => {
+
+
+
         await api.put("/memo/createMemo", {
             _id,
             title: memoTitle,
@@ -143,20 +163,7 @@ function CreateMemo({ currentUser, socket }) {
         }).then(res => {
         });
     }, [memoTitle]);
-    // const handleSave = useCallback(async (_id, body) => {
-    //     try {
-    //         console.log(_id, body)
-    //         let result = await api.put("createMemo", {
-    //             _id,
-    //             body,
-    //         });
-    //         console.log(`result in handleSave at CreateMemo.js`, result);
-    //         newRoomId = result.data.roomId;
-    //         setCurRoomId(newRoomId);
-    //     } catch(err) {
-    //         console.log(`err in handleSave at CreateMemo.js`, err);
-    //     }
-    // }, []);
+
     //플래그로 나눠놓은 이유 get일때 가져오는거랑 create일때랑 거의 같아서, getMemo를 하면서 창을 불러낼때 fetch를 먼저 하는거 말고 create랑 같음
     const handleFetch = useCallback(async id => {
         try {
@@ -189,17 +196,35 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
+    //새로고침 핸들러
+    const beforeunloadHandler = (event) => {
+        event.preventDefault();
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), false)
 
+        selectedProvider.newProvider.disconnect();
+        selectedProvider.newProvider.destroy();
 
+        event.returnValue = ""
+    }
+    useEffect(() => {
+        window.addEventListener('beforeunload', beforeunloadHandler);
+        return () => {
+            window.removeEventListener("beforeunload", beforeunloadHandler);
+        };
+    }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
+
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
 
 
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
-        navigate('/', { replace: true })
+        setTimeout(() => {
+            navigate('/', { replace: true })
+
+        }, 350);
 
     }
     useEffect(() => {
@@ -265,23 +290,43 @@ function CreateMemo({ currentUser, socket }) {
 
     }
 
+
+    // 메모를 특정 폴더로 이동
+
+    const [openMoveFolder, setOpenMoveFolder] = useState(false);
+    const handleMoveClickOpen = () => {
+        setOpenMoveFolder(true);
+    };
+    const handleMoveClickClose = () => {
+        setOpenMoveFolder(false);
+    };
+
+    const moveMemo = (event) => {
+        event.preventDefault();
+
+        const findMemoId = selectedProvider.documentId
+        const selectFolder = selectFolderName.label;
+        api.post("/folder/move", {
+            memoId: findMemoId,
+            afterFolder: selectFolder
+
+        }).then(response => { handleMoveClickClose() })
+
+    }
+
+
     //실시간 유저 변경
     useEffect(() => {
-
         if (CurUserList) {
             // curUserUpdate(CurUserList)
             setCurMemberList([...CurUserList])
-
         }
-
         return () => {
             //     // let list = curMemberList.filter(member => member.email !== currentUser)
             //     // console.log("curMemberList", curMemberList)
             //     // console.log("CurUserList", CurUserList)
             setCurMemberList([])
-
         }
-
     }, [CurUserList])
 
     //for push alarm
@@ -300,27 +345,29 @@ function CreateMemo({ currentUser, socket }) {
             targetFcmTokenList = res.data.fcmTokenList
         });
 
-        
+
         // 각 유저마다 push 보내기
         let result = targetFcmTokenList.map(fcmToken => {
             let body = {
-                    to: fcmToken,
-                    notification: {
+                to: fcmToken,
+                action: 'actionnnnnnnnnnnnnnnnnnnnnnnn',
+                notification: {
                     title: title,
-                    body: msg
+                    body: msg,
+                    // onclick : "https://livememo-frontend.web.app/",
                 }
             }
 
             let options = {
-                method : "POST",
+                method: "POST",
                 headers: new Headers({
-                Authorization:"key=AAAA4sQcU_I:APA91bEqamNYS8VueqCFncNdPGEQqEsRdTuKM3vyj7nJIlcVUfceWocALD-mQrxba6plVRkRJMCXwmc0rLqgfneJQpuIOIKnViwzq_xnmsbF_c2auVxq371NWL1S8OgsbOaW2iAxGGyo",
-                'Content-Type': 'application/json'
-            }),
+                    Authorization: "key=AAAAy4f44o8:APA91bGvvFhBsQYezMQ-V2NGV2Py64YUHvuLrXeXAtGEcf0Ktolkgh23WBmGsm2903V9ZBz5N0jO1e-8JRuxFAIXryjn-YmxtcuCSYKbzUaCON_7T2JIp63_NYrtKALtUgndhIm0aXzi",
+                    'Content-Type': 'application/json'
+                }),
                 body: JSON.stringify(body)
             }
 
-            fetch("https://fcm.googleapis.com/fcm/send", options).then(res=>{
+            fetch("https://fcm.googleapis.com/fcm/send", options).then(res => {
                 console.log(`SENT`);
                 console.log(res);
             })
@@ -461,7 +508,7 @@ function CreateMemo({ currentUser, socket }) {
                             <StyledInputBase
                                 placeholder="사용자 메일을 입력해주세요."
                                 inputProps={{ 'aria-label': 'search' }}
-                                onChange={handleChange}
+                                onChange={(e) => handleChange(e)}
                             />
                         </Search>
                         <button className="addButton" onClick={addUser}>
@@ -531,26 +578,52 @@ function CreateMemo({ currentUser, socket }) {
                             },
                         }}
                     >
-                        <MenuItem onClick={handleThreeDotClose}>
+                        <MenuItem onClick={handleMoveClickOpen}>
                             <IconButton style={{ color: 'black' }}>
                                 <DriveFolderUploadIcon />
                             </IconButton>
                         </MenuItem>
+                        <Dialog className="moveFolderDia" open={openMoveFolder} onClose={handleMoveClickClose}>
+                            <DialogTitle>폴더로 이동</DialogTitle>
+                            <DialogContent sx={{ width: 300 }}>
+                                <DialogContentText>
+                                    이동할 폴더를 선택해주세요.
+                                </DialogContentText>
+
+
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={folderList}
+                                    sx={{ width: 250 }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                    value={selectFolderName}
+                                    onChange={(event, newValue) => {
+                                        setSelectFolderName(newValue);
+                                    }}
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={moveMemo}>이동</Button>
+                                <Button onClick={handleMoveClickClose}>취소</Button>
+                            </DialogActions>
+                        </Dialog>
+
                         <MenuItem >
                             <IconButton onClick={handleDialogOpen} style={{ color: 'black' }}>
                                 <NotificationsIcon />
                             </IconButton>
                             <Dialog open={dialogOpen} onClose={handleDialogClose}>
-                                <DialogTitle>Push Message</DialogTitle>
+                                <DialogTitle>Push 알림</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
-                                        To push message to other member, please enter your message here.
+                                        Push 알림으로 보낼 제목과 내용을 적어주세요.
                                     </DialogContentText>
                                     <TextField
                                         autoFocus
                                         margin="dense"
                                         id="title"
-                                        label="Title"
+                                        label="제목"
                                         type="text"
                                         fullWidth
                                         variant="standard"
@@ -558,15 +631,15 @@ function CreateMemo({ currentUser, socket }) {
                                     <TextField
                                         margin="dense"
                                         id="message"
-                                        label="Message"
+                                        label="내용"
                                         type="text"
                                         fullWidth
                                         variant="standard"
                                     />
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={handleDialogClose}>Cancel</Button>
-                                    <Button onClick={sendNotification}>push</Button>
+                                    <Button onClick={sendNotification}>전송</Button>
+                                    <Button onClick={handleDialogClose}>취소</Button>
                                 </DialogActions>
                             </Dialog>
                         </MenuItem>
@@ -603,4 +676,6 @@ function CreateMemo({ currentUser, socket }) {
         </div >
     )
 }
+
+
 export default CreateMemo
