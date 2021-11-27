@@ -19,6 +19,7 @@ function MemoList({ currentUser, socket }) {
     const [memos, setMemos] = useState([]);
     const [contents, setContents] = useState([]);
     const [beReload, setBeRealod] = useState(false)
+    const [timeToList, setTimeToList] = useState(false)
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -49,6 +50,12 @@ function MemoList({ currentUser, socket }) {
     }, [beReload])
 
 
+    useEffect(() => {
+        setTimeout(() => {
+            setTimeToList(true)
+        }, 750)
+
+    }, [])
 
 
     useEffect(() => {
@@ -67,9 +74,13 @@ function MemoList({ currentUser, socket }) {
         })();
 
         return () => {
+            if (!socket) return;
             setBeRealod(beReload => !beReload)
         }
     }, [])
+
+
+
 
     //컨텐츠 파싱
     useEffect(() => {
@@ -80,22 +91,35 @@ function MemoList({ currentUser, socket }) {
                 let cur_list = []
                 // console.log(doc)
                 let jsonDoc = JSON.parse(doc)
-                // console.log(jsonDoc)
                 if (jsonDoc.content.length >= 1) {
-
+                    console.log(jsonDoc)
                     jsonDoc.content.map(para => {
                         if (Object.keys(para).length >= 2) {
+                            console.log(para)
+                            if (para.content[0].type === "text") {
+                                console.log(para.content[0].text)
+                                cur_list = [...cur_list, { "type": "text", "text": para.content[0].text }]
+                            }
+                            else if (para.content[0].type === "image") {
+                                // console.log(para.content[0].attrs.src)
 
-                            cur_list = [...cur_list, para.content[0].text]
+                                cur_list = [...cur_list, { "type": "image", "text": para.content[0].attrs.src }]
+
+                            }
+
                         }
 
                     })
+                    console.log(cur_list)
                     temp.push({ roomId: roomId, title: title, shareUserCount: shareUserCount, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
+                } else {
+                    window.location.reload()
                 }
             }
         })
 
         setContents(temp)
+
 
     }, [memos])
 
@@ -153,8 +177,9 @@ function MemoList({ currentUser, socket }) {
 
 
     return (
+
         <div className="memoList">
-            <Layout >
+            {timeToList && (<Layout >
                 <div style={{ width: '84%', margin: '5rem auto' }}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={{ xs: 2, md: 3 }} >
@@ -170,7 +195,8 @@ function MemoList({ currentUser, socket }) {
                                         contents={memo.context}
                                         shareUserCount={memo.shareUserCount}
                                         isBookMark={memo.isBookMark}
-                                        time={timeFormatting(memo.updatedTime)} />
+                                        time={timeFormatting(memo.updatedTime)}
+                                    />
 
 
                                 </Grid>
@@ -180,9 +206,11 @@ function MemoList({ currentUser, socket }) {
                     </Box>
                     <Footer />
                 </div>
-            </Layout>
+            </Layout>)}
+
         </div >
     )
+
 
 
 

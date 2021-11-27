@@ -19,13 +19,13 @@ const MemoRow = ({ roomId, title, contents, shareUserCount, isBookMark, time }) 
 
         navigate(`/createMemo/${roomId}`, { state: { roomId, first: false, isBookMark: isBookMark } })
     }
-    ///여기서 doc 형태에 들어갈 json으로 리덕스로 set해주고 app에가서 찾은다음에 메모에 그거 보내버림 prop으로
     const Item = styled(Paper)(({ theme }) => ({
         ...theme.typography.body2,
         padding: theme.spacing(2),
         height: 150, overflowY: 'scroll', marginTop: 10,
         color: theme.palette.text.secondary,
     }));
+
 
 
     return (
@@ -61,7 +61,7 @@ const MemoRow = ({ roomId, title, contents, shareUserCount, isBookMark, time }) 
                 <hr />
                 {contents.map((content, index) => (
                     <div key={index}>
-                        <p>{content}</p>
+                        {content.type === 'text' ? (<p> {content.text}</p>) : (<img src={content.text} width="50%" />)}
                     </div>
                 ))}
             </Item>

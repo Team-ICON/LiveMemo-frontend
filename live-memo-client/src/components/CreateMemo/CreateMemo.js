@@ -29,24 +29,17 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/material/Autocomplete';
 import "./CreateMemo.css"
 
+import { Long, serialize, deserialize } from 'bson';
 
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import { height } from '@mui/system';
 
 
 
@@ -130,8 +123,42 @@ function CreateMemo({ currentUser, socket }) {
         setDialogOpen(false);
     };
 
+    // const dataURLToBlob = useCallback((dataURL) => {
+    //     const BASE64_MARKER = ';base64,'
+
+    //     // base64로 인코딩 되어있지 않을 경우
+    //     if (dataURL.indexOf(BASE64_MARKER) === -1) {
+    //         const parts = dataURL.split(',')
+    //         const contentType = parts[0].split(':')[1]
+    //         const raw = parts[1]
+    //         return new Blob([raw], {
+    //             type: contentType,
+    //         })
+    //     }
+    //     // base64로 인코딩 된 이진데이터일 경우
+    //     const parts = dataURL.split(BASE64_MARKER)
+    //     const contentType = parts[0].split(':')[1]
+    //     const raw = window.atob(parts[1])
+    //     // atob()는 Base64를 디코딩하는 메서드
+    //     const rawLength = raw.length
+    //     // 부호 없는 1byte 정수 배열을 생성
+    //     const uInt8Array = new Uint8Array(rawLength) // 길이만 지정된 배열
+    //     let i = 0
+    //     while (i < rawLength) {
+    //         uInt8Array[i] = raw.charCodeAt(i)
+    //         i++
+    //     }
+    //     return new Blob([uInt8Array], {
+    //         type: contentType,
+    //     })
+    // })
+
+
 
     const handleSave = useCallback(async (_id, body, quit) => {
+
+
+
         await api.put("/memo/createMemo", {
             _id,
             title: memoTitle,
@@ -193,12 +220,16 @@ function CreateMemo({ currentUser, socket }) {
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
     function popstateHandler() {
+
         handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
 
 
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
-        navigate('/', { replace: true })
+        setTimeout(() => {
+            navigate('/', { replace: true })
+
+        }, 350);
 
     }
     useEffect(() => {
@@ -333,7 +364,7 @@ function CreateMemo({ currentUser, socket }) {
             let options = {
                 method: "POST",
                 headers: new Headers({
-                    Authorization: "key=AAAA4sQcU_I:APA91bEqamNYS8VueqCFncNdPGEQqEsRdTuKM3vyj7nJIlcVUfceWocALD-mQrxba6plVRkRJMCXwmc0rLqgfneJQpuIOIKnViwzq_xnmsbF_c2auVxq371NWL1S8OgsbOaW2iAxGGyo",
+                    Authorization: "key=AAAAy4f44o8:APA91bGvvFhBsQYezMQ-V2NGV2Py64YUHvuLrXeXAtGEcf0Ktolkgh23WBmGsm2903V9ZBz5N0jO1e-8JRuxFAIXryjn-YmxtcuCSYKbzUaCON_7T2JIp63_NYrtKALtUgndhIm0aXzi",
                     'Content-Type': 'application/json'
                 }),
                 body: JSON.stringify(body)
@@ -576,8 +607,8 @@ function CreateMemo({ currentUser, socket }) {
                             </DialogActions>
                         </Dialog>
 
-                        <MenuItem onClick={handleClose}>
-                            <IconButton style={{ color: 'black' }}>
+                        <MenuItem >
+                            <IconButton onClick={handleDialogOpen} style={{ color: 'black' }}>
                                 <NotificationsIcon />
                             </IconButton>
                             <Dialog open={dialogOpen} onClose={handleDialogClose}>
