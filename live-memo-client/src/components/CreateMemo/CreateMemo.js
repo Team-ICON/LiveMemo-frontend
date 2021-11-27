@@ -29,6 +29,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+
+import Autocomplete from '@mui/material/Autocomplete';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -39,7 +41,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import "./CreateMemo.css"
 
 import { Long, serialize, deserialize } from 'bson';
-
 
 
 
@@ -92,12 +93,6 @@ function CreateMemo({ currentUser, socket }) {
                 }
             })
     }, [])
-
-
-
-
-
-
 
     const handleDrawerOpen = () => {
         setDrawerOpen(true);
@@ -355,9 +350,11 @@ function CreateMemo({ currentUser, socket }) {
         let result = targetFcmTokenList.map(fcmToken => {
             let body = {
                 to: fcmToken,
+                action: 'actionnnnnnnnnnnnnnnnnnnnnnnn',
                 notification: {
                     title: title,
-                    body: msg
+                    body: msg,
+                    // onclick : "https://livememo-frontend.web.app/",
                 }
             }
 
@@ -589,12 +586,17 @@ function CreateMemo({ currentUser, socket }) {
                         <Dialog className="moveFolderDia" open={openMoveFolder} onClose={handleMoveClickClose}>
                             <DialogTitle>폴더로 이동</DialogTitle>
                             <DialogContent sx={{ width: 300 }}>
+                                <DialogContentText>
+                                    이동할 폴더를 선택해주세요.
+                                </DialogContentText>
+
+
                                 <Autocomplete
                                     id="combo-box-demo"
                                     options={folderList}
                                     sx={{ width: 250 }}
                                     renderInput={(params) => <TextField {...params} />}
-                                    value={selectFolderName || folderList[0]}
+                                    value={selectFolderName}
                                     onChange={(event, newValue) => {
                                         setSelectFolderName(newValue);
                                     }}
@@ -612,16 +614,16 @@ function CreateMemo({ currentUser, socket }) {
                                 <NotificationsIcon />
                             </IconButton>
                             <Dialog open={dialogOpen} onClose={handleDialogClose}>
-                                <DialogTitle>Push Message</DialogTitle>
+                                <DialogTitle>Push 알림</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
-                                        To push message to other member, please enter your message here.
+                                        Push 알림으로 보낼 제목과 내용을 적어주세요.
                                     </DialogContentText>
                                     <TextField
                                         autoFocus
                                         margin="dense"
                                         id="title"
-                                        label="Title"
+                                        label="제목"
                                         type="text"
                                         fullWidth
                                         variant="standard"
@@ -629,15 +631,15 @@ function CreateMemo({ currentUser, socket }) {
                                     <TextField
                                         margin="dense"
                                         id="message"
-                                        label="Message"
+                                        label="내용"
                                         type="text"
                                         fullWidth
                                         variant="standard"
                                     />
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={handleDialogClose}>Cancel</Button>
-                                    <Button onClick={sendNotification}>push</Button>
+                                    <Button onClick={sendNotification}>전송</Button>
+                                    <Button onClick={handleDialogClose}>취소</Button>
                                 </DialogActions>
                             </Dialog>
                         </MenuItem>

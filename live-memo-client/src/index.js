@@ -5,7 +5,7 @@ import App from './components/App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import dotenv from 'dotenv';
-import "./messaging_get_token";
+import "./components/pushNotification/messaging_get_token";
 
 import socketio from 'socket.io-client';
 import { baseUrl } from "./axios";
