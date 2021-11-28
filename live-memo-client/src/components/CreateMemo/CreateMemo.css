@@ -82,7 +82,8 @@ input:focus {outline: gray solid 2px;}
 .addButton{
     background-color: black;
     width: 15vw;
-    height: 5vh;
+    height: 32px;
+    /* height: 5vh; */
     border-top-left-radius: 7px; 
     border-top-right-radius: 7px; 
     border-bottom-right-radius: 7px;
