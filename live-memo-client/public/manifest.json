@@ -3,12 +3,12 @@
   "short_name": "Memo",
   "icons": [
     {
-      "src": "icons/2.png",
+      "src": "icons/Live-Memo(192x192).png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/3.png",
+      "src": "icons/Live-Memo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
