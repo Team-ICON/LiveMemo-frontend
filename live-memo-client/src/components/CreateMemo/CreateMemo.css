@@ -134,8 +134,8 @@ input:focus {outline: gray solid 2px;}
     margin-bottom: 40px;
     background-color: whitesmoke;
     padding: 8px;
-    height: 6.5vh;
-    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.24);
+    /* height: 6.5vh; */
+    height: 42px;
 
     border-top-left-radius: 7px; 
     border-top-right-radius: 7px; 
