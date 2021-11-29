@@ -20,6 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = isSupported() ? getMessaging() : null
+console.log(messaging)
 
 function subscribe() {
     Notification.requestPermission().then(permission => {
@@ -56,7 +57,7 @@ function subscribe() {
     })
 }
 
-if (messaging)
+if (messaging !== null)
     subscribe();
 
 export { messaging, getToken, onMessage, app }
