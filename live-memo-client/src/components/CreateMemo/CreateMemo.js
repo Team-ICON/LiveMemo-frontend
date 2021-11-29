@@ -397,7 +397,7 @@ function CreateMemo({ currentUser, socket }) {
             let options = {
                 method: "POST",
                 headers: new Headers({
-                    Authorization: `key=AAAAy4f44o8:APA91bGvvFhBsQYezMQ-V2NGV2Py64YUHvuLrXeXAtGEcf0Ktolkgh23WBmGsm2903V9ZBz5N0jO1e-8JRuxFAIXryjn-YmxtcuCSYKbzUaCON_7T2JIp63_NYrtKALtUgndhIm0aXzi`,
+                    Authorization: `key=AAAA4sQcU_I:APA91bEqamNYS8VueqCFncNdPGEQqEsRdTuKM3vyj7nJIlcVUfceWocALD-mQrxba6plVRkRJMCXwmc0rLqgfneJQpuIOIKnViwzq_xnmsbF_c2auVxq371NWL1S8OgsbOaW2iAxGGyo`,
                     'Content-Type': 'application/json'
                 }),
                 body: JSON.stringify(body)

@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
 import { api } from "../../axios";
 
+import "../../firebase.js";
 
 function MemoList({ currentUser, socket }) {
     const [memos, setMemos] = useState([]);

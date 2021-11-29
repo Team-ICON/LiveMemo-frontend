@@ -6,6 +6,8 @@ dotenv.config();
 const token = localStorage.getItem('livememo-token');
 
 export const api = axios.create({
+  // baseURL: `https://livememo-backend.herokuapp.com/api`,
+  // baseURL: `http://localhost:4000/api`,
   // baseURL: `http://localhost:4000/api`,
   baseURL: `https://livememo.shop/api`,
   headers: {
@@ -15,4 +17,6 @@ export const api = axios.create({
 });
 
 export const baseUrl = 'https://livememo.shop/';
+// export const baseUrl = 'http://localhost:4000/';
+// export const baseUrl = 'https://livememo-backend.herokuapp.com/';
 
