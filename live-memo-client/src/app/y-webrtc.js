@@ -328,7 +328,7 @@ export class WebrtcConn {
         // 수정 부분: 'stream' 이벤트 추가 --> 비디오 태그 생성
         let constraints = { audio: true, video: false };
         navigator.mediaDevices.getUserMedia(constraints)
-            .then((stream) => { 
+            .then((stream) => {
                 this.peer.addStream(stream)
             })
             .catch(console.log);
@@ -651,7 +651,7 @@ export class WebrtcProvider extends Observable {
         roomName,
         doc,
         {
-            signaling = ['wss://livememo.herokuapp.com'],
+            signaling = ['wss://realbro.shop/signaling', 'wss://livememo.shop/signaling', 'wss://livememo.herokuapp.com', 'wss://signaling.yjs.dev', 'wss://y-webrtc-signaling-eu.herokuapp.com', 'wss://y-webrtc-signaling-us.herokuapp.com'],
             password = null,
             awareness = new awarenessProtocol.Awareness(doc),
             maxConns = 20 + math.floor(random.rand() * 15), // the random factor reduces the chance that n clients form a cluster

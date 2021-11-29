@@ -45,7 +45,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     const handleChange = useCallback(
         ({ state, tr, content }) => {
-            console.log(state);
             //state 는 현재 editstate 뜸 tr은  트랜잭션 tr은 editstate 안에도 있음 
             if (tr?.docChanged) {
                 setDocState(state.toJSON().doc);

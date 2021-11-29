@@ -60,7 +60,7 @@
 // }
 let swRegistration = null;
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
   navigator.serviceWorker.register('firebase-messaging-sw.js')
