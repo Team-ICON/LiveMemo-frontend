@@ -68,6 +68,9 @@ function MemoList({ currentUser, socket }) {
                     }, 500);
 
                 }
+                else if (email === null) {
+                    alert("새로고침 한번 해주세요~")
+                }
 
             });
 

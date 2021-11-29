@@ -93,6 +93,8 @@ function FolderMemoList({ currentUser, socket }) {
 
                     })
                     temp.push({ roomId: roomId, title: title, shareUserCount: shareUserCount, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
+                } else {
+                    window.location.reload()
                 }
             }
         })
