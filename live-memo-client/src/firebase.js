@@ -20,10 +20,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = isSupported() ? getMessaging() : null
-console.log(messaging)
 function subscribe() {
     Notification.requestPermission().then(permission => {
         console.log(permission)
+        console.log(messaging)
+
         if (permission == "granted") {
             getToken(messaging, { vapidKey: `BEqPyH6fNMq7qKa5Sn81R3VeI5Nw0kjR3gea79SkfJpzEocFro5ljOubelpLcn7QX7JiQAksBWT1VudTQklyfWQ` }).then(async (currentToken) => {
                 if (currentToken) {
