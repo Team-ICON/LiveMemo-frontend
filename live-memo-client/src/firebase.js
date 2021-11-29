@@ -20,4 +20,4 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const messaging = getMessaging();
 
-export { messaging, getToken, onMessage }
+export { messaging, getToken, onMessage, app }
