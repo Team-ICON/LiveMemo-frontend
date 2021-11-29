@@ -41,7 +41,7 @@ self.addEventListener('push', function (event) {
     const title = jsonText.notification.title;
     const options = {
         body: jsonText.notification.body,
-        icon: 'icons/Live-memo(192x192).png',
+        icon: 'icons/Live-Memo(192x192).png',
         badge: 'images/badge.png'
     };
     event.waitUntil(self.registration.showNotification(title, options));
