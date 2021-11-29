@@ -79,7 +79,16 @@ function FolderMemoList({ currentUser, socket }) {
                     jsonDoc.content.map(para => {
                         if (Object.keys(para).length >= 2) {
 
-                            cur_list = [...cur_list, para.content[0].text]
+                            if (para.content[0].type === "text") {
+                                console.log(para.content[0].text)
+                                cur_list = [...cur_list, { "type": "text", "text": para.content[0].text }]
+                            }
+                            else if (para.content[0].type === "image") {
+                                // console.log(para.content[0].attrs.src)
+
+                                cur_list = [...cur_list, { "type": "image", "text": para.content[0].attrs.src }]
+
+                            }
                         }
 
                     })

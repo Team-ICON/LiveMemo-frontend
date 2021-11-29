@@ -148,9 +148,6 @@ function CreateMemo({ currentUser, socket }) {
 
 
     const handleSave = useCallback(async (_id, body, quit) => {
-
-
-
         await api.put("/memo/createMemo", {
             _id,
             title: memoTitle,
@@ -167,11 +164,7 @@ function CreateMemo({ currentUser, socket }) {
             setCurMemberList([])
             if (state.first) {
                 handleSave(state.roomId, JSON.stringify(firstState), true);
-                // const res = await api.post("/memo/setCurUser", {
-                //     userId: currentUser._id,
-                //     roomId: id
-                // }).then(res => {
-                // });
+
                 return firstState;
             }
             else {
@@ -508,9 +501,11 @@ function CreateMemo({ currentUser, socket }) {
                                 onChange={(e) => handleChange(e)}
                             />
                         </Search>
-                        <button className="addButton" onClick={addUser}>
-                            Add
-                        </button>
+                        <div className="searchUserAdd">
+                            <button className="addButton" onClick={addUser}>
+                                Add
+                            </button>
+                        </div>
                     </div >
 
                 </List>

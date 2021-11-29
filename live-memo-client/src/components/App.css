@@ -29,6 +29,8 @@
 }
 
 
+remirror-editor.ProseMirror:focus {outline: gray solid 2px;}
+
 /* editor css */
 .remirror-editor.ProseMirror{
   background-color: white;

@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
-import { RemirrorJSON } from 'remirror';
+import { RemirrorJSON, prosemirrorNodeToHtml } from 'remirror';
 import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension, LinkExtension } from 'remirror/extensions';
 import {
     EditorComponent,
@@ -41,12 +41,11 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const [isSynced, setIsSynced] = useState<boolean>(false);
     const [docState, setDocState] = useState<RemirrorJSON>();
     const dispatch = useDispatch()
-    const CurUserList = useSelector(getCurUsers)
 
 
     const handleChange = useCallback(
         ({ state, tr, content }) => {
-
+            console.log(state);
             //state 는 현재 editstate 뜸 tr은  트랜잭션 tr은 editstate 안에도 있음 
             if (tr?.docChanged) {
                 setDocState(state.toJSON().doc);
@@ -126,6 +125,9 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         return extension;
     }, []);
 
+    const uploadFile = () => {
+        console.log(1)
+    }
     const createExtensions = useCallback(() => {
         return [
             new BoldExtension(),
@@ -140,7 +142,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
 
     //getcontext 는 햔재 remirror 상태 다 들어 있음
-    const { manager, getContext } = useRemirror({
+    const { manager, state, getContext } = useRemirror({
         extensions: createExtensions,
     });
 
@@ -152,7 +154,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         const fetchFallback = async () => {
 
             if (provider.connected && clientCount === 0) {
-
 
                 const res = await onFetch(documentId);
                 //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함

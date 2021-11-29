@@ -11,7 +11,10 @@ import socketio from 'socket.io-client';
 import { baseUrl } from "./axios";
 
 
-const socket = socketio.connect(baseUrl);
+const socket = socketio.connect(baseUrl, {
+  cors: { origin: "https://livememo.shop/" },
+  // withCredentials: true
+});
 
 
 ReactDOM.render(
