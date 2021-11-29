@@ -17,7 +17,7 @@ function useWebRtcProvider(user: User, documentId: string) {
 		// @ts-ignore opts param seems to expect ALL options
 		const newProvider = new WebrtcProvider(user.picture, roomName, ydoc, {
 			awareness,
-			// signaling: ['wss://livememo.herokuapp.com']
+			// signaling: ['wss://realbro.shop/signaling', 'wss://livememo.shop/signaling', 'wss://livememo.herokuapp.com', 'wss://signaling.yjs.dev', 'wss://y-webrtc-signaling-eu.herokuapp.com', 'wss://y-webrtc-signaling-us.herokuapp.com']
 		});
 		dispatch(selectProvider({
 			newProvider,

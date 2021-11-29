@@ -56,35 +56,6 @@ self.addEventListener('notificationclick', function (event) {
     //푸시 노티피케이션 에서 클릭 리스너
 
     //   var data = event.notification.data;
-      event.notification.close();
-      event.waitUntil(clients.openWindow("https://livememo-frontend.web.app/"));
-  });
-
-
-
-
-// function notifyMe() {
-//     // Let's check if the browser supports notifications
-//     if (!("Notification" in window)) {
-//         alert(
-//             "This browser does not support desktop notification"// Let's check whether notification permissions have already been granted
-//         );
-//     } else if (Notification.permission === "granted") {
-//         // If it's okay let's create a notification
-//         var notification = new Notification(
-//             "Hi there!"// Otherwise, we need to ask the user for permission
-//         );
-//     } else if (Notification.permission !== "denied") {
-//         Notification
-//             .requestPermission()
-//             .then(function (permission) {
-//                 // If the user accepts, let's create a notification
-//                 if (permission === "granted") {
-//                     var notification = new Notification("Hi there!");
-//                 }
-//             });
-//     }
-
-//     // At last, if the user has denied notifications, and you want to be respectful
-//     // there is no need to bother them any more.
-// }
+    event.notification.close();
+    event.waitUntil(clients.openWindow("https://live-memo-610d4.firebaseapp.com//"));
+});

@@ -95,4 +95,4 @@ getToken(messaging, { vapidKey: `BEQA-GyE9tre2RN7z0CWpDpTU3q0sf-7xXZthInZhHfyNO0
 // if (messaging !== null)
 //     subscribe();
 
-export { messaging, getToken, onMessage, app }
+export { messaging, getToken, onMessage, app, subscribe }
