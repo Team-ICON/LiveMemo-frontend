@@ -59,5 +59,5 @@ self.addEventListener('notificationclick', function (event) {
 
     //   var data = event.notification.data;
     event.notification.close();
-    event.waitUntil(clients.openWindow("https://livememo-frontend.web.app/"));
+    event.waitUntil(clients.openWindow("https://live-memo-610d4.firebaseapp.com/"));
 });
