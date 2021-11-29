@@ -11,6 +11,17 @@
 
 // import { messaging, getToken, onMessage } from "../../firebase"
 // import { api } from "../../axios";
+<<<<<<< HEAD
+=======
+// // import { onBackgroundMessage } from "firebase/messaging/sw";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+
+import { messaging, getToken, onMessage } from "../../firebase"
+import { api } from "../../axios";
+>>>>>>> dev
 
 // function subscribe() {
 //   Notification.requestPermission().then(permission => {
