@@ -12,7 +12,8 @@ import { baseUrl } from "./axios";
 
 
 const socket = socketio.connect(baseUrl, {
-  cors: { origin: "https://livememo.shop" }
+  cors: { origin: "https://livememo.shop/" },
+  // withCredentials: true
 });
 
 
