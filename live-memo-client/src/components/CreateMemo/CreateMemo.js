@@ -37,10 +37,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
-import Autocomplete from '@mui/material/Autocomplete';
 import "./CreateMemo.css"
 
-import { Long, serialize, deserialize } from 'bson';
 
 
 
@@ -151,9 +149,6 @@ function CreateMemo({ currentUser, socket }) {
 
 
     const handleSave = useCallback(async (_id, body, quit) => {
-
-
-
         await api.put("/memo/createMemo", {
             _id,
             title: memoTitle,
@@ -170,11 +165,7 @@ function CreateMemo({ currentUser, socket }) {
             setCurMemberList([])
             if (state.first) {
                 handleSave(state.roomId, JSON.stringify(firstState), true);
-                // const res = await api.post("/memo/setCurUser", {
-                //     userId: currentUser._id,
-                //     roomId: id
-                // }).then(res => {
-                // });
+
                 return firstState;
             }
             else {

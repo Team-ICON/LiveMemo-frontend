@@ -1,29 +1,30 @@
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { getMessaging, getToken, onMessage } from "firebase/messaging";
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import { api } from "../../axios";
+// // import { onBackgroundMessage } from "firebase/messaging/sw";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC2XKZyh4QMPROuZXDneko-9X9MoGde-Lc",
+//   authDomain: "live-memo-610d4.firebaseapp.com",
+//   projectId: "live-memo-610d4",
+//   storageBucket: "live-memo-610d4.appspot.com",
+//   messagingSenderId: "874159596175",
+//   appId: "1:874159596175:web:f2a1236ba6e24f5a9286fa"
+// };
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+// const messaging = getMessaging();
+import { messaging, getToken, onMessage } from "../../firebase"
 import { api } from "../../axios";
-// import { onBackgroundMessage } from "firebase/messaging/sw";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDF1Fl1YdCAddX6ToplB4LC58dEYKhMqls",
-  authDomain: "apppush-3b5aa.firebaseapp.com",
-  projectId: "apppush-3b5aa",
-  storageBucket: "apppush-3b5aa.appspot.com",
-  messagingSenderId: "150342264977",
-  appId: "1:150342264977:web:27b62b14eadbc0af167730",
-  measurementId: "G-SZ4VFV0T6H"
-};
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const messaging = getMessaging();
 
 
-getToken(messaging, { vapidKey: 'BHlhjOwtc7AzNvzguw-_aWnUTPR0xXOND8Mi8IjxnbVZZEkCbj2L4fNiUKsruorbzSHLYDtzoxfjR2zVOfdYz9I' }).then(async (currentToken) => {
+getToken(messaging, { vapidKey: 'BEqPyH6fNMq7qKa5Sn81R3VeI5Nw0kjR3gea79SkfJpzEocFro5ljOubelpLcn7QX7JiQAksBWT1VudTQklyfWQ' }).then(async (currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
     console.log(`currentToken`, currentToken);

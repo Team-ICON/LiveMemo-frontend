@@ -53,7 +53,7 @@ function MemoList({ currentUser, socket }) {
     useEffect(() => {
         setTimeout(() => {
             setTimeToList(true)
-        }, 750)
+        }, 350)
 
     }, [])
 
