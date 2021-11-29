@@ -20,7 +20,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = isSupported() ? getMessaging() : null
-
 function subscribe() {
     Notification.requestPermission().then(permission => {
         console.log(permission)
