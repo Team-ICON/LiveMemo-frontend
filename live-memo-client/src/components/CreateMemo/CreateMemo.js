@@ -194,7 +194,7 @@ function CreateMemo({ currentUser, socket }) {
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
 
-        event.returnValue = ""
+        event.returnValue = 0
     }
     useEffect(() => {
         window.addEventListener('beforeunload', beforeunloadHandler);
@@ -204,17 +204,21 @@ function CreateMemo({ currentUser, socket }) {
     }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
-    function popstateHandler() {
-
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
+    const popstateHandler = (event) => {
+        event.preventDefault();
+        api.post("/memo/leaveRoom", {
+            memoId: state.roomId
+        }).then((response) => {
+            console.log(response)
+        })
 
 
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
-        setTimeout(() => {
-            navigate('/', { replace: true })
 
-        }, 350);
+
+
+        event.returnValue = 0
 
     }
     useEffect(() => {

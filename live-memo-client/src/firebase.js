@@ -25,7 +25,7 @@ function subscribe() {
         console.log(permission)
         console.log(messaging)
 
-        if (permission == "granted") {
+        if (permission === "granted") {
             getToken(messaging, { vapidKey: `BEqPyH6fNMq7qKa5Sn81R3VeI5Nw0kjR3gea79SkfJpzEocFro5ljOubelpLcn7QX7JiQAksBWT1VudTQklyfWQ` }).then(async (currentToken) => {
                 if (currentToken) {
                     // Send the token to your server and update the UI if necessary
