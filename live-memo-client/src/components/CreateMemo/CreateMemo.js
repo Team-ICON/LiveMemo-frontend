@@ -55,6 +55,8 @@ function CreateMemo({ currentUser, socket }) {
     //메모에 속한 사용자 리스트 
     const [memberList, setMemberList] = useState([]);
     const [curMemberList, setCurMemberList] = useState([]);
+    const [canSave, setCanSave] = useState(false)
+    const [beReload, setBeRealod] = useState(false)
 
     // three dot button
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
@@ -186,43 +188,87 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
+    // useEffect(() => {
+    //     (() => {
+    //         socket.on('reload', (flag) => {
+    //             console.log(flag)
+    //             setTimeout(() => {
+    //                 setBeRealod(beReload => !beReload)
+    //             }, 250);
+
+    //         });
+
+    //     })();
+
+    //     return () => {
+    //         if (!socket) return;
+    //         // setBeRealod(beReload => !beReload)
+    //     }
+    // }, [])
+
+
     //새로고침 핸들러
     const beforeunloadHandler = (event) => {
         event.preventDefault();
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), false)
-
+        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
         selectedProvider.newProvider.disconnect();
         selectedProvider.newProvider.destroy();
+        event.returnValue = false
 
-        event.returnValue = ""
+        socket.emit('reload', "success");
+
     }
     useEffect(() => {
+
+
         window.addEventListener('beforeunload', beforeunloadHandler);
         return () => {
             window.removeEventListener("beforeunload", beforeunloadHandler);
+
         };
     }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
-    function popstateHandler() {
 
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), true)
-
-
-        selectedProvider.newProvider.disconnect();
-        selectedProvider.newProvider.destroy();
-        setTimeout(() => {
-            navigate('/', { replace: true })
-
-        }, 350);
-
-    }
     useEffect(() => {
+
+
+        function popstateHandler(event) {
+            event.preventDefault();
+
+            if (window.confirm(`뒤로 가시겠습니까?
+변경사항이 저장되지 않을 수 있습니다.`)) {
+
+                api.post("/memo/leaveRoom", {
+                    memoId: state.roomId
+                }).then((response) => {
+                    console.log(response)
+                })
+
+
+                selectedProvider.newProvider.disconnect();
+                selectedProvider.newProvider.destroy();
+            }
+            else {
+                selectedProvider.newProvider.disconnect();
+                selectedProvider.newProvider.destroy();
+                window.history.go(1)
+
+            }
+
+        }
         window.addEventListener('popstate', popstateHandler, false);
         return () => {
             window.removeEventListener('popstate', popstateHandler)
         }
     }, [selectedProvider, selectedDoc]) //바뀐거 계속 확인
+
+
+    useEffect(() => {
+        setTimeout(() => {
+            setCanSave(true)
+        }, 1000);
+    }, [])
 
     //뒤로가기 아이콘 눌렀을때 저장
     const onSubmit = async (event) => {
@@ -526,10 +572,12 @@ function CreateMemo({ currentUser, socket }) {
             </Drawer>
             <div className="createMemo__tools">
                 <div className="createMemo__toolsLeft">
-                    <IconButton style={{ color: 'white' }} onClick={onSubmit}>
+                    {canSave && <IconButton style={{ color: 'white' }} onClick={onSubmit}>
                         <ArrowBackIosNewIcon />
-                    </IconButton>
-
+                    </IconButton>}
+                    {!canSave && <IconButton style={{ color: 'gray' }} >
+                        <ArrowBackIosNewIcon />
+                    </IconButton>}
                 </div>
                 <div className="memo__toolsRight">
                     {isBookMark === false && <IconButton style={{ color: 'white' }} onClick={addBookMark}>

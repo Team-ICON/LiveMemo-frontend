@@ -85,6 +85,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         ({ webrtcPeers }) => {
             // console.log("사람수:", webrtcPeers.length)
             setClientCount(webrtcPeers.length);
+            console.log(clientCount)
             dispatch(setCurUserList({
                 webrtcPeers
             }))
@@ -152,8 +153,8 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         }
         const fetchFallback = async () => {
 
+            console.log(clientCount)
             if (provider.connected && clientCount === 0) {
-
                 const res = await onFetch(documentId);
                 //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함
                 dispatch(selectDoc({
