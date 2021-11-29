@@ -57,7 +57,7 @@ function subscribe() {
     })
 }
 
-if (messaging !== null)
-    subscribe();
+// if (messaging !== null)
+subscribe();
 
 export { messaging, getToken, onMessage, app }
