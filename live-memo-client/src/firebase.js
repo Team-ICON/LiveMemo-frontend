@@ -16,8 +16,6 @@ const firebaseConfig = {
     appId: "1:874159596175:web:f2a1236ba6e24f5a9286fa"
 };
 // Initialize Firebase
-const messaging = getMessaging();
-if (messaging.isSupported()) {
-    initializeApp(firebaseConfig);
-}
+const app = initializeApp(firebaseConfig);
+const messaging = isSupported() ? getMessaging() : null
 export { messaging, getToken, onMessage }
