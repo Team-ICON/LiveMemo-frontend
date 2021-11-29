@@ -42,5 +42,5 @@ self.addEventListener('notificationclick', function (event) {
 
     //   var data = event.notification.data;
     event.notification.close();
-    event.waitUntil(clients.openWindow("http://localhost:3000/"));
+    event.waitUntil(clients.openWindow("https://live-memo-610d4.firebaseapp.com//"));
 });
