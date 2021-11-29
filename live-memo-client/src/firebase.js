@@ -58,3 +58,5 @@ function subscribe() {
 
 if (messaging)
     subscribe();
+
+export { messaging, getToken, onMessage, app }
