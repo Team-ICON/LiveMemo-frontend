@@ -12,7 +12,7 @@ import { baseUrl } from "./axios";
 
 
 const socket = socketio.connect(baseUrl, {
-  cors: { origin: "*" }
+  cors: { origin: "https://livememo.shop" }
 });
 
 
