@@ -187,16 +187,18 @@ function CreateMemo({ currentUser, socket }) {
     }, []);
 
     //새로고침 핸들러
-    const beforeunloadHandler = (event) => {
-        event.preventDefault();
-        handleSave(state.roomId, JSON.stringify(selectedDoc.docState), false)
 
-        selectedProvider.newProvider.disconnect();
-        selectedProvider.newProvider.destroy();
-
-        event.returnValue = 0
-    }
     useEffect(() => {
+        const beforeunloadHandler = (event) => {
+            event.preventDefault();
+            handleSave(state.roomId, JSON.stringify(selectedDoc.docState), false)
+
+            selectedProvider.newProvider.disconnect();
+            selectedProvider.newProvider.destroy();
+
+            event.returnValue = 0
+        }
+
         window.addEventListener('beforeunload', beforeunloadHandler);
         return () => {
             window.removeEventListener("beforeunload", beforeunloadHandler);
@@ -204,24 +206,33 @@ function CreateMemo({ currentUser, socket }) {
     }, []);
 
     //진짜 뒤로가기 눌렀을때 저장 핸들러
-    const popstateHandler = (event) => {
-        event.preventDefault();
-        api.post("/memo/leaveRoom", {
-            memoId: state.roomId
-        }).then((response) => {
-            console.log(response)
-        })
 
-
-        selectedProvider.newProvider.disconnect();
-        selectedProvider.newProvider.destroy();
-
-
-
-        event.returnValue = 0
-
-    }
     useEffect(() => {
+
+
+        function popstateHandler(event) {
+            event.preventDefault();
+
+
+
+
+
+            // if (window.confirm("뒤로가겠습니까?")) {
+            //     api.post("/memo/leaveRoom", {
+            //         memoId: state.roomId
+            //     }).then((response) => {
+            //         console.log(response)
+            //     })
+            //     selectedProvider.newProvider.disconnect();
+            //     selectedProvider.newProvider.destroy();
+            // }
+            // else {
+            //     selectedProvider.newProvider.disconnect();
+            //     selectedProvider.newProvider.destroy();
+            //     window.history.go(1)
+            // }
+
+        }
         window.addEventListener('popstate', popstateHandler, false);
         return () => {
             window.removeEventListener('popstate', popstateHandler)
