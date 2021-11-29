@@ -1,4 +1,4 @@
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -16,11 +16,8 @@ const firebaseConfig = {
     appId: "1:874159596175:web:f2a1236ba6e24f5a9286fa"
 };
 // Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const messaging = isSupported() ? getMessaging() : null
 
 
-
-const messaging = getMessaging();
-if (messaging.isSupported()) {
-    initializeApp(firebaseConfig);
-}
-export { messaging, getToken, onMessage }
+export { messaging, getToken, onMessage, app }
