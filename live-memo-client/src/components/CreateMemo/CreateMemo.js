@@ -4,10 +4,12 @@ import { Cookies } from "react-cookie";
 import Editor from '../editor/Editor';
 import { api } from "../../axios";
 import UserProvider from '../../UserProvider'
+
 //redux
 import { useSelector, useDispatch } from 'react-redux';
 import { selectOpenProvider, selectOpenDoc, } from '../../features/memoSlice';
 import { getCurUsers } from '../../features/userSlice';
+
 //material ui
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -29,7 +31,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
 import Autocomplete from '@mui/material/Autocomplete';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';

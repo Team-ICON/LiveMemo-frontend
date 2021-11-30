@@ -1,15 +1,17 @@
 import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import { RemirrorJSON, prosemirrorNodeToHtml } from 'remirror';
-import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension, LinkExtension } from 'remirror/extensions';
+import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension, LinkExtension, TextHighlightExtension } from 'remirror/extensions';
 import {
     EditorComponent,
     Remirror,
     ThemeProvider,
     useRemirror,
+    useCommands
 } from '@remirror/react';
 import { ProsemirrorDevTools } from '@remirror/dev';
 import { useNavigate } from 'react-router';
 import { setCurUserList, getCurUsers } from '../../features/userSlice';
+import ExtensionButtons from "../CreateMemo/ExtensionButtons"
 
 import { useDebouncedCallback } from 'use-debounce';
 import useCurrentUser from '../hooks/useCurrentUser';
@@ -136,6 +138,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             }),
             new AnnotationExtension(),
             new ImageExtension({ enableResizing: true }),
+            new TextHighlightExtension(),
             linkExtension
         ];
     }, [provider]);
@@ -180,6 +183,8 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         <ThemeProvider>
             <Remirror manager={manager} onChange={handleChange}>
                 <EditorComponent />
+                <ExtensionButtons />
+
             </Remirror>
 
         </ThemeProvider>
