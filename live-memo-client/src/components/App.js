@@ -39,11 +39,6 @@ const App = ({ socket }) => {
       })
   }, [])
 
-  // useEffect(() => {
-
-  //   if (messaging !== null)
-  //     subscribe();
-  // }, [])
 
   const user = useSelector(selectUser);
 

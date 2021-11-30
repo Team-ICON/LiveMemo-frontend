@@ -96,12 +96,12 @@ function MemoList({ currentUser, socket }) {
                 // console.log(doc)
                 let jsonDoc = JSON.parse(doc)
                 if (jsonDoc.content.length >= 1) {
-                    console.log(jsonDoc)
+                    // console.log(jsonDoc)
                     jsonDoc.content.map(para => {
                         if (Object.keys(para).length >= 2) {
-                            console.log(para)
+                            // console.log(para)
                             if (para.content[0].type === "text") {
-                                console.log(para.content[0].text)
+                                // console.log(para.content[0].text)
                                 cur_list = [...cur_list, { "type": "text", "text": para.content[0].text }]
                             }
                             else if (para.content[0].type === "image") {
@@ -114,7 +114,7 @@ function MemoList({ currentUser, socket }) {
                         }
 
                     })
-                    console.log(cur_list)
+                    // console.log(cur_list)
                     temp.push({ roomId: roomId, title: title, shareUserCount: shareUserCount, context: cur_list, updatedTime: updatedTime, isBookMark: isBookMark })
                 } else {
                     window.location.reload()

@@ -189,7 +189,11 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
+<<<<<<< HEAD
     // 
+=======
+
+>>>>>>> dev
 
 
     //새로고침 핸들러
@@ -251,7 +255,7 @@ function CreateMemo({ currentUser, socket }) {
     useEffect(() => {
         setTimeout(() => {
             setCanSave(true)
-        }, 1000);
+        }, 2000);
     }, [])
 
     //뒤로가기 아이콘 눌렀을때 저장

@@ -1,21 +1,21 @@
 import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
-import { RemirrorJSON, prosemirrorNodeToHtml } from 'remirror';
-import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension, LinkExtension, TextHighlightExtension } from 'remirror/extensions';
+import { RemirrorJSON, } from 'remirror';
+import { YjsExtension, AnnotationExtension, BoldExtension, ImageExtension, TextHighlightExtension } from 'remirror/extensions';
 import {
     EditorComponent,
     Remirror,
     ThemeProvider,
     useRemirror,
-    useCommands
+
 } from '@remirror/react';
-import { ProsemirrorDevTools } from '@remirror/dev';
-import { useNavigate } from 'react-router';
-import { setCurUserList, getCurUsers } from '../../features/userSlice';
+import { setCurUserList, } from '../../features/userSlice';
 import ExtensionButtons from "../CreateMemo/ExtensionButtons"
 
 import { useDebouncedCallback } from 'use-debounce';
 import useCurrentUser from '../hooks/useCurrentUser';
 import useWebRtcProvider from '../hooks/useWebRtcProvider';
+import useSaveHook from '../hooks/useSaveHook';
+
 import useObservableListener from '../hooks/useObservableListener';
 import FloatingAnnotations from './FloatingAnnotations';
 import AnnotationsJSONPrinter from './AnnotationsJSONPrinter';
@@ -30,14 +30,15 @@ interface EditorProps {
 }
 
 const TIMEOUT = 3000 + Math.floor(Math.random() * 7000);
-
+console.log(TIMEOUT)
 const Status = ({ success = false }) => (
-    <span className={`status ${success ? 'success' : 'fail'}`}>sync</span>
+    <span className={`status ${success ? 'success' : ''}`}>&nbsp;</span>
 );
 
 function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     const usedFallbackRef = useRef<boolean>(false);
     const currentUser = useCurrentUser();
+
     const provider = useWebRtcProvider(currentUser, documentId);
     const [clientCount, setClientCount] = useState<number>(0);
     const [isSynced, setIsSynced] = useState<boolean>(false);
@@ -50,7 +51,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             //state 는 현재 editstate 뜸 tr은  트랜잭션 tr은 editstate 안에도 있음 
             if (tr?.docChanged) {
                 setDocState(state.toJSON().doc);
-                console.log(state.toJSON())
+
             }
         },
         [setDocState],
@@ -118,18 +119,16 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     useObservableListener('update', handleYDocUpdate, provider.doc);
 
 
-    const linkExtension = useMemo(() => {
-        const extension = new LinkExtension({ autoLink: true });
-        extension.addHandler('onClick', (_, data) => {
-            window.location.href = data.href
-            return true;
-        });
-        return extension;
-    }, []);
+    // const linkExtension = useMemo(() => {
+    //     const extension = new LinkExtension({ autoLink: true });
+    //     extension.addHandler('onClick', (_, data) => {
+    //         window.location.href = data.href
+    //         return true;
+    //     });
+    //     return extension;
+    // }, []);
 
-    const uploadFile = () => {
-        console.log(1)
-    }
+
     const createExtensions = useCallback(() => {
         return [
             new BoldExtension(),
@@ -139,7 +138,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             new AnnotationExtension(),
             new ImageExtension({ enableResizing: true }),
             new TextHighlightExtension(),
-            linkExtension
         ];
     }, [provider]);
 
@@ -181,10 +179,13 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
 
     return (
         <ThemeProvider>
-            <Remirror manager={manager} onChange={handleChange}>
+            <Remirror manager={manager} onChange={handleChange} >
+
                 <EditorComponent />
                 <ExtensionButtons />
-
+                {/* <p className="info">
+                    Synced: <Status success={isSynced || clientCount === 0} />
+                </p> */}
             </Remirror>
 
         </ThemeProvider>
