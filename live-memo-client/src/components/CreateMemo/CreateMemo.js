@@ -189,23 +189,7 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
-    // useEffect(() => {
-    //     (() => {
-    //         socket.on('reload', (flag) => {
-    //             console.log(flag)
-    //             setTimeout(() => {
-    //                 setBeRealod(beReload => !beReload)
-    //             }, 250);
-
-    //         });
-
-    //     })();
-
-    //     return () => {
-    //         if (!socket) return;
-    //         // setBeRealod(beReload => !beReload)
-    //     }
-    // }, [])
+    // 
 
 
     //새로고침 핸들러
