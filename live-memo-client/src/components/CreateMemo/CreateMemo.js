@@ -656,13 +656,13 @@ function CreateMemo({ currentUser, socket }) {
                                 <DialogTitle>Push 알림</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
-                                        Push 알림으로 보낼 제목과 내용을 적어주세요.
+                                        Push 알림을 보내는 사람과 내용을 적어주세요.
                                     </DialogContentText>
                                     <TextField
                                         autoFocus
                                         margin="dense"
                                         id="title"
-                                        label="제목"
+                                        label="보내는 사람"
                                         type="text"
                                         fullWidth
                                         variant="standard"
