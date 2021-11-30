@@ -5,3 +5,14 @@
     
     justify-content: center;
 }
+
+.status.success {
+	background: lawngreen;
+}
+.status {
+	background: red;
+	border-radius: 100%;
+	height: 16px;
+	width: 30px;
+	margin: 0 0.5rem;
+}

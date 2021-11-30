@@ -189,23 +189,7 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
-    // useEffect(() => {
-    //     (() => {
-    //         socket.on('reload', (flag) => {
-    //             console.log(flag)
-    //             setTimeout(() => {
-    //                 setBeRealod(beReload => !beReload)
-    //             }, 250);
 
-    //         });
-
-    //     })();
-
-    //     return () => {
-    //         if (!socket) return;
-    //         // setBeRealod(beReload => !beReload)
-    //     }
-    // }, [])
 
 
     //새로고침 핸들러
@@ -268,7 +252,7 @@ function CreateMemo({ currentUser, socket }) {
     useEffect(() => {
         setTimeout(() => {
             setCanSave(true)
-        }, 1000);
+        }, 2000);
     }, [])
 
     //뒤로가기 아이콘 눌렀을때 저장

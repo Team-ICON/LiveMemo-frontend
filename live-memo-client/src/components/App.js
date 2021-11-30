@@ -13,7 +13,9 @@ import { useSelector, useDispatch } from 'react-redux';
 // import CreateMemo from "./CreateMemo/CreateMemo"
 import CircularProgress from '@mui/material/CircularProgress';
 import { api } from "../axios";
-import { messaging, subscribe } from "../firebase"
+// import useImportScript from "./hooks/useImportScript";
+
+// import { messaging, subscribe } from "../firebase"
 
 const CreateMemo = lazy(() => import("./CreateMemo/CreateMemo"))
 const MemoList = lazy(() => import("./MemoList/MemoList"))
@@ -37,11 +39,7 @@ const App = ({ socket }) => {
       })
   }, [])
 
-  useEffect(() => {
 
-    if (messaging !== null)
-      subscribe();
-  }, [])
 
   const user = useSelector(selectUser);
 

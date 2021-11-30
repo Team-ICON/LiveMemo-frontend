@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { cx } from 'remirror';
 
+
 const theme = createTheme({
     palette: {
         mode: 'dark',
@@ -32,12 +33,16 @@ const ExtensionButtons = () => {
                 >
                     Bold</Button>
 
+
             </Stack >
 
-        </ThemeProvider>
+        </ThemeProvider >
 
 
     );
 };
+
+
+
 
 export default ExtensionButtons
