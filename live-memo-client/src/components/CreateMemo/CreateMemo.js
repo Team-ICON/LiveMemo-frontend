@@ -189,11 +189,6 @@ function CreateMemo({ currentUser, socket }) {
 
     }, []);
 
-<<<<<<< HEAD
-    // 
-=======
-
->>>>>>> dev
 
 
     //새로고침 핸들러
