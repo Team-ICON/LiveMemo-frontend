@@ -2,13 +2,14 @@
     display: none
 }
 .buttonGroup{
-	height:6vh;
+	height:7vh;
 	width: 100%;
 	position:fixed;
 	left: 0;
-	bottom: 0;
+	top:1vh;
+	bottom: 3vh;
     justify-content: center;
-	padding-bottom: 2vh;
+	background-color: rgb(37, 36, 36);
 
 }
 
