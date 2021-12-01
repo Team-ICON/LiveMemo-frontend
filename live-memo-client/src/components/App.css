@@ -1,5 +1,6 @@
 .app{
   height:100vh;
+
 }
 .app__body{
   display:flex;
@@ -39,9 +40,16 @@ remirror-editor.ProseMirror:focus {outline: gray solid 2px;}
   height: 100%;
 }
 
+@media (max-height: 540px) {
+  .remirror-editor.ProseMirror {
+   
+    height: 50%
+  }
+}
 .remirror-theme{
   width: 100%;
   height: 100%;
+  
   
 }
 

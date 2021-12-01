@@ -4,6 +4,7 @@
     /* background-color: rgb(199, 181, 199); */
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 .createMemo__tools{
     display: flex;

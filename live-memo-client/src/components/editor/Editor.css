@@ -2,20 +2,17 @@
     display: none
 }
 .buttonGroup{
-	height:5vh;
+	height:7vh;
 	width: 100%;
 	position:sticky;
 	left: 0;
-	bottom: 1vh;
+	top:1vh;
+	bottom: 3vh;
     justify-content: center;
 	background-color: rgb(37, 36, 36);
 
 }
-/* .editorWrapper{
-	position:sticky;
-	height:100%;
-	width:100%;
-} */
+
 /* .status.success {
 	background: lawngreen;
 }
