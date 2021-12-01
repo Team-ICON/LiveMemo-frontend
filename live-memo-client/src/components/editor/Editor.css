@@ -9,6 +9,7 @@
 	bottom: 0;
     justify-content: center;
 	padding-bottom:1vh;
+	z-index:999;
 }
 /* .editorWrapper{
 	height:100%;
