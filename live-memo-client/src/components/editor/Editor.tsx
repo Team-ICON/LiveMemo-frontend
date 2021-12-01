@@ -180,7 +180,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     return (
         <ThemeProvider>
             <Remirror manager={manager} onChange={handleChange} >
-
                 <EditorComponent />
                 <ExtensionButtons />
 
