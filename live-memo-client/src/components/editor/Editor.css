@@ -4,7 +4,7 @@
 .buttonGroup{
 	height:30px;
 	width: 100%;
-	position:fixed;
+	position:sticky;
 	left: 0;
 	top:1vh;
 	bottom: 3vh;
