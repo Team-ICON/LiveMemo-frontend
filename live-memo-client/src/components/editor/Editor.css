@@ -2,10 +2,18 @@
     display: none
 }
 .buttonGroup{
-    
+	height:5vh;
+	width: 100%;
+	position: relative;
+	left: 0;
+	bottom: 0;
     justify-content: center;
+	margin-bottom:2vh;
 }
-
+.editorWrapper{
+	height:100%;
+	width:100%;
+}
 /* .status.success {
 	background: lawngreen;
 }

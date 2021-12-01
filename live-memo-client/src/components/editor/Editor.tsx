@@ -180,12 +180,10 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     return (
         <ThemeProvider>
             <Remirror manager={manager} onChange={handleChange} >
-
-                <EditorComponent />
-                <ExtensionButtons />
-                {/* <p className="info">
-                    Synced: <Status success={isSynced || clientCount === 0} />
-                </p> */}
+                <div className="editorWrapper">
+                    <EditorComponent />
+                    <ExtensionButtons />
+                </div>
             </Remirror>
 
         </ThemeProvider>
