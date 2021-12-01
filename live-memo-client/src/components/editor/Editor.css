@@ -2,14 +2,14 @@
     display: none
 }
 .buttonGroup{
-	height:5vh;
+	height:6vh;
 	width: 100%;
-	position: sticky;
+	position: relative;
 	left: 0;
 	bottom: 0;
     justify-content: center;
-	padding-bottom:1vh;
-	z-index:999;
+	padding-bottom: 0!important;
+
 }
 /* .editorWrapper{
 	height:100%;
