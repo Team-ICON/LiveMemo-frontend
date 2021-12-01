@@ -2,13 +2,13 @@
     display: none
 }
 .buttonGroup{
-	height:6vh;
+	height:5vh;
 	width: 100%;
 	position:sticky;
 	left: 0;
-	bottom: 0;
+	bottom: 1vh;
     justify-content: center;
-	padding-bottom: 2vh;
+	background-color: rgb(37, 36, 36);
 
 }
 /* .editorWrapper{

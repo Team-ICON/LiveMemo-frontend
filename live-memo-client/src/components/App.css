@@ -46,6 +46,7 @@ remirror-editor.ProseMirror:focus {outline: gray solid 2px;}
 }
 
 .remirror-editor-wrapper{
+  background-color: rgb(37, 36, 36);
   padding-top :10px;
   padding-left: 10px;
   padding-right:10px;
