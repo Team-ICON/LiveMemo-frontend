@@ -130,7 +130,7 @@ input:focus {outline: gray solid 2px;}
 
 .curMemberList{
     display:flex;
-    
+    overflow:hidden;
     margin: 10px;
     margin-bottom: 40px;
     background-color: whitesmoke;

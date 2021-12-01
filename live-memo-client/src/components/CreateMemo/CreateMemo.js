@@ -38,6 +38,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import CloseIcon from '@mui/icons-material/Close';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import "./CreateMemo.css"
 
 
@@ -117,36 +118,6 @@ function CreateMemo({ currentUser, socket }) {
     const handleDialogClose = () => {
         setDialogOpen(false);
     };
-
-    // const dataURLToBlob = useCallback((dataURL) => {
-    //     const BASE64_MARKER = ';base64,'
-
-    //     // base64로 인코딩 되어있지 않을 경우
-    //     if (dataURL.indexOf(BASE64_MARKER) === -1) {
-    //         const parts = dataURL.split(',')
-    //         const contentType = parts[0].split(':')[1]
-    //         const raw = parts[1]
-    //         return new Blob([raw], {
-    //             type: contentType,
-    //         })
-    //     }
-    //     // base64로 인코딩 된 이진데이터일 경우
-    //     const parts = dataURL.split(BASE64_MARKER)
-    //     const contentType = parts[0].split(':')[1]
-    //     const raw = window.atob(parts[1])
-    //     // atob()는 Base64를 디코딩하는 메서드
-    //     const rawLength = raw.length
-    //     // 부호 없는 1byte 정수 배열을 생성
-    //     const uInt8Array = new Uint8Array(rawLength) // 길이만 지정된 배열
-    //     let i = 0
-    //     while (i < rawLength) {
-    //         uInt8Array[i] = raw.charCodeAt(i)
-    //         i++
-    //     }
-    //     return new Blob([uInt8Array], {
-    //         type: contentType,
-    //     })
-    // })
 
 
 
@@ -677,7 +648,6 @@ function CreateMemo({ currentUser, socket }) {
             <div className="curMemberList">
                 <Avatar src={currentUser.picture} className="avatar_skin" sx={{ bgcolor: 'black' }}>ID</Avatar>
                 {curMemberList.map((item, index) => (
-                    // { console.log(item) }
                     <Avatar className="curMember" key={index} sx={{ bgcolor: deepPurple[400] }} src={item} />
                 ))}
 
