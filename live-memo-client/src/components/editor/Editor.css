@@ -11,10 +11,11 @@
 	padding-bottom: 0!important;
 
 }
-/* .editorWrapper{
+.editorWrapper{
+	position:sticky;
 	height:100%;
 	width:100%;
-} */
+}
 /* .status.success {
 	background: lawngreen;
 }
