@@ -4,16 +4,16 @@
 .buttonGroup{
 	height:5vh;
 	width: 100%;
-	position: relative;
+	position: sticky;
 	left: 0;
 	bottom: 0;
     justify-content: center;
-	margin-bottom:2vh;
+	padding-bottom:1vh;
 }
-.editorWrapper{
+/* .editorWrapper{
 	height:100%;
 	width:100%;
-}
+} */
 /* .status.success {
 	background: lawngreen;
 }
