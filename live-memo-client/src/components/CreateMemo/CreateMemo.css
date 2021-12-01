@@ -1,8 +1,8 @@
 .createMemo{
-    display: table-column;
+    /* display: table-column; */
     background-color: rgb(37, 36, 36);
     /* background-color: rgb(199, 181, 199); */
-    overscroll-behavior-y: none;
+    position: fixed;
     height: 100%;
     width: 100%;
 }
