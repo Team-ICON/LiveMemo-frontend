@@ -11,7 +11,6 @@ export interface User {
 function useYjsAwareness(user: User, doc: Doc): awarenessProtocol.Awareness {
 	return useMemo(() => {
 		const awareness = new awarenessProtocol.Awareness(doc);
-		console.log(user.color)
 		awareness.setLocalStateField('user', {
 			name: user.displayName,
 			color: user.color ? user.color : getRandomColor(user.name),

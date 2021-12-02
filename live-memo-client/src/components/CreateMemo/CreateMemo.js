@@ -77,7 +77,6 @@ function CreateMemo({ currentUser, socket }) {
     let searchEmail = "";
     // 이동할 폴더 이름
     const [selectFolderName, setSelectFolderName] = useState(folderList[0]);
-    console.log(currentUser.color)
     //최초 실행 시 폴더 리스트를 받아옴
     useEffect(() => {
         let tempFolderList = [];
@@ -150,7 +149,7 @@ function CreateMemo({ currentUser, socket }) {
                 if (curMem.length == 1)
                     return res.data.memInfo.content;
                 else {
-                    return firstState
+                    return "false"
                 }
 
             }
