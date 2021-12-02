@@ -149,7 +149,7 @@ function CreateMemo({ currentUser, socket }) {
                 if (curMem.length == 1)
                     return res.data.memInfo.content;
                 else {
-                    return "false"
+                    return "already"
                 }
 
             }
@@ -161,6 +161,7 @@ function CreateMemo({ currentUser, socket }) {
 
 
 
+
     //새로고침 핸들러
     const beforeunloadHandler = (event) => {
         event.preventDefault();
@@ -169,6 +170,7 @@ function CreateMemo({ currentUser, socket }) {
         selectedProvider.newProvider.destroy();
         event.returnValue = false
 
+        socket.emit('reload', "success");
 
     }
     useEffect(() => {
@@ -610,13 +612,13 @@ function CreateMemo({ currentUser, socket }) {
                                 <DialogTitle>Push 알림</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
-                                        Push 알림을 보내는 사람과 내용을 적어주세요.
+                                        Push 알림으로 보낼 제목과 내용을 적어주세요.
                                     </DialogContentText>
                                     <TextField
                                         autoFocus
                                         margin="dense"
                                         id="title"
-                                        label="보내는 사람"
+                                        label="제목"
                                         type="text"
                                         fullWidth
                                         variant="standard"

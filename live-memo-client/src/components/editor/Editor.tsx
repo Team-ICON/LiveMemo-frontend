@@ -173,9 +173,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 }
 
             }
-            else if (provider.connected) {
-                window.location.reload()
-            }
 
             usedFallbackRef.current = true;
         };
