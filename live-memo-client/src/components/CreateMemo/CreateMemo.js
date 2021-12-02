@@ -147,10 +147,11 @@ function CreateMemo({ currentUser, socket }) {
                 setMemberList(res.data.memInfo.userList);
 
                 if (curMem.length == 1)
-                    return res.data.memInfo.content;
+                    return { data: res.data.memInfo.content, flag: true }
                 else {
-                    return "false"
+                    return { data: firstState, flag: false }
                 }
+
 
             }
         } catch {
