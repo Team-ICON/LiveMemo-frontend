@@ -163,7 +163,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 dispatch(selectDoc({
                     docState: JSON.parse(res)
                 }))
-                if (res !== "already") {
+                if (res.flag) {
                     console.log(res)
                     getContext()?.setContent(JSON.parse(res));
 
