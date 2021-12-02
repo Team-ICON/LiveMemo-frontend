@@ -34,7 +34,8 @@ const App = ({ socket }) => {
         dispatch(login({
           displayName: User.profileName,
           email: User.email,
-          picture: User.picture
+          picture: User.picture,
+          color: User.color
         }))
       })
   }, [])
