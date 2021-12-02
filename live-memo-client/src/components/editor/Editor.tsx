@@ -161,18 +161,14 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 const res = await onFetch(documentId);
                 // res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함
                 dispatch(selectDoc({
-                    docState: JSON.parse(res.data)
+                    docState: JSON.parse(res)
                 }))
-                if (res.flag) {
-                    console.log(res.data)
-                    getContext()?.setContent(JSON.parse(res.data));
+                console.log(docState)
+                getContext()?.setContent(JSON.parse(res));
 
-                }
-                else {
-                    console.log(res.data)
-                }
 
             }
+
 
             usedFallbackRef.current = true;
         };
@@ -188,7 +184,6 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
     return (
         <ThemeProvider>
             <Remirror manager={manager} onChange={handleChange} >
-
                 <EditorComponent />
                 <ExtensionButtons />
 
