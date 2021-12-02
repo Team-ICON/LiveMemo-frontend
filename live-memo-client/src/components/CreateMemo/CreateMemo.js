@@ -149,8 +149,9 @@ function CreateMemo({ currentUser, socket }) {
                 if (curMem.length == 1)
                     return { data: res.data.memInfo.content, flag: true }
                 else {
-                    return { data: firstState, flag: false }
+                    return firstState
                 }
+
 
             }
         } catch {

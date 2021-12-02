@@ -163,14 +163,9 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 dispatch(selectDoc({
                     docState: JSON.parse(res.data)
                 }))
-                if (res.flag) {
-                    console.log(res.data)
-                    getContext()?.setContent(JSON.parse(res.data));
+                console.log(docState)
+                getContext()?.setContent(JSON.parse(res));
 
-                }
-                else {
-                    console.log(res)
-                }
 
             }
 
