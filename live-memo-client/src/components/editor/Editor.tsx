@@ -30,6 +30,8 @@ interface EditorProps {
 }
 
 const TIMEOUT = 3000 + Math.floor(Math.random() * 7000);
+const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
+
 console.log(TIMEOUT)
 const Status = ({ success = false }) => (
     <span className={`status ${success ? 'success' : ''}`}>&nbsp;</span>
@@ -157,13 +159,22 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
             console.log(clientCount)
             if (provider.connected && clientCount === 0) {
                 const res = await onFetch(documentId);
-                //res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함
+                // res는 문자열이여서 여기서 JSON형태로 넘겨줘야됨 위에서 JSON으로 받아서 통일시킴 그래서 나중에 create에서 stringify 함
                 dispatch(selectDoc({
                     docState: JSON.parse(res)
                 }))
-                console.log(docState)
-                getContext()?.setContent(JSON.parse(res));
+                if (res !== "already") {
+                    console.log(res)
+                    getContext()?.setContent(JSON.parse(res));
 
+                }
+                else {
+                    console.log(res)
+                }
+
+            }
+            else if (provider.connected) {
+                window.location.reload()
             }
 
             usedFallbackRef.current = true;
