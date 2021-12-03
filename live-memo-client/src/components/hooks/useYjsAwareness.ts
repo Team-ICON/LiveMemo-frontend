@@ -13,7 +13,7 @@ function useYjsAwareness(user: User, doc: Doc): awarenessProtocol.Awareness {
 		const awareness = new awarenessProtocol.Awareness(doc);
 		awareness.setLocalStateField('user', {
 			name: user.displayName,
-			color: user.color ? user.color : getRandomColor(user.name),
+			color: user.color === "" ? getRandomColor(user.name) : user.color,
 		});
 		return awareness;
 	}, [user.displayName, doc]);
