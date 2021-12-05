@@ -221,10 +221,11 @@ function CreateMemo({ currentUser, socket }) {
 
 
     useEffect(() => {
+        setCanSave(false);
         setTimeout(() => {
             setCanSave(true)
         }, 2000);
-    }, [])
+    }, [curMemberList])
 
     //뒤로가기 아이콘 눌렀을때 저장
     const onSubmit = async (event) => {
@@ -381,6 +382,7 @@ function CreateMemo({ currentUser, socket }) {
                 }
             }).catch(error => { alert("메일 주소를 확인해주세요."); });
 
+        console.log("searchEmail: ", searchEmail)
         socket.emit('newUser', searchEmail);
     }
 

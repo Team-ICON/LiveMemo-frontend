@@ -62,16 +62,20 @@ function MemoList({ currentUser, socket }) {
     useEffect(() => {
         (() => {
             socket.on('newUser', (email) => {
-                if (email === currentUser.email) {
+                if (currentUser === null) {
+                    setTimeout(() => {
+                        setBeRealod(beReload => !beReload)
+                    }, 250);
+                }
+                else if (email === currentUser.email) {
                     console.log(email)
                     setTimeout(() => {
                         setBeRealod(beReload => !beReload)
                     }, 500);
 
                 }
-                else if (email === null) {
-                    alert("새로고침 한번 해주세요~")
-                }
+
+
 
             });
 
