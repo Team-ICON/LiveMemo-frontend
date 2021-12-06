@@ -498,6 +498,7 @@ function CreateMemo({ currentUser, socket }) {
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
+
                                 placeholder="사용자 메일을 입력해주세요."
                                 inputProps={{ 'aria-label': 'search' }}
                                 onChange={(e) => handleChange(e)}
