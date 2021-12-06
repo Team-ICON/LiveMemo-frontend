@@ -324,7 +324,7 @@ function CreateMemo({ currentUser, socket }) {
 
     //for push alarm
     const sendNotification = async () => {
-        const title = document.getElementById('title').value
+        const title = document.getElementById('name').value
         const msg = document.getElementById('message').value
 
         let targetFcmTokenList = []
@@ -615,13 +615,13 @@ function CreateMemo({ currentUser, socket }) {
                                 <DialogTitle>Push 알림</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
-                                        Push 알림으로 보낼 제목과 내용을 적어주세요.
+                                        이름과 내용을 적어주세요.
                                     </DialogContentText>
                                     <TextField
                                         autoFocus
                                         margin="dense"
-                                        id="title"
-                                        label="제목"
+                                        id="name"
+                                        label="보내는 사람"
                                         type="text"
                                         fullWidth
                                         variant="standard"
