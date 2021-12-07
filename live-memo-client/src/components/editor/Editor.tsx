@@ -75,6 +75,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
                 onSave(documentId, JSON.stringify(newDocState), false);
                 const meta = provider.doc.getMap('meta');
                 meta.set('lastSaved', Date.now());
+                console.log(meta)
             }
         },
         [onSave, documentId, provider.doc, isSynced, clientCount],

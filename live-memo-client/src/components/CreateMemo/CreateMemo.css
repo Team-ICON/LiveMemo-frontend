@@ -69,7 +69,7 @@ input:focus {outline: gray solid 2px;}
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
     text-indent: 0.8em;
-    font-size: large;
+    font-size: larger;
     border: 2px solid gray;
 
 }
