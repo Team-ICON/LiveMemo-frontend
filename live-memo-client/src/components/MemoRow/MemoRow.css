@@ -46,7 +46,7 @@
 .memoRow__title{
     display: flex;
     flex-wrap: wrap;
-    font-size: 16px;
+    font-size: large;
     flex:0.3;
     font-weight: bold;
     flex-basis :60%;
