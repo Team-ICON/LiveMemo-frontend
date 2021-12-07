@@ -44,7 +44,6 @@ import "./CreateMemo.css"
 
 
 const cookies = new Cookies();
-const token = cookies.get('livememo-token');
 
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 let folderList = [];

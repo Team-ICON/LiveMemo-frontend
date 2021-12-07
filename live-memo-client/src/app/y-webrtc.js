@@ -489,20 +489,24 @@ export class Room {
         encoding.writeVarUint(encoderSync, messageSync)
         syncProtocol.writeSyncStep1(encoderSync, this.doc)
         broadcastBcMessage(this, encoding.toUint8Array(encoderSync))
+
         // broadcast local state
         const encoderState = encoding.createEncoder()
         encoding.writeVarUint(encoderState, messageSync)
         syncProtocol.writeSyncStep2(encoderState, this.doc)
         broadcastBcMessage(this, encoding.toUint8Array(encoderState))
+
         // write queryAwareness
         const encoderAwarenessQuery = encoding.createEncoder()
         encoding.writeVarUint(encoderAwarenessQuery, messageQueryAwareness)
         broadcastBcMessage(this, encoding.toUint8Array(encoderAwarenessQuery))
+
         // broadcast local awareness state
         const encoderAwarenessState = encoding.createEncoder()
         encoding.writeVarUint(encoderAwarenessState, messageAwareness)
         encoding.writeVarUint8Array(encoderAwarenessState, awarenessProtocol.encodeAwarenessUpdate(this.awareness, [this.doc.clientID]))
         broadcastBcMessage(this, encoding.toUint8Array(encoderAwarenessState))
+
     }
 
     disconnect() {
