@@ -48,6 +48,7 @@ const cookies = new Cookies();
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 let folderList = [];
 
+//컴포넌트가 엮여서 state 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
