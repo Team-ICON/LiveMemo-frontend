@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router';
 import { Cookies } from "react-cookie";
 import Editor from '../editor/Editor';
@@ -48,6 +48,42 @@ const cookies = new Cookies();
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 let folderList = [];
 
+//컴포넌트가 엮여서 state 
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(3),
+        width: 'auto',
+    },
+}));
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '60vw',
+
+    },
+}));
 function CreateMemo({ currentUser, socket }) {
     // 사용자 추가 클릭 시 Drawer 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -58,7 +94,7 @@ function CreateMemo({ currentUser, socket }) {
     const [curMemberList, setCurMemberList] = useState([]);
     const [canSave, setCanSave] = useState(false)
     const [beReload, setBeRealod] = useState(false)
-
+    const [searchEmail, setSearchEmail] = useState("")
     // three dot button
     const [isBookMark, setIsBookMark] = useState(state.isBookMark);
     //mic button
@@ -73,7 +109,7 @@ function CreateMemo({ currentUser, socket }) {
     const selectedDoc = useSelector(selectOpenDoc)
     const CurUserList = useSelector(getCurUsers)
     const dispatch = useDispatch()
-    let searchEmail = "";
+    // let searchEmail = "";
     // 이동할 폴더 이름
     const [selectFolderName, setSelectFolderName] = useState(folderList[0]);
     //최초 실행 시 폴더 리스트를 받아옴
@@ -99,6 +135,7 @@ function CreateMemo({ currentUser, socket }) {
 
     const handleDrawerClose = () => {
         setDrawerOpen(false);
+        setSearchEmail("")
     };
 
     const handleThreeDotClick = (event) => {
@@ -394,45 +431,12 @@ function CreateMemo({ currentUser, socket }) {
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
     }));
-    // 사용자 검색 기능
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-    }));
-    const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }));
-    const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        '& .MuiInputBase-input': {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-            transition: theme.transitions.create('width'),
-            width: '60vw',
+    // 사용자 검색 기능 그냥 밑에 씀
 
-        },
-    }));
-    const handleChange = (e) => {
-        searchEmail = e.target.value;
-    }
+    // const handleChange = (e) => {
+    //     setSearchEmail(e.target.value)
+
+    // }
     //제목 수정
     const handleTitleNameChange = (e) => {
         setMemoTitle(e.target.value);
@@ -498,11 +502,15 @@ function CreateMemo({ currentUser, socket }) {
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>
-                            <StyledInputBase
 
+                            <StyledInputBase
+                                value={searchEmail}
+                                type="text"
                                 placeholder="사용자 메일을 입력해주세요."
-                                inputProps={{ 'aria-label': 'search' }}
-                                onChange={(e) => handleChange(e)}
+                                onChange={(e) => {
+                                    setSearchEmail(e.target.value)
+
+                                }}
                             />
                         </Search>
                         <div className="searchUserAdd">
