@@ -48,7 +48,7 @@ const cookies = new Cookies();
 const firstState = "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}"
 let folderList = [];
 
-//컴포넌트가 엮여서 state 
+//이 컴포넌트들을 create 컴포넌트에 넣어 버리면 계속 요소를 재정의 해서 focus out 됨
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,

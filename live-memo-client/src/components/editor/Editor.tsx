@@ -174,7 +174,7 @@ function Editor({ documentId, onFetch, onSave, }: EditorProps) {
         };
 
 
-        const timeoutId = window.setTimeout(fetchFallback, 500);
+        const timeoutId = window.setTimeout(fetchFallback, 250);
 
         return () => {
             window.clearTimeout(timeoutId);
